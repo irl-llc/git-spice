@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"net/url"
 
 	"go.abhg.dev/gs/internal/silog"
 )
@@ -148,17 +147,4 @@ type apiError struct {
 
 func (e *apiError) Error() string {
 	return fmt.Sprintf("bitbucket API error (status %d): %s", e.StatusCode, e.Body)
-}
-
-// encodeQueryParams encodes query parameters for a URL.
-func encodeQueryParams(params map[string]string) string {
-	if len(params) == 0 {
-		return ""
-	}
-
-	values := url.Values{}
-	for k, v := range params {
-		values.Set(k, v)
-	}
-	return "?" + values.Encode()
 }

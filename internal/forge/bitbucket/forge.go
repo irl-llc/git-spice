@@ -79,7 +79,7 @@ func (f *Forge) ParseRemoteURL(remoteURL string) (forge.RepositoryID, error) {
 
 // OpenRepository opens the Bitbucket repository that the given ID points to.
 func (f *Forge) OpenRepository(
-	ctx context.Context,
+	_ context.Context,
 	token forge.AuthenticationToken,
 	id forge.RepositoryID,
 ) (forge.Repository, error) {
