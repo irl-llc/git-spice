@@ -2,15 +2,10 @@ package bitbucket
 
 import (
 	"context"
-	"errors"
-	"iter"
 
 	"go.abhg.dev/gs/internal/forge"
 	"go.abhg.dev/gs/internal/silog"
 )
-
-// ErrNotImplemented indicates that a feature is not yet implemented.
-var ErrNotImplemented = errors.New("not implemented")
 
 // Repository is a Bitbucket repository.
 type Repository struct {
@@ -41,93 +36,6 @@ func newRepository(
 // Forge returns the forge this repository belongs to.
 func (r *Repository) Forge() forge.Forge { return r.forge }
 
-// SubmitChange creates a new pull request in the repository.
-//
-// This is a stub that will be implemented in a future PR.
-func (r *Repository) SubmitChange(
-	ctx context.Context,
-	req forge.SubmitChangeRequest,
-) (forge.SubmitChangeResult, error) {
-	return forge.SubmitChangeResult{}, ErrNotImplemented
-}
-
-// EditChange edits an existing pull request.
-//
-// This is a stub that will be implemented in a future PR.
-func (r *Repository) EditChange(
-	ctx context.Context,
-	id forge.ChangeID,
-	opts forge.EditChangeOptions,
-) error {
-	return ErrNotImplemented
-}
-
-// FindChangesByBranch finds pull requests by branch name.
-//
-// This is a stub that will be implemented in a future PR.
-func (r *Repository) FindChangesByBranch(
-	ctx context.Context,
-	branch string,
-	opts forge.FindChangesOptions,
-) ([]*forge.FindChangeItem, error) {
-	return nil, ErrNotImplemented
-}
-
-// FindChangeByID finds a pull request by its ID.
-//
-// This is a stub that will be implemented in a future PR.
-func (r *Repository) FindChangeByID(
-	ctx context.Context,
-	id forge.ChangeID,
-) (*forge.FindChangeItem, error) {
-	return nil, ErrNotImplemented
-}
-
-// ChangesStates retrieves the states of multiple pull requests.
-//
-// This is a stub that will be implemented in a future PR.
-func (r *Repository) ChangesStates(
-	ctx context.Context,
-	ids []forge.ChangeID,
-) ([]forge.ChangeState, error) {
-	return nil, ErrNotImplemented
-}
-
-// PostChangeComment posts a comment on a pull request.
-//
-// This is a stub that will be implemented in a future PR.
-func (r *Repository) PostChangeComment(
-	ctx context.Context,
-	id forge.ChangeID,
-	body string,
-) (forge.ChangeCommentID, error) {
-	return nil, ErrNotImplemented
-}
-
-// UpdateChangeComment updates an existing comment.
-//
-// This is a stub that will be implemented in a future PR.
-func (r *Repository) UpdateChangeComment(
-	ctx context.Context,
-	id forge.ChangeCommentID,
-	body string,
-) error {
-	return ErrNotImplemented
-}
-
-// ListChangeComments lists comments on a pull request.
-//
-// This is a stub that will be implemented in a future PR.
-func (r *Repository) ListChangeComments(
-	ctx context.Context,
-	id forge.ChangeID,
-	opts *forge.ListChangeCommentsOptions,
-) iter.Seq2[*forge.ListChangeCommentItem, error] {
-	return func(yield func(*forge.ListChangeCommentItem, error) bool) {
-		yield(nil, ErrNotImplemented)
-	}
-}
-
 // NewChangeMetadata returns the metadata for a pull request.
 func (r *Repository) NewChangeMetadata(
 	_ context.Context,
@@ -138,12 +46,9 @@ func (r *Repository) NewChangeMetadata(
 }
 
 // ListChangeTemplates lists pull request templates in the repository.
-//
-// This is a stub that will be implemented in a future PR.
+// Bitbucket has limited template support, so this returns an empty list.
 func (r *Repository) ListChangeTemplates(
-	ctx context.Context,
+	_ context.Context,
 ) ([]*forge.ChangeTemplate, error) {
-	// Bitbucket has limited template support.
-	// Return empty list for now.
 	return nil, nil
 }
