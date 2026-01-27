@@ -95,23 +95,49 @@ func TestPostChangeComment(t *testing.T) {
 }
 
 func TestUpdateChangeComment(t *testing.T) {
-	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		assert.Equal(t, http.MethodPut, r.Method)
-		assert.Contains(t, r.URL.Path, "/comments/42")
+	t.Run("Success", func(t *testing.T) {
+		srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			assert.Equal(t, http.MethodPut, r.Method)
+			assert.Contains(t, r.URL.Path, "/pullrequests/123/comments/42")
 
-		var req apiCreateCommentRequest
-		require.NoError(t, json.NewDecoder(r.Body).Decode(&req))
-		assert.Equal(t, "updated content", req.Content.Raw)
+			var req apiCreateCommentRequest
+			require.NoError(t, json.NewDecoder(r.Body).Decode(&req))
+			assert.Equal(t, "updated content", req.Content.Raw)
 
-		w.WriteHeader(http.StatusOK)
-	}))
-	defer srv.Close()
+			w.WriteHeader(http.StatusOK)
+		}))
+		defer srv.Close()
 
-	repo := newTestRepository(srv.URL)
-	commentID := &PRComment{ID: 42}
+		repo := newTestRepository(srv.URL)
+		commentID := &PRComment{ID: 42, PRID: 123}
 
-	err := repo.UpdateChangeComment(t.Context(), commentID, "updated content")
-	require.NoError(t, err)
+		err := repo.UpdateChangeComment(t.Context(), commentID, "updated content")
+		require.NoError(t, err)
+	})
+
+	t.Run("LegacyCommentMissingPRID", func(t *testing.T) {
+		repo := newTestRepository("http://unused")
+		commentID := &PRComment{ID: 42, PRID: 0} // Missing PRID
+
+		err := repo.UpdateChangeComment(t.Context(), commentID, "updated content")
+		require.Error(t, err)
+		assert.ErrorIs(t, err, forge.ErrCommentCannotUpdate)
+	})
+
+	t.Run("CommentNotFound", func(t *testing.T) {
+		srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+			w.WriteHeader(http.StatusNotFound)
+			_, _ = w.Write([]byte(`{"type":"error","error":{"message":"Comment not found"}}`))
+		}))
+		defer srv.Close()
+
+		repo := newTestRepository(srv.URL)
+		commentID := &PRComment{ID: 42, PRID: 123}
+
+		err := repo.UpdateChangeComment(t.Context(), commentID, "updated content")
+		require.Error(t, err)
+		assert.ErrorIs(t, err, forge.ErrCommentCannotUpdate)
+	})
 }
 
 func TestFindChangesByBranch(t *testing.T) {
