@@ -106,6 +106,15 @@ func updateNavigationComments(
 		return fmt.Errorf("get remote repository: %w", err)
 	}
 
+	// Create URL formatter for forges that need explicit links.
+	// Forges like GitHub auto-link "#123" to PRs, but Bitbucket doesn't.
+	var urlFormatter func(forge.ChangeID) string
+	if repo, ok := remoteRepo.(forge.WithChangeURL); ok {
+		urlFormatter = func(id forge.ChangeID) string {
+			return fmt.Sprintf("[%s](%s)", id.String(), repo.ChangeURL(id))
+		}
+	}
+
 	// Look up branch graph once, and share between all syncs.
 	trackedBranches, err := svc.LoadBranches(ctx)
 	if err != nil {
@@ -131,8 +140,9 @@ func updateNavigationComments(
 
 		idxByBranch[b.Name] = len(nodes)
 		nodes = append(nodes, &stackedChange{
-			Change: b.Change.ChangeID(),
-			Base:   -1,
+			Change:       b.Change.ChangeID(),
+			Base:         -1,
+			urlFormatter: urlFormatter,
 		})
 		infos = append(infos, branchInfo{
 			Branch: b.Name,
@@ -172,8 +182,9 @@ func updateNavigationComments(
 
 				idx := len(nodes)
 				nodes = append(nodes, &stackedChange{
-					Change: downstackCR,
-					Base:   lastDownstackIdx,
+					Change:       downstackCR,
+					Base:         lastDownstackIdx,
+					urlFormatter: urlFormatter,
 				})
 				// Inform previous node about this node.
 				if lastDownstackIdx != -1 {
@@ -383,6 +394,10 @@ type stackedChange struct {
 
 	Base   int // -1 = no base CR
 	Aboves []int
+
+	// urlFormatter, if set, formats the change as a markdown link.
+	// Used for forges that don't auto-link change references (e.g., Bitbucket).
+	urlFormatter func(forge.ChangeID) string
 }
 
 var _ stacknav.Node = (*stackedChange)(nil)
@@ -390,6 +405,9 @@ var _ stacknav.Node = (*stackedChange)(nil)
 func (s *stackedChange) BaseIdx() int { return s.Base }
 
 func (s *stackedChange) Value() string {
+	if s.urlFormatter != nil {
+		return s.urlFormatter(s.Change)
+	}
 	return s.Change.String()
 }
 

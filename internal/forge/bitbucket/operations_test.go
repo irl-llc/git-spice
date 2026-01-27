@@ -408,5 +408,5 @@ func TestStateToAPI(t *testing.T) {
 
 func newTestRepository(baseURL string) *Repository {
 	client := newClient(baseURL, &AuthenticationToken{AccessToken: "test"}, silog.Nop())
-	return newRepository(&Forge{}, "workspace", "repo", silog.Nop(), client)
+	return newRepository(&Forge{}, baseURL, "workspace", "repo", silog.Nop(), client)
 }
