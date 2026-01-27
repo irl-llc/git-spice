@@ -18,14 +18,18 @@ import (
 
 // Registry is a collection of known code forges.
 type Registry struct {
-	m sync.Map
+	// forges stores primary forge registrations by ID.
+	forges sync.Map
+
+	// aliases stores alias -> forge mappings for alternate lookup names.
+	aliases sync.Map
 }
 
-// All returns an iterator over items in the Forge
-// in an unspecified order.
+// All returns an iterator over primary forge registrations
+// in an unspecified order. Aliases are not included.
 func (r *Registry) All() iter.Seq[Forge] {
 	return func(yield func(Forge) bool) {
-		r.m.Range(func(_, value any) bool {
+		r.forges.Range(func(_, value any) bool {
 			return yield(value.(Forge))
 		})
 	}
@@ -35,20 +39,29 @@ func (r *Registry) All() iter.Seq[Forge] {
 // The Forge may be unregistered by calling the returned function.
 func (r *Registry) Register(f Forge) (unregister func()) {
 	id := f.ID()
-	r.m.Store(id, f)
+	r.forges.Store(id, f)
 	return func() {
-		r.m.Delete(id)
+		r.forges.Delete(id)
 	}
 }
 
-// Lookup searches for a registered Forge by ID.
+// RegisterAlias registers an alias for a Forge.
+// The alias can be used with Lookup to find the forge,
+// but will not appear in All().
+func (r *Registry) RegisterAlias(alias string, f Forge) {
+	r.aliases.Store(alias, f)
+}
+
+// Lookup searches for a registered Forge by ID or alias.
 // It returns false if a forge with that ID is not known.
 func (r *Registry) Lookup(id string) (Forge, bool) {
-	f, ok := r.m.Load(id)
-	if !ok {
-		return nil, false
+	if f, ok := r.forges.Load(id); ok {
+		return f.(Forge), true
 	}
-	return f.(Forge), true
+	if f, ok := r.aliases.Load(id); ok {
+		return f.(Forge), true
+	}
+	return nil, false
 }
 
 // MatchRemoteURL attempts to match the given remote URL with a registered forge.
@@ -141,6 +154,27 @@ type Forge interface {
 	// ClearAuthenticationToken removes the authentication token
 	// from the secret stash.
 	ClearAuthenticationToken(secret.Stash) error
+}
+
+// WithDisplayName is an optional interface that forges can implement
+// to provide a human-friendly display name for the UI.
+// If not implemented, the forge's ID is used as the display name.
+type WithDisplayName interface {
+	Forge
+
+	// DisplayName returns a human-friendly name for the forge,
+	// e.g. "Bitbucket (Atlassian)" instead of just "bitbucket".
+	DisplayName() string
+}
+
+// GetDisplayName returns the display name for a forge.
+// If the forge implements WithDisplayName, it returns DisplayName().
+// Otherwise, it returns the forge's ID.
+func GetDisplayName(f Forge) string {
+	if fd, ok := f.(WithDisplayName); ok {
+		return fd.DisplayName()
+	}
+	return f.ID()
 }
 
 // AuthenticationToken is a secret that results from a successful login.

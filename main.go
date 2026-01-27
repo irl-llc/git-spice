@@ -68,7 +68,9 @@ func main() {
 
 	// Register supported forges.
 	var forges forge.Registry
-	forges.Register(&bitbucket.Forge{Log: logger})
+	bitbucketForge := &bitbucket.Forge{Log: logger}
+	forges.Register(bitbucketForge)
+	forges.RegisterAlias("atlassian", bitbucketForge)
 	forges.Register(&github.Forge{Log: logger})
 	forges.Register(&gitlab.Forge{Log: logger})
 	for _, f := range _extraForges {

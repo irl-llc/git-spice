@@ -65,6 +65,49 @@ func TestRegister(t *testing.T) {
 	})
 }
 
+func TestRegisterAlias(t *testing.T) {
+	ctrl := gomock.NewController(t)
+
+	mockForge := forgetest.NewMockForge(ctrl)
+	mockForge.EXPECT().ID().Return("primary").AnyTimes()
+
+	var registry forge.Registry
+	defer registry.Register(mockForge)()
+	registry.RegisterAlias("alias", mockForge)
+
+	t.Run("LookupByID", func(t *testing.T) {
+		f, ok := registry.Lookup("primary")
+		assert.True(t, ok, "forge not found by ID")
+		assert.Equal(t, "primary", f.ID())
+	})
+
+	t.Run("LookupByAlias", func(t *testing.T) {
+		f, ok := registry.Lookup("alias")
+		assert.True(t, ok, "forge not found by alias")
+		assert.Equal(t, "primary", f.ID())
+	})
+
+	t.Run("AliasNotInAll", func(t *testing.T) {
+		var count int
+		for range registry.All() {
+			count++
+		}
+		assert.Equal(t, 1, count, "alias should not appear in All()")
+	})
+}
+
+func TestGetDisplayName(t *testing.T) {
+	ctrl := gomock.NewController(t)
+
+	t.Run("WithoutDisplayName", func(t *testing.T) {
+		mockForge := forgetest.NewMockForge(ctrl)
+		mockForge.EXPECT().ID().Return("test-forge")
+
+		name := forge.GetDisplayName(mockForge)
+		assert.Equal(t, "test-forge", name)
+	})
+}
+
 func TestChangeState(t *testing.T) {
 	tests := []struct {
 		state forge.ChangeState

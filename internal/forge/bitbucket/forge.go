@@ -20,7 +20,10 @@ type Forge struct {
 	Log *silog.Logger
 }
 
-var _ forge.Forge = (*Forge)(nil)
+var (
+	_ forge.Forge           = (*Forge)(nil)
+	_ forge.WithDisplayName = (*Forge)(nil)
+)
 
 func (f *Forge) logger() *silog.Logger {
 	if f.Log == nil {
@@ -43,6 +46,9 @@ func (f *Forge) APIURL() string {
 
 // ID reports a unique key for this forge.
 func (*Forge) ID() string { return "bitbucket" }
+
+// DisplayName returns a human-friendly name for the forge.
+func (*Forge) DisplayName() string { return "Bitbucket (Atlassian)" }
 
 // CLIPlugin returns the CLI plugin for the Bitbucket Forge.
 func (f *Forge) CLIPlugin() any { return &f.Options }
