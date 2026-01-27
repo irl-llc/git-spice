@@ -266,6 +266,17 @@ type Repository interface {
 	ListChangeTemplates(context.Context) ([]*ChangeTemplate, error)
 }
 
+// WithChangeURL is an optional interface that repositories can implement
+// to provide URLs for changes.
+// This is used to generate clickable links in navigation comments
+// for forges that don't auto-link change references.
+type WithChangeURL interface {
+	Repository
+
+	// ChangeURL returns the web URL for viewing the given change.
+	ChangeURL(id ChangeID) string
+}
+
 // ChangeID is a unique identifier for a change in a repository.
 type ChangeID interface {
 	String() string
