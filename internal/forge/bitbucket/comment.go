@@ -2,6 +2,7 @@ package bitbucket
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"iter"
 
@@ -19,7 +20,7 @@ func (r *Repository) PostChangeComment(
 	if err != nil {
 		return nil, err
 	}
-	return &PRComment{ID: comment.ID}, nil
+	return &PRComment{ID: comment.ID, PRID: prID}, nil
 }
 
 func (r *Repository) createComment(
@@ -50,19 +51,22 @@ func (r *Repository) UpdateChangeComment(
 	body string,
 ) error {
 	comment := mustPRComment(id)
-	return r.updateComment(ctx, comment.ID, body)
+	if comment.PRID == 0 {
+		// Legacy comment without PR ID.
+		// Return sentinel error so caller can recreate the comment.
+		return fmt.Errorf("comment %d missing PR ID: %w", comment.ID, forge.ErrCommentCannotUpdate)
+	}
+	return r.updateComment(ctx, comment.PRID, comment.ID, body)
 }
 
 func (r *Repository) updateComment(
 	ctx context.Context,
-	commentID int64,
+	prID, commentID int64,
 	body string,
 ) error {
-	// Bitbucket comment update requires the PR ID.
-	// Since we don't have it, we need to use the global comments endpoint.
 	path := fmt.Sprintf(
-		"/repositories/%s/%s/pullrequests/comments/%d",
-		r.workspace, r.repo, commentID,
+		"/repositories/%s/%s/pullrequests/%d/comments/%d",
+		r.workspace, r.repo, prID, commentID,
 	)
 
 	req := &apiCreateCommentRequest{
@@ -70,6 +74,12 @@ func (r *Repository) updateComment(
 	}
 
 	if err := r.client.put(ctx, path, req, nil); err != nil {
+		// 404 means the comment doesn't exist (deleted or wrong PR).
+		// Return sentinel error so caller can recreate it.
+		var apiErr *apiError
+		if errors.As(err, &apiErr) && apiErr.StatusCode == 404 {
+			return fmt.Errorf("comment %d not found: %w", commentID, forge.ErrCommentCannotUpdate)
+		}
 		return fmt.Errorf("update comment: %w", err)
 	}
 	return nil

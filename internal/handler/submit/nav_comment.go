@@ -3,6 +3,7 @@ package submit
 import (
 	"context"
 	"encoding"
+	"errors"
 	"fmt"
 	"maps"
 	"regexp"
@@ -264,6 +265,8 @@ func updateNavigationComments(
 			Body   string
 		}
 		updateComment struct {
+			Branch  string
+			Meta    forge.ChangeMetadata
 			Change  forge.ChangeID
 			Comment forge.ChangeCommentID
 			Body    string
@@ -332,13 +335,58 @@ func updateNavigationComments(
 					}
 
 					err := remoteRepo.UpdateChangeComment(ctx, update.Comment, update.Body)
-					if err != nil {
+					if err == nil {
+						continue
+					}
+
+					// If comment cannot be updated, recreate it.
+					if !errors.Is(err, forge.ErrCommentCannotUpdate) {
 						log.Warn("Error updating comment",
 							"change", update.Change.String(),
 							"error", err,
 						)
 						continue
 					}
+
+					log.Info("Recreating navigation comment",
+						"change", update.Change.String(),
+						"reason", err,
+					)
+
+					commentID, err := remoteRepo.PostChangeComment(ctx, update.Change, update.Body)
+					if err != nil {
+						log.Warn("Error recreating comment",
+							"change", update.Change.String(),
+							"error", err,
+						)
+						continue
+					}
+
+					meta := update.Meta
+					meta.SetNavigationCommentID(commentID)
+					bs, err := remoteRepo.Forge().MarshalChangeMetadata(meta)
+					if err != nil {
+						log.Warn("Error marshaling change metadata",
+							"change", update.Change.String(),
+							"error", err,
+						)
+						continue
+					}
+
+					mu.Lock()
+					if err := branchTx.Upsert(ctx, state.UpsertRequest{
+						Name:           update.Branch,
+						ChangeMetadata: bs,
+						ChangeForge:    remoteRepo.Forge().ID(),
+					}); err != nil {
+						log.Error("Unable to update branch metadata",
+							"branch", update.Branch,
+							"error", err,
+						)
+					} else {
+						upserted = append(upserted, update.Branch)
+					}
+					mu.Unlock()
 				}
 			}
 		})
@@ -366,6 +414,8 @@ func updateNavigationComments(
 			}
 		} else {
 			updatec <- &updateComment{
+				Branch:  info.Branch,
+				Meta:    info.Meta,
 				Change:  info.Meta.ChangeID(),
 				Comment: info.Meta.NavigationCommentID(),
 				Body:    commentBody,

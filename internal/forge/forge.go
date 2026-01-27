@@ -225,6 +225,12 @@ type RepositoryID interface {
 // because the base branch has not been pushed yet.
 var ErrUnsubmittedBase = errors.New("base branch has not been submitted yet")
 
+// ErrCommentCannotUpdate indicates that an existing comment cannot be updated.
+// This typically occurs when local state is missing required information
+// (e.g., PR ID for Bitbucket comments).
+// Callers should handle this by posting a new comment instead.
+var ErrCommentCannotUpdate = errors.New("comment cannot be updated")
+
 // Repository is a Git repository hosted on a forge.
 type Repository interface {
 	Forge() Forge
