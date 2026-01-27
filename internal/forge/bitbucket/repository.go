@@ -2,6 +2,7 @@ package bitbucket
 
 import (
 	"context"
+	"fmt"
 
 	"go.abhg.dev/gs/internal/forge"
 	"go.abhg.dev/gs/internal/silog"
@@ -11,21 +12,26 @@ import (
 type Repository struct {
 	client *client
 
+	url             string // base URL (e.g., "https://bitbucket.org")
 	workspace, repo string
 	log             *silog.Logger
 	forge           *Forge
 }
 
-var _ forge.Repository = (*Repository)(nil)
+var (
+	_ forge.Repository    = (*Repository)(nil)
+	_ forge.WithChangeURL = (*Repository)(nil)
+)
 
 func newRepository(
 	forge *Forge,
-	workspace, repo string,
+	url, workspace, repo string,
 	log *silog.Logger,
 	client *client,
 ) *Repository {
 	return &Repository{
 		client:    client,
+		url:       url,
 		workspace: workspace,
 		repo:      repo,
 		forge:     forge,
@@ -35,6 +41,12 @@ func newRepository(
 
 // Forge returns the forge this repository belongs to.
 func (r *Repository) Forge() forge.Forge { return r.forge }
+
+// ChangeURL returns the web URL for viewing the given pull request.
+func (r *Repository) ChangeURL(id forge.ChangeID) string {
+	prNum := mustPR(id).Number
+	return fmt.Sprintf("%s/%s/%s/pull-requests/%d", r.url, r.workspace, r.repo, prNum)
+}
 
 // NewChangeMetadata returns the metadata for a pull request.
 func (r *Repository) NewChangeMetadata(
