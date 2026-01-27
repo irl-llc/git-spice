@@ -13,6 +13,14 @@ func TestForge_ID(t *testing.T) {
 	assert.Equal(t, "bitbucket", f.ID())
 }
 
+func TestForge_DisplayName(t *testing.T) {
+	f := &Forge{}
+	assert.Equal(t, "Bitbucket (Atlassian)", f.DisplayName())
+
+	// Verify it implements forge.WithDisplayName.
+	var _ forge.WithDisplayName = f
+}
+
 func TestForge_URL(t *testing.T) {
 	tests := []struct {
 		name    string
