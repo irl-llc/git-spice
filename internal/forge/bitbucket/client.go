@@ -115,15 +115,13 @@ func (c *client) setAuth(req *http.Request) {
 		return
 	}
 
-	// Bitbucket API tokens use Basic auth with email:token.
-	// Note: For API access, the username must be the Atlassian account email,
-	// not the Bitbucket username (which is used for git operations).
-	if c.token.Email != "" {
+	// GCM and environment variable tokens use Bearer auth (OAuth tokens).
+	// App passwords use Basic auth with email:token.
+	if c.token.AuthType == AuthTypeAppPassword && c.token.Email != "" {
 		req.SetBasicAuth(c.token.Email, c.token.AccessToken)
 		return
 	}
 
-	// Fallback to Bearer for environment variable tokens without email.
 	req.Header.Set("Authorization", "Bearer "+c.token.AccessToken)
 }
 
