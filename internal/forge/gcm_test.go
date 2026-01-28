@@ -1,4 +1,4 @@
-package bitbucket
+package forge
 
 import (
 	"testing"
@@ -70,7 +70,7 @@ password=secret
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			token, err := parseCredentialOutput([]byte(tt.output))
+			cred, err := parseCredentialOutput([]byte(tt.output))
 
 			if tt.wantErr {
 				require.Error(t, err)
@@ -78,9 +78,8 @@ password=secret
 			}
 
 			require.NoError(t, err)
-			assert.Equal(t, tt.wantUsername, token.Email)
-			assert.Equal(t, tt.wantPassword, token.AccessToken)
-			assert.Equal(t, AuthTypeGCM, token.AuthType)
+			assert.Equal(t, tt.wantUsername, cred.Username)
+			assert.Equal(t, tt.wantPassword, cred.Password)
 		})
 	}
 }
@@ -125,8 +124,7 @@ func TestExtractHost(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := extractHost(tt.rawURL)
-			assert.Equal(t, tt.wantOut, got)
+			assert.Equal(t, tt.wantOut, extractHost(tt.rawURL))
 		})
 	}
 }

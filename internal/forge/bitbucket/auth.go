@@ -1,8 +1,6 @@
 package bitbucket
 
 import (
-	"bufio"
-	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -13,7 +11,6 @@ import (
 	"go.abhg.dev/gs/internal/secret"
 	"go.abhg.dev/gs/internal/silog"
 	"go.abhg.dev/gs/internal/ui"
-	"go.abhg.dev/gs/internal/xec"
 )
 
 // AuthType identifies the authentication method used.
@@ -242,70 +239,18 @@ func (f *Forge) ClearAuthenticationToken(stash secret.Stash) error {
 	return stash.DeleteSecret(f.URL(), "token")
 }
 
-// loadGCMCredentials attempts to load OAuth credentials from git-credential-manager.
-// Returns nil if GCM credentials are not available.
+// loadGCMCredentials attempts to load OAuth credentials
+// from git-credential-manager.
+// Returns an error if GCM credentials are not available.
 func (f *Forge) loadGCMCredentials() (*AuthenticationToken, error) {
-	host := extractHost(f.URL())
-	input := fmt.Sprintf("protocol=https\nhost=%s\n\n", host)
-
-	ctx := context.Background()
-	output, err := xec.Command(ctx, nil, "git", "credential", "fill").
-		WithStdinString(input).
-		Output()
+	cred, err := forge.LoadGCMCredential(f.URL())
 	if err != nil {
-		return nil, fmt.Errorf("git credential fill: %w", err)
-	}
-
-	return parseCredentialOutput(output)
-}
-
-// parseCredentialOutput parses the output of `git credential fill`.
-// The format is key=value pairs, one per line.
-func parseCredentialOutput(output []byte) (*AuthenticationToken, error) {
-	var username, password string
-
-	scanner := bufio.NewScanner(bytes.NewReader(output))
-	for scanner.Scan() {
-		line := scanner.Text()
-		key, value, ok := strings.Cut(line, "=")
-		if !ok {
-			continue
-		}
-
-		switch key {
-		case "username":
-			username = value
-		case "password":
-			password = value
-		}
-	}
-
-	if err := scanner.Err(); err != nil {
-		return nil, fmt.Errorf("parse credential output: %w", err)
-	}
-
-	if password == "" {
-		return nil, errors.New("no password in credential output")
+		return nil, err
 	}
 
 	return &AuthenticationToken{
 		AuthType:    AuthTypeGCM,
-		AccessToken: password,
-		Email:       username,
+		AccessToken: cred.Password,
+		Email:       cred.Username,
 	}, nil
-}
-
-// extractHost extracts the host from a URL.
-func extractHost(rawURL string) string {
-	// Remove protocol prefix.
-	host := rawURL
-	if idx := strings.Index(host, "://"); idx != -1 {
-		host = host[idx+3:]
-	}
-
-	// Remove path suffix.
-	if idx := strings.Index(host, "/"); idx != -1 {
-		host = host[:idx]
-	}
-	return host
 }
