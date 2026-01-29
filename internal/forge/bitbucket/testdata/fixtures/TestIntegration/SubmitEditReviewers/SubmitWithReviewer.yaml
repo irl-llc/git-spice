@@ -1,0 +1,29 @@
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: api.bitbucket.org
+        headers:
+            Content-Type:
+                - application/json
+        url: https://api.bitbucket.org/2.0/users/shambucket-admin
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: 59
+        body: '{"type": "error", "error": {"message": "shambucket-admin"}}'
+        headers:
+            Content-Length:
+                - "59"
+            Content-Type:
+                - application/json; charset=utf-8
+        status: 404 Not Found
+        code: 404
+        duration: 129.215167ms
