@@ -9,6 +9,10 @@ import (
 	"go.abhg.dev/gs/internal/forge"
 )
 
+// _listChangeCommentsPageSize is the number of comments to fetch per page.
+// It's a variable so tests can override it.
+var _listChangeCommentsPageSize = 100
+
 // PostChangeComment posts a comment on a pull request.
 func (r *Repository) PostChangeComment(
 	ctx context.Context,
@@ -135,8 +139,8 @@ func (r *Repository) iterateComments(
 
 func (r *Repository) buildCommentsPath(prID int64) string {
 	return fmt.Sprintf(
-		"/repositories/%s/%s/pullrequests/%d/comments",
-		r.workspace, r.repo, prID,
+		"/repositories/%s/%s/pullrequests/%d/comments?pagelen=%d",
+		r.workspace, r.repo, prID, _listChangeCommentsPageSize,
 	)
 }
 
