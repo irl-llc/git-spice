@@ -8,7 +8,7 @@ interactions:
         proto_minor: 1
         content_length: 160
         host: api.bitbucket.org
-        body: '{"title":"Testing MgNPVwby","description":"Test PR with non-existent base","source":{"branch":{"name":"MgNPVwby"}},"destination":{"branch":{"name":"atVonJoL"}}}'
+        body: '{"title":"Testing AmT9IRBe","description":"Test PR with non-existent base","source":{"branch":{"name":"AmT9IRBe"}},"destination":{"branch":{"name":"3iPbwGIS"}}}'
         headers:
             Content-Type:
                 - application/json
@@ -19,7 +19,7 @@ interactions:
         proto_major: 2
         proto_minor: 0
         content_length: 141
-        body: '{"type": "error", "error": {"message": "destination: branch not found: atVonJoL", "fields": {"destination": ["branch not found: atVonJoL"]}}}'
+        body: '{"type": "error", "error": {"message": "destination: branch not found: 3iPbwGIS", "fields": {"destination": ["branch not found: 3iPbwGIS"]}}}'
         headers:
             Content-Length:
                 - "141"
@@ -27,4 +27,4 @@ interactions:
                 - application/json; charset=utf-8
         status: 400 Bad Request
         code: 400
-        duration: 205.738875ms
+        duration: 204.555042ms
