@@ -42,16 +42,11 @@ func (r *Repository) updatePRBase(ctx context.Context, prID int64, base string) 
 	return r.updatePullRequest(ctx, prID, req)
 }
 
-func (r *Repository) updatePRDraft(_ context.Context, _ int64, draft *bool) error {
+func (r *Repository) updatePRDraft(ctx context.Context, prID int64, draft *bool) error {
 	if draft == nil {
 		return nil
 	}
-
-	// Bitbucket doesn't have a simple draft toggle API.
-	// Draft status is part of the PR state, but changing it directly
-	// via the API is not straightforward. Log a warning for now.
-	r.log.Warn("Bitbucket draft status toggle is not fully supported via API")
-	return nil
+	return r.updatePullRequest(ctx, prID, &apiUpdatePRRequest{Draft: draft})
 }
 
 func (r *Repository) addPRReviewers(
