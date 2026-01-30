@@ -9,6 +9,8 @@ interactions:
         content_length: 0
         host: api.bitbucket.org
         form:
+            fields:
+                - +values.reviewers
             pagelen:
                 - "10"
             q:
@@ -16,7 +18,7 @@ interactions:
         headers:
             Content-Type:
                 - application/json
-        url: https://api.bitbucket.org/2.0/repositories/shambucket/shambucket/pullrequests?q=source.branch.name%3D%22does-not-exist%22&pagelen=10
+        url: https://api.bitbucket.org/2.0/repositories/shambucket/shambucket/pullrequests?q=source.branch.name%3D%22does-not-exist%22&pagelen=10&fields=%2Bvalues.reviewers
         method: GET
       response:
         proto: HTTP/2.0
@@ -31,4 +33,4 @@ interactions:
                 - application/json; charset=utf-8
         status: 200 OK
         code: 200
-        duration: 367.318625ms
+        duration: 620.211041ms

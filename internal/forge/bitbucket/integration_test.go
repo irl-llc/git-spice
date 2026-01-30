@@ -50,16 +50,14 @@ func TestIntegration(t *testing.T) {
 				bitbucket.CloseChange(t.Context(), repo.(*bitbucket.Repository), change.(*bitbucket.PR)))
 		},
 		SetCommentsPageSize: bitbucket.SetListChangeCommentsPageSize,
-		Reviewers:           []string{"shambucket-admin"},
+		Reviewers:           []string{"Ed IRL Kohlwey"},
 		Assignees:           []string{},
 		// Bitbucket limitations:
 		SkipLabels:            true, // Bitbucket does not support PR labels
 		SkipAssignees:         true, // Bitbucket does not support PR assignees
 		SkipTemplates:         true, // Bitbucket has limited template support
-		SkipDraft:             true, // Bitbucket draft API is not straightforward
 		ShortHeadHash:         true, // Bitbucket API returns 12-char hashes
-		SkipReviewers:         true, // Bitbucket user lookup by username doesn't work
-		SkipMerge:             true, // Bitbucket repo may require approvals before merge
+		SkipMerge:             true, // Merge requires repository-specific branch permissions
 		SkipCommentPagination: true, // Bitbucket returns 403 with small page sizes
 	})
 }
