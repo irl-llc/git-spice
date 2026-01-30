@@ -38,7 +38,7 @@ func (r *Repository) listPRsByBranch(
 	}
 
 	path := fmt.Sprintf(
-		"/repositories/%s/%s/pullrequests?q=%s&pagelen=%d",
+		"/repositories/%s/%s/pullrequests?q=%s&pagelen=%d&fields=%%2Bvalues.reviewers",
 		r.workspace, r.repo, url.QueryEscape(query), limit,
 	)
 
@@ -90,7 +90,7 @@ func (r *Repository) convertPRToFindItem(pr *apiPullRequest) *forge.FindChangeIt
 		Subject:   pr.Title,
 		BaseName:  pr.Destination.Branch.Name,
 		HeadHash:  extractHeadHash(pr),
-		Draft:     pr.State == "DRAFT",
+		Draft:     pr.Draft,
 		Reviewers: extractUsernames(pr.Reviewers),
 	}
 }
@@ -111,7 +111,16 @@ func extractUsernames(users []apiUser) []string {
 	}
 	names := make([]string, len(users))
 	for i, u := range users {
-		names[i] = u.Username
+		names[i] = extractUsername(&u)
 	}
 	return names
+}
+
+// extractUsername returns the username for display purposes.
+// Falls back to Nickname since Bitbucket deprecated usernames.
+func extractUsername(u *apiUser) string {
+	if u.Username != "" {
+		return u.Username
+	}
+	return u.Nickname
 }

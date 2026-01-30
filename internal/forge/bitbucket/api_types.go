@@ -10,6 +10,7 @@ type apiCreatePRRequest struct {
 	Destination       apiBranchRef  `json:"destination"`
 	Reviewers         []apiReviewer `json:"reviewers,omitempty"`
 	CloseSourceBranch bool          `json:"close_source_branch,omitempty"`
+	Draft             bool          `json:"draft,omitempty"`
 }
 
 // apiUpdatePRRequest is the request body for updating a pull request.
@@ -18,6 +19,7 @@ type apiUpdatePRRequest struct {
 	Description string        `json:"description,omitempty"`
 	Destination *apiBranchRef `json:"destination,omitempty"`
 	Reviewers   []apiReviewer `json:"reviewers,omitempty"`
+	Draft       *bool         `json:"draft,omitempty"`
 }
 
 // apiBranchRef references a branch in a repository.
@@ -42,6 +44,7 @@ type apiPullRequest struct {
 	Title       string       `json:"title"`
 	Description string       `json:"description"`
 	State       string       `json:"state"`
+	Draft       bool         `json:"draft"`
 	Source      apiBranchRef `json:"source"`
 	Destination apiBranchRef `json:"destination"`
 	Author      apiUser      `json:"author"`
@@ -66,6 +69,7 @@ type apiUser struct {
 	Username    string `json:"username"`
 	DisplayName string `json:"display_name"`
 	AccountID   string `json:"account_id"`
+	Nickname    string `json:"nickname"`
 }
 
 // apiCommit represents a commit.
@@ -101,4 +105,15 @@ type apiCommentList struct {
 // apiCreateCommentRequest is the request body for creating a comment.
 type apiCreateCommentRequest struct {
 	Content apiContent `json:"content"`
+}
+
+// apiWorkspaceMember represents a member of a Bitbucket workspace.
+type apiWorkspaceMember struct {
+	User apiUser `json:"user"`
+}
+
+// apiWorkspaceMemberList is the paginated response for listing workspace members.
+type apiWorkspaceMemberList struct {
+	Values []apiWorkspaceMember `json:"values"`
+	Next   string               `json:"next,omitempty"`
 }

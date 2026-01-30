@@ -2,7 +2,9 @@ package bitbucket
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"strings"
 
 	"go.abhg.dev/gs/internal/forge"
 )
@@ -53,6 +55,7 @@ func (r *Repository) buildCreatePRRequest(
 		Destination: apiBranchRef{
 			Branch: apiBranch{Name: req.Base},
 		},
+		Draft: req.Draft,
 	}
 	if req.Body != "" {
 		apiReq.Description = req.Body
@@ -71,9 +74,26 @@ func (r *Repository) createPullRequest(
 
 	var resp apiPullRequest
 	if err := r.client.post(ctx, path, req, &resp); err != nil {
+		if isDestinationBranchNotFound(err) {
+			return nil, fmt.Errorf("create pull request: %w", forge.ErrUnsubmittedBase)
+		}
 		return nil, fmt.Errorf("create pull request: %w", err)
 	}
 	return &resp, nil
+}
+
+// isDestinationBranchNotFound checks if the error indicates
+// the destination branch doesn't exist.
+func isDestinationBranchNotFound(err error) bool {
+	var apiErr *apiError
+	if !errors.As(err, &apiErr) {
+		return false
+	}
+	if apiErr.StatusCode != 400 {
+		return false
+	}
+	return strings.Contains(apiErr.Body, "destination") &&
+		strings.Contains(apiErr.Body, "branch not found")
 }
 
 func (r *Repository) resolveReviewerUUIDs(
@@ -97,11 +117,57 @@ func (r *Repository) resolveReviewerUUIDs(
 }
 
 func (r *Repository) getUser(ctx context.Context, username string) (*apiUser, error) {
-	path := "/users/" + username
-
-	var user apiUser
-	if err := r.client.get(ctx, path, &user); err != nil {
+	user, err := r.findWorkspaceMember(ctx, username)
+	if err != nil {
 		return nil, err
 	}
-	return &user, nil
+	if user == nil {
+		return nil, fmt.Errorf("user %q not found in workspace %q", username, r.workspace)
+	}
+	return user, nil
+}
+
+func (r *Repository) findWorkspaceMember(
+	ctx context.Context,
+	username string,
+) (*apiUser, error) {
+	path := fmt.Sprintf("/workspaces/%s/members", r.workspace)
+	for path != "" {
+		user, nextPath, err := r.searchMemberPage(ctx, path, username)
+		if err != nil {
+			return nil, err
+		}
+		if user != nil {
+			return user, nil
+		}
+		path = nextPath
+	}
+	return nil, nil
+}
+
+func (r *Repository) searchMemberPage(
+	ctx context.Context,
+	path, username string,
+) (*apiUser, string, error) {
+	var resp apiWorkspaceMemberList
+	if err := r.client.get(ctx, path, &resp); err != nil {
+		return nil, "", fmt.Errorf("list workspace members: %w", err)
+	}
+
+	for _, member := range resp.Values {
+		if matchesUsername(&member.User, username) {
+			return &member.User, "", nil
+		}
+	}
+	return nil, resp.Next, nil
+}
+
+// matchesUsername checks if the user matches the given username.
+// It checks Username first (for backward compatibility), then Nickname
+// (since Bitbucket deprecated usernames in favor of account IDs).
+func matchesUsername(user *apiUser, username string) bool {
+	if user.Username != "" && strings.EqualFold(user.Username, username) {
+		return true
+	}
+	return strings.EqualFold(user.Nickname, username)
 }
