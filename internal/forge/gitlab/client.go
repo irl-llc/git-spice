@@ -34,8 +34,7 @@ func newGitLabClient(ctx context.Context, baseURL string, tok *AuthenticationTok
 			TokenSource: oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token}),
 		}
 
-	case AuthTypeOAuth2, AuthTypeGCM:
-		// OAuth2 and GCM tokens use the same authentication method.
+	case AuthTypeOAuth2:
 		authSource = gitlab.OAuthTokenSource{
 			TokenSource: oauth2.StaticTokenSource(&oauth2.Token{
 				AccessToken: tok.AccessToken,
