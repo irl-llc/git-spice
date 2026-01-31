@@ -107,15 +107,34 @@ func loadStashToken(t *testing.T, forgeURL string) string {
 	return tok.AccessToken
 }
 
+// CredentialSource indicates where credentials were obtained from.
+type CredentialSource int
+
+const (
+	// CredentialSourceEnv indicates credentials from environment variables.
+	// These are typically app passwords requiring Basic auth.
+	CredentialSourceEnv CredentialSource = iota
+
+	// CredentialSourceGCM indicates credentials from git-credential-manager.
+	// These are OAuth tokens requiring Bearer auth.
+	CredentialSourceGCM
+
+	// CredentialSourceReplay indicates dummy credentials for replay mode.
+	CredentialSourceReplay
+)
+
 // Credential retrieves full authentication credentials (username and password)
 // for the given forge URL. This is useful for forges like Bitbucket that require
 // both username and token for Basic auth.
 //
-// In update mode, it tries GCM first, then falls back to environment variables.
+// In update mode, it tries environment variables first, then GCM.
 // In replay mode, it returns dummy credentials.
-func Credential(t *testing.T, forgeURL, userEnvVar, passEnvVar string) (username, password string) {
+//
+// Returns the credential source so callers can determine the appropriate
+// authentication type (e.g., Basic auth for app passwords, Bearer for OAuth).
+func Credential(t *testing.T, forgeURL, userEnvVar, passEnvVar string) (username, password string, source CredentialSource) {
 	if !Update() {
-		return "user@example.com", "token"
+		return "user@example.com", "token", CredentialSourceReplay
 	}
 
 	// Try environment variables first for explicit override.
@@ -123,19 +142,19 @@ func Credential(t *testing.T, forgeURL, userEnvVar, passEnvVar string) (username
 	pass := os.Getenv(passEnvVar)
 	if user != "" && pass != "" {
 		t.Logf("Using %s/%s from environment", userEnvVar, passEnvVar)
-		return user, pass
+		return user, pass, CredentialSourceEnv
 	}
 
 	// Try GCM.
 	cred, err := forge.LoadGCMCredential(forgeURL)
 	if err == nil {
 		t.Logf("Using credentials from git-credential-manager for %s", forgeURL)
-		return cred.Username, cred.Password
+		return cred.Username, cred.Password, CredentialSourceGCM
 	}
 
 	t.Fatalf("No credentials available for %s: set %s/%s or configure git-credential-manager",
 		forgeURL, userEnvVar, passEnvVar)
-	return "", ""
+	return "", "", CredentialSourceReplay
 }
 
 // NewHTTPRecorder creates a new HTTP recorder for the given test and name.
