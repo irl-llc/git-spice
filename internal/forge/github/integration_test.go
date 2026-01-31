@@ -24,11 +24,10 @@ import (
 
 var _fixtures = fixturetest.Config{Update: forgetest.Update}
 
-// To avoid looking this up for every test that needs the repo ID,
-// we'll just hardcode it here.
-var (
-	_gitSpiceRepoID = githubv4.ID("R_kgDOJ2BQKg")
-	_testRepoID     = githubv4.ID("R_kgDOMVd0xg")
+// Test repository configuration.
+const (
+	_testOwner = "ed-irl"
+	_testRepo  = "git-spice-test"
 )
 
 // TODO: delete newRecorder when tests have been migrated to forgetest.
@@ -53,32 +52,8 @@ func newGitHubClient(
 func TestIntegration_Repository(t *testing.T) {
 	rec := newRecorder(t, t.Name())
 	ghc := newGitHubClient(rec.GetDefaultClient())
-	_, err := github.NewRepository(t.Context(), new(github.Forge), "abhinav", "git-spice", silogtest.New(t), ghc, nil)
+	_, err := github.NewRepository(t.Context(), new(github.Forge), _testOwner, _testRepo, silogtest.New(t), ghc, nil)
 	require.NoError(t, err)
-}
-
-func TestIntegration_Repository_NewChangeMetadata(t *testing.T) {
-	rec := newRecorder(t, t.Name())
-	ghc := newGitHubClient(rec.GetDefaultClient())
-	repo, err := github.NewRepository(t.Context(), new(github.Forge), "abhinav", "git-spice", silogtest.New(t), ghc, _gitSpiceRepoID)
-	require.NoError(t, err)
-
-	t.Run("valid", func(t *testing.T) {
-		md, err := repo.NewChangeMetadata(t.Context(), &github.PR{Number: 196})
-		require.NoError(t, err)
-
-		assert.Equal(t, &github.PR{
-			Number: 196,
-			GQLID:  "PR_kwDOJ2BQKs5ylEYu",
-		}, md.ChangeID())
-		assert.Equal(t, "github", md.ForgeID())
-	})
-
-	t.Run("invalid", func(t *testing.T) {
-		_, err := repo.NewChangeMetadata(t.Context(), &github.PR{Number: 10000})
-		require.Error(t, err)
-		assert.ErrorContains(t, err, "get pull request ID")
-	})
 }
 
 func TestIntegration(t *testing.T) {
@@ -93,7 +68,7 @@ func TestIntegration(t *testing.T) {
 		Log: silogtest.New(t),
 	}
 
-	const remoteURL = "https://github.com/abhinav/test-repo"
+	const remoteURL = "https://github.com/" + _testOwner + "/" + _testRepo
 
 	forgetest.RunIntegration(t, forgetest.IntegrationConfig{
 		RemoteURL: remoteURL,
@@ -109,8 +84,8 @@ func TestIntegration(t *testing.T) {
 
 			ghc := newGitHubClient(httpClient)
 			repo, err := github.NewRepository(
-				t.Context(), &githubForge, "abhinav", "test-repo",
-				silogtest.New(t), ghc, _testRepoID,
+				t.Context(), &githubForge, _testOwner, _testRepo,
+				silogtest.New(t), ghc, nil,
 			)
 			require.NoError(t, err)
 			return repo
@@ -122,8 +97,8 @@ func TestIntegration(t *testing.T) {
 			require.NoError(t, github.CloseChange(t.Context(), repo.(*github.Repository), change.(*github.PR)))
 		},
 		SetCommentsPageSize: github.SetListChangeCommentsPageSize,
-		Reviewers:           []string{"abhinav-robot"},
-		Assignees:           []string{"abhinav-robot", "abhinav"},
+		Reviewers:           []string{},
+		Assignees:           []string{},
 	})
 }
 
@@ -133,7 +108,7 @@ func TestIntegration_Repository_LabelCreateDelete(t *testing.T) {
 	rec := newRecorder(t, t.Name())
 	ghc := newGitHubClient(rec.GetDefaultClient())
 	repo, err := github.NewRepository(
-		t.Context(), new(github.Forge), "abhinav", "test-repo", silogtest.New(t), ghc, _testRepoID,
+		t.Context(), new(github.Forge), _testOwner, _testRepo, silogtest.New(t), ghc, nil,
 	)
 	require.NoError(t, err)
 
@@ -172,7 +147,7 @@ func TestIntegration_Repository_notFoundError(t *testing.T) {
 	client := rec.GetDefaultClient()
 	client.Transport = graphqlutil.WrapTransport(client.Transport)
 	ghc := newGitHubClient(client)
-	_, err := github.NewRepository(ctx, new(github.Forge), "abhinav", "does-not-exist-repo", silogtest.New(t), ghc, nil)
+	_, err := github.NewRepository(ctx, new(github.Forge), _testOwner, "does-not-exist-repo", silogtest.New(t), ghc, nil)
 	require.Error(t, err)
 	assert.ErrorIs(t, err, graphqlutil.ErrNotFound)
 
@@ -180,7 +155,7 @@ func TestIntegration_Repository_notFoundError(t *testing.T) {
 	if assert.ErrorAs(t, err, &gqlError) {
 		assert.Equal(t, "NOT_FOUND", gqlError.Type)
 		assert.Equal(t, []any{"repository"}, gqlError.Path)
-		assert.Contains(t, gqlError.Message, "abhinav/does-not-exist-repo")
+		assert.Contains(t, gqlError.Message, _testOwner+"/does-not-exist-repo")
 	}
 }
 
