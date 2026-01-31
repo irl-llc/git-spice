@@ -9,7 +9,7 @@ interactions:
         content_length: 196
         host: api.github.com
         body: |
-            {"query":"query($label:String!$name:String!$owner:String!){repository(owner: $owner, name: $name){label(name: $label){id}}}","variables":{"label":"TDlGIr8m","name":"test-repo","owner":"abhinav"}}
+            {"query":"query($label:String!$name:String!$owner:String!){repository(owner: $owner, name: $name){label(name: $label){id}}}","variables":{"label":"TDlGIr8m","name":"test-repo","owner":"test-owner"}}
         headers:
             Content-Type:
                 - application/json
@@ -63,7 +63,7 @@ interactions:
         content_length: 196
         host: api.github.com
         body: |
-            {"query":"query($label:String!$name:String!$owner:String!){repository(owner: $owner, name: $name){label(name: $label){id}}}","variables":{"label":"TDlGIr8m","name":"test-repo","owner":"abhinav"}}
+            {"query":"query($label:String!$name:String!$owner:String!){repository(owner: $owner, name: $name){label(name: $label){id}}}","variables":{"label":"TDlGIr8m","name":"test-repo","owner":"test-owner"}}
         headers:
             Content-Type:
                 - application/json
@@ -117,7 +117,7 @@ interactions:
         content_length: 196
         host: api.github.com
         body: |
-            {"query":"query($label:String!$name:String!$owner:String!){repository(owner: $owner, name: $name){label(name: $label){id}}}","variables":{"label":"TDlGIr8m","name":"test-repo","owner":"abhinav"}}
+            {"query":"query($label:String!$name:String!$owner:String!){repository(owner: $owner, name: $name){label(name: $label){id}}}","variables":{"label":"TDlGIr8m","name":"test-repo","owner":"test-owner"}}
         headers:
             Content-Type:
                 - application/json

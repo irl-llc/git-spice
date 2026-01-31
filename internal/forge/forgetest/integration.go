@@ -40,6 +40,42 @@ func init() {
 	}
 }
 
+// Canonical placeholders for test repository values in VCR fixtures.
+// These make fixtures portable across different test environments.
+const (
+	CanonicalOwner = "test-owner"
+	CanonicalRepo  = "test-repo"
+)
+
+// TestRepo returns the owner and repository name for integration tests.
+// In update mode, it reads from environment variables (ownerEnv, repoEnv).
+// In replay mode, it returns the canonical placeholders.
+func TestRepo(t *testing.T, ownerEnv, repoEnv string) (owner, repo string) {
+	if !Update() {
+		return CanonicalOwner, CanonicalRepo
+	}
+
+	owner = os.Getenv(ownerEnv)
+	repo = os.Getenv(repoEnv)
+	if owner == "" || repo == "" {
+		t.Fatalf("In update mode, %s and %s must be set", ownerEnv, repoEnv)
+	}
+	t.Logf("Using test repo: %s/%s", owner, repo)
+	return owner, repo
+}
+
+// RepoSanitizers returns sanitizers that replace actual owner/repo values
+// with canonical placeholders. Use these when creating HTTP recorders.
+func RepoSanitizers(owner, repo string) []httptest.Sanitizer {
+	if owner == CanonicalOwner && repo == CanonicalRepo {
+		return nil // No sanitization needed in replay mode.
+	}
+	return []httptest.Sanitizer{
+		{Replace: owner, With: CanonicalOwner},
+		{Replace: repo, With: CanonicalRepo},
+	}
+}
+
 // Token retrieves authentication credentials for the given forge URL.
 // In update mode, it tries multiple sources in order:
 //  1. Environment variable (explicit override)
@@ -132,9 +168,15 @@ func Credential(t *testing.T, forgeURL, userEnvVar, passEnvVar string) (username
 }
 
 // NewHTTPRecorder creates a new HTTP recorder for the given test and name.
-func NewHTTPRecorder(t *testing.T, name string) *recorder.Recorder {
+// Sanitizers are applied to recorded fixtures in update mode.
+func NewHTTPRecorder(
+	t *testing.T,
+	name string,
+	sanitizers []httptest.Sanitizer,
+) *recorder.Recorder {
 	return httptest.NewTransportRecorder(t, name, httptest.TransportRecorderOptions{
-		Update: Update,
+		Update:     Update,
+		Sanitizers: sanitizers,
 		Matcher: func(r *http.Request, i cassette.Request) bool {
 			// If there's no body, just match the method and URL.
 			if r.Body == nil || r.Body == http.NoBody {
@@ -204,6 +246,42 @@ type IntegrationConfig struct {
 	// base branches to be absent when submitting changes.
 	// (GitLab does this. It's not clear why.)
 	BaseBranchMayBeAbsent bool // optional
+
+	// SkipLabels skips label-related tests.
+	// Set to true for forges that don't support labels (e.g., Bitbucket).
+	SkipLabels bool // optional
+
+	// SkipAssignees skips assignee-related tests.
+	// Set to true for forges that don't support assignees (e.g., Bitbucket).
+	SkipAssignees bool // optional
+
+	// SkipTemplates skips template-related tests.
+	// Set to true for forges that don't support PR templates.
+	SkipTemplates bool // optional
+
+	// SkipDraft skips draft-related tests.
+	// Set to true for forges with limited draft support.
+	SkipDraft bool // optional
+
+	// ShortHeadHash indicates the forge returns truncated commit hashes.
+	// When true, hash comparisons use prefix matching.
+	ShortHeadHash bool // optional
+
+	// SkipReviewers skips reviewer-related tests.
+	// Set to true for forges where user lookup by username doesn't work.
+	SkipReviewers bool // optional
+
+	// SkipMerge skips merge-related tests in ChangesStates.
+	// Set to true for forges that require approvals before merge.
+	SkipMerge bool // optional
+
+	// SkipCommentPagination skips the ListAllComments pagination test.
+	// Set to true for forges where comment listing with small page sizes fails.
+	SkipCommentPagination bool // optional
+
+	// Sanitizers are applied to recorded HTTP fixtures.
+	// Use RepoSanitizers to create sanitizers for owner/repo values.
+	Sanitizers []httptest.Sanitizer // optional
 }
 
 // RunIntegration runs integration tests with the given configuration.
@@ -213,13 +291,18 @@ func RunIntegration(t *testing.T, config IntegrationConfig) {
 		Fixtures: fixturetest.Config{
 			Update: Update,
 		},
-		RemoteURL:           config.RemoteURL,
-		openRepository:      config.OpenRepository,
-		MergeChange:         config.MergeChange,
-		CloseChange:         config.CloseChange,
-		Reviewers:           config.Reviewers,
-		Assignees:           config.Assignees,
-		SetCommentsPageSize: config.SetCommentsPageSize,
+		RemoteURL:             config.RemoteURL,
+		openRepository:        config.OpenRepository,
+		MergeChange:           config.MergeChange,
+		CloseChange:           config.CloseChange,
+		Reviewers:             config.Reviewers,
+		Assignees:             config.Assignees,
+		SetCommentsPageSize:   config.SetCommentsPageSize,
+		Sanitizers:            config.Sanitizers,
+		shortHeadHash:         config.ShortHeadHash,
+		skipReviewers:         config.SkipReviewers,
+		skipMerge:             config.SkipMerge,
+		skipCommentPagination: config.SkipCommentPagination,
 	}
 
 	t.Run("SubmitEditChange", func(t *testing.T) {
@@ -234,17 +317,21 @@ func RunIntegration(t *testing.T, config IntegrationConfig) {
 		suite.TestSubmitChangeBase(t)
 	})
 
-	t.Run("SubmitEditDraft", func(t *testing.T) {
-		t.Parallel()
+	if !config.SkipDraft {
+		t.Run("SubmitEditDraft", func(t *testing.T) {
+			t.Parallel()
 
-		suite.TestSubmitChangeDraft(t)
-	})
+			suite.TestSubmitChangeDraft(t)
+		})
+	}
 
-	t.Run("ChangesStates", func(t *testing.T) {
-		t.Parallel()
+	if !config.SkipMerge {
+		t.Run("ChangesStates", func(t *testing.T) {
+			t.Parallel()
 
-		suite.TestChangeStates(t)
-	})
+			suite.TestChangeStates(t)
+		})
+	}
 
 	t.Run("FindChangesByBranchDoesNotExist", func(t *testing.T) {
 		t.Parallel()
@@ -254,15 +341,19 @@ func RunIntegration(t *testing.T, config IntegrationConfig) {
 
 	// NOTE: ListChangeTemplates cannot run in parallel
 	// because it modifies the main branch.
-	t.Run("ListChangeTemplates", func(t *testing.T) {
-		suite.TestListChangeTemplates(t)
-	})
+	if !config.SkipTemplates {
+		t.Run("ListChangeTemplates", func(t *testing.T) {
+			suite.TestListChangeTemplates(t)
+		})
+	}
 
-	t.Run("SubmitEditLabels", func(t *testing.T) {
-		t.Parallel()
+	if !config.SkipLabels {
+		t.Run("SubmitEditLabels", func(t *testing.T) {
+			t.Parallel()
 
-		suite.TestSubmitEditLabels(t)
-	})
+			suite.TestSubmitEditLabels(t)
+		})
+	}
 
 	if !config.BaseBranchMayBeAbsent {
 		t.Run("SubmitBaseDoesNotExist", func(t *testing.T) {
@@ -272,17 +363,21 @@ func RunIntegration(t *testing.T, config IntegrationConfig) {
 		})
 	}
 
-	t.Run("SubmitEditReviewers", func(t *testing.T) {
-		t.Parallel()
+	if !config.SkipReviewers {
+		t.Run("SubmitEditReviewers", func(t *testing.T) {
+			t.Parallel()
 
-		suite.TestSubmitEditReviewers(t)
-	})
+			suite.TestSubmitEditReviewers(t)
+		})
+	}
 
-	t.Run("SubmitEditAssignees", func(t *testing.T) {
-		t.Parallel()
+	if !config.SkipAssignees {
+		t.Run("SubmitEditAssignees", func(t *testing.T) {
+			t.Parallel()
 
-		suite.TestSubmitEditAssignees(t)
-	})
+			suite.TestSubmitEditAssignees(t)
+		})
+	}
 
 	t.Run("ChangeComments", func(t *testing.T) {
 		t.Parallel()
@@ -319,6 +414,21 @@ type integrationSuite struct {
 	// SetCommentsPageSize sets the page size for listing comments.
 	SetCommentsPageSize func(testing.TB, int)
 
+	// Sanitizers are applied to recorded HTTP fixtures.
+	Sanitizers []httptest.Sanitizer
+
+	// shortHeadHash indicates the forge returns truncated commit hashes.
+	shortHeadHash bool
+
+	// skipReviewers skips reviewer-related tests.
+	skipReviewers bool
+
+	// skipMerge skips merge-related tests.
+	skipMerge bool
+
+	// skipCommentPagination skips pagination test.
+	skipCommentPagination bool
+
 	openRepository func(*testing.T, *http.Client) forge.Repository
 }
 
@@ -326,7 +436,7 @@ type integrationSuite struct {
 // In Update mode, it records HTTP interactions to fixtures.
 // In non-update mode, it replays from existing fixtures.
 func (s *integrationSuite) HTTPClient(t *testing.T) *http.Client {
-	rec := NewHTTPRecorder(t, t.Name())
+	rec := NewHTTPRecorder(t, t.Name(), s.Sanitizers)
 	return rec.GetDefaultClient()
 }
 
@@ -335,6 +445,18 @@ func (s *integrationSuite) HTTPClient(t *testing.T) *http.Client {
 func (s *integrationSuite) OpenRepository(t *testing.T) forge.Repository {
 	httpClient := s.HTTPClient(t)
 	return s.openRepository(t, httpClient)
+}
+
+// assertHashMatch asserts that two hashes match.
+// If shortHeadHash is set, it uses prefix matching (API returns short hash).
+func (s *integrationSuite) assertHashMatch(t *testing.T, expected, actual, msg string) {
+	t.Helper()
+	if s.shortHeadHash {
+		assert.True(t, strings.HasPrefix(expected, actual),
+			"%s: expected %q to be prefix of %q", msg, actual, expected)
+	} else {
+		assert.Equal(t, expected, actual, msg)
+	}
 }
 
 func (s *integrationSuite) TestSubmitEditChange(t *testing.T) {
@@ -380,7 +502,7 @@ func (s *integrationSuite) TestSubmitEditChange(t *testing.T) {
 	t.Run("FindChangeByID", func(t *testing.T) {
 		foundChange, err := repo.FindChangeByID(t.Context(), changeID)
 		require.NoError(t, err, "error finding change by ID")
-		assert.Equal(t, commitHash, foundChange.HeadHash.String(),
+		s.assertHashMatch(t, commitHash, foundChange.HeadHash.String(),
 			"head hash should match first commit")
 		assert.Equal(t, "Testing "+branchName, foundChange.Subject, "subject should match")
 		assert.Equal(t, "main", foundChange.BaseName, "base name should match")
@@ -396,7 +518,7 @@ func (s *integrationSuite) TestSubmitEditChange(t *testing.T) {
 
 		foundChange := changes[0]
 		assert.Equal(t, changeID, foundChange.ID, "ID should match")
-		assert.Equal(t, commitHash, foundChange.HeadHash.String(),
+		s.assertHashMatch(t, commitHash, foundChange.HeadHash.String(),
 			"head hash should match first commit")
 		assert.Equal(t, "Testing "+branchName, foundChange.Subject, "subject should match")
 		assert.Equal(t, "main", foundChange.BaseName, "base name should match")
@@ -1263,19 +1385,21 @@ func (s *integrationSuite) TestChangeComments(t *testing.T) {
 	})
 
 	// List all comments with pagination.
-	t.Run("ListAllComments", func(t *testing.T) {
-		// Set a small page size to test pagination.
-		s.SetCommentsPageSize(t, 3)
+	if !s.skipCommentPagination {
+		t.Run("ListAllComments", func(t *testing.T) {
+			// Set a small page size to test pagination.
+			s.SetCommentsPageSize(t, 3)
 
-		var gotBodies []string
-		for comment, err := range repo.ListChangeComments(t.Context(), changeID, nil /* opts */) {
-			require.NoError(t, err)
-			gotBodies = append(gotBodies, comment.Body)
-		}
+			var gotBodies []string
+			for comment, err := range repo.ListChangeComments(t.Context(), changeID, nil /* opts */) {
+				require.NoError(t, err)
+				gotBodies = append(gotBodies, comment.Body)
+			}
 
-		assert.Len(t, gotBodies, len(comments))
-		assert.ElementsMatch(t, comments, gotBodies)
-	})
+			assert.Len(t, gotBodies, len(comments))
+			assert.ElementsMatch(t, comments, gotBodies)
+		})
+	}
 
 	// List comments with filtering.
 	t.Run("ListFilteredComments", func(t *testing.T) {

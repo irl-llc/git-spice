@@ -9,7 +9,7 @@ interactions:
         content_length: 587
         host: api.github.com
         body: |
-            {"query":"query($branch:String!$limit:Int!$owner:String!$repo:String!$states:[PullRequestState!]!){repository(owner: $owner, name: $repo){pullRequests(first: $limit, headRefName: $branch, states: $states, orderBy: {field: UPDATED_AT, direction: DESC}){nodes{id,number,url,title,state,headRefOid,baseRefName,isDraft,labels(first: 100){nodes{name}},reviewRequests(first: 100){nodes{requestedReviewer{... on Actor{login}}}},assignees(first: 100){nodes{login}}}}}}","variables":{"branch":"does-not-exist","limit":10,"owner":"abhinav","repo":"test-repo","states":["OPEN","CLOSED","MERGED"]}}
+            {"query":"query($branch:String!$limit:Int!$owner:String!$repo:String!$states:[PullRequestState!]!){repository(owner: $owner, name: $repo){pullRequests(first: $limit, headRefName: $branch, states: $states, orderBy: {field: UPDATED_AT, direction: DESC}){nodes{id,number,url,title,state,headRefOid,baseRefName,isDraft,labels(first: 100){nodes{name}},reviewRequests(first: 100){nodes{requestedReviewer{... on Actor{login}}}},assignees(first: 100){nodes{login}}}}}}","variables":{"branch":"does-not-exist","limit":10,"owner":"test-owner","repo":"test-repo","states":["OPEN","CLOSED","MERGED"]}}
         headers:
             Content-Type:
                 - application/json
