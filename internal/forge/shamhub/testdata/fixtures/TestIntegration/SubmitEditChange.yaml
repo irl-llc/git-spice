@@ -7,9 +7,9 @@ interactions:
         proto_major: 1
         proto_minor: 1
         content_length: 79
-        host: 127.0.0.1:57651
-        body: '{"subject":"Testing gozdeqPr","body":"Test PR","base":"main","head":"gozdeqPr"}'
-        url: http://127.0.0.1:57651/abhinav/test-repo/changes
+        host: 127.0.0.1:60531
+        body: '{"subject":"Testing m5htQYLg","body":"Test PR","base":"main","head":"m5htQYLg"}'
+        url: http://127.0.0.1:60531/abhinav/test-repo/changes
         method: POST
       response:
         proto: HTTP/1.1
@@ -19,7 +19,7 @@ interactions:
         body: |
             {
               "number": 1,
-              "url": "http://127.0.0.1:57652/abhinav/test-repo/change/1"
+              "url": "http://127.0.0.1:60532/abhinav/test-repo/change/1"
             }
         headers:
             Content-Length:
@@ -28,15 +28,15 @@ interactions:
                 - application/json
         status: 200 OK
         code: 200
-        duration: 17.6675ms
+        duration: 44.265083ms
     - id: 1
       request:
         proto: HTTP/1.1
         proto_major: 1
         proto_minor: 1
         content_length: 0
-        host: 127.0.0.1:57651
-        url: http://127.0.0.1:57651/abhinav/test-repo/change/1
+        host: 127.0.0.1:60531
+        url: http://127.0.0.1:60531/abhinav/test-repo/change/1
         method: GET
       response:
         proto: HTTP/1.1
@@ -46,9 +46,9 @@ interactions:
         body: |
             {
               "number": 1,
-              "html_url": "http://127.0.0.1:57652/abhinav/test-repo/change/1",
+              "html_url": "http://127.0.0.1:60532/abhinav/test-repo/change/1",
               "state": "open",
-              "title": "Testing gozdeqPr",
+              "title": "Testing m5htQYLg",
               "body": "Test PR",
               "base": {
                 "repository": {
@@ -56,15 +56,15 @@ interactions:
                   "name": "test-repo"
                 },
                 "ref": "main",
-                "sha": "792d1c7341d61e2cc66c69877973c0936865dc1e"
+                "sha": "453c01f099c99107ce6d07c9854bed0ac4c6fb6f"
               },
               "head": {
                 "repository": {
                   "owner": "abhinav",
                   "name": "test-repo"
                 },
-                "ref": "gozdeqPr",
-                "sha": "eea462df3e450c9468da401ac6be08bcdfe98081"
+                "ref": "m5htQYLg",
+                "sha": "7d766d65b64fc1f0fdf9f15d3ba1e12fd5d7bcf0"
               }
             }
         headers:
@@ -74,20 +74,20 @@ interactions:
                 - application/json
         status: 200 OK
         code: 200
-        duration: 15.153209ms
+        duration: 78.477333ms
     - id: 2
       request:
         proto: HTTP/1.1
         proto_major: 1
         proto_minor: 1
         content_length: 0
-        host: 127.0.0.1:57651
+        host: 127.0.0.1:60531
         form:
             limit:
                 - "10"
             state:
                 - all
-        url: http://127.0.0.1:57651/abhinav/test-repo/changes/by-branch/gozdeqPr?limit=10&state=all
+        url: http://127.0.0.1:60531/abhinav/test-repo/changes/by-branch/m5htQYLg?limit=10&state=all
         method: GET
       response:
         proto: HTTP/1.1
@@ -98,9 +98,9 @@ interactions:
             [
               {
                 "number": 1,
-                "html_url": "http://127.0.0.1:57652/abhinav/test-repo/change/1",
+                "html_url": "http://127.0.0.1:60532/abhinav/test-repo/change/1",
                 "state": "open",
-                "title": "Testing gozdeqPr",
+                "title": "Testing m5htQYLg",
                 "body": "Test PR",
                 "base": {
                   "repository": {
@@ -108,15 +108,15 @@ interactions:
                     "name": "test-repo"
                   },
                   "ref": "main",
-                  "sha": "792d1c7341d61e2cc66c69877973c0936865dc1e"
+                  "sha": "453c01f099c99107ce6d07c9854bed0ac4c6fb6f"
                 },
                 "head": {
                   "repository": {
                     "owner": "abhinav",
                     "name": "test-repo"
                   },
-                  "ref": "gozdeqPr",
-                  "sha": "eea462df3e450c9468da401ac6be08bcdfe98081"
+                  "ref": "m5htQYLg",
+                  "sha": "7d766d65b64fc1f0fdf9f15d3ba1e12fd5d7bcf0"
                 }
               }
             ]
@@ -127,4 +127,4 @@ interactions:
                 - application/json
         status: 200 OK
         code: 200
-        duration: 12.906208ms
+        duration: 62.191333ms
