@@ -33,12 +33,17 @@ func TestIntegration(t *testing.T) {
 		Forge:     &bitbucketForge,
 		OpenRepository: func(t *testing.T, httpClient *http.Client) forge.Repository {
 			email, token, source := forgetest.Credential(
-				t, remoteURL, "BITBUCKET_EMAIL", "BITBUCKET_TOKEN",
+				t, remoteURL,
+				"BITBUCKET_EMAIL", "BITBUCKET_TOKEN",
 			)
+
+			// GCM returns OAuth tokens (Bearer auth),
+			// env vars are app passwords (Basic auth).
 			authType := bitbucket.AuthTypeAppPassword
 			if source == forgetest.CredentialSourceGCM {
 				authType = bitbucket.AuthTypeGCM
 			}
+
 			return bitbucket.NewRepositoryForTest(
 				&bitbucketForge,
 				bitbucket.DefaultURL,
