@@ -47,6 +47,12 @@ type shamComment struct {
 	ID     int
 	Change int
 	Body   string
+
+	// Resolvable indicates this is a code review comment that can be resolved.
+	Resolvable bool
+
+	// Resolved indicates this comment has been resolved.
+	Resolved bool
 }
 
 var (

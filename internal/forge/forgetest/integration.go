@@ -259,6 +259,10 @@ type IntegrationConfig struct {
 	// Sanitizers are applied to recorded HTTP fixtures.
 	// Use ConfigSanitizers to create sanitizers from test configuration.
 	Sanitizers []httptest.Sanitizer // optional
+
+	// SkipCommentCounts skips the CommentCountsByChange test.
+	// Set to true for forges that don't support comment resolution tracking.
+	SkipCommentCounts bool // optional
 }
 
 // RunIntegration runs integration tests with the given configuration.
@@ -280,6 +284,7 @@ func RunIntegration(t *testing.T, config IntegrationConfig) {
 		skipReviewers:         config.SkipReviewers,
 		skipMerge:             config.SkipMerge,
 		skipCommentPagination: config.SkipCommentPagination,
+		skipCommentCounts:     config.SkipCommentCounts,
 	}
 
 	t.Run("SubmitEditChange", func(t *testing.T) {
@@ -361,6 +366,14 @@ func RunIntegration(t *testing.T, config IntegrationConfig) {
 
 		suite.TestChangeComments(t)
 	})
+
+	if !config.SkipCommentCounts {
+		t.Run("CommentCountsByChange", func(t *testing.T) {
+			t.Parallel()
+
+			suite.TestCommentCountsByChange(t)
+		})
+	}
 }
 
 type integrationSuite struct {
@@ -405,6 +418,9 @@ type integrationSuite struct {
 
 	// skipCommentPagination skips pagination test.
 	skipCommentPagination bool
+
+	// skipCommentCounts skips comment counts test.
+	skipCommentCounts bool
 
 	openRepository func(*testing.T, *http.Client) forge.Repository
 }
@@ -1378,6 +1394,57 @@ func (s *integrationSuite) TestChangeComments(t *testing.T) {
 
 		assert.Equal(t, []string{comments[0]}, gotBodies)
 	})
+}
+
+// TestCommentCountsByChange tests the CommentCountsByChange method.
+// This test creates a PR and verifies that comment counts can be retrieved.
+// Note: Creating resolvable review threads requires forge-specific operations,
+// so this test verifies the method works but may return zero counts.
+func (s *integrationSuite) TestCommentCountsByChange(t *testing.T) {
+	branchFixture := fixturetest.New(s.Fixtures, "branch", func() string {
+		return randomString(8)
+	})
+	branchName := branchFixture.Get(t)
+	t.Logf("Creating branch: %s", branchName)
+
+	if Update() {
+		testRepo := newTestRepository(t, s.RemoteURL)
+
+		testRepo.CreateBranch(branchName)
+		testRepo.CheckoutBranch(branchName)
+		testRepo.WriteFile(branchName+".txt", randomString(32))
+		testRepo.AddAllAndCommit("commit from test")
+		testRepo.Push(branchName)
+
+		t.Cleanup(func() {
+			testRepo.DeleteRemoteBranch(branchName)
+		})
+	}
+
+	repo := s.OpenRepository(t)
+
+	change, err := repo.SubmitChange(t.Context(), forge.SubmitChangeRequest{
+		Subject: "Testing " + branchName,
+		Body:    "Test PR for comment counts",
+		Base:    "main",
+		Head:    branchName,
+	})
+	require.NoError(t, err, "error creating PR")
+
+	// Call CommentCountsByChange with the new change.
+	counts, err := repo.CommentCountsByChange(t.Context(), []forge.ChangeID{change.ID})
+	require.NoError(t, err, "error getting comment counts")
+	require.Len(t, counts, 1, "expected one result")
+
+	// Verify the counts structure is valid.
+	// We can't guarantee there are comments, but the counts should be non-negative.
+	result := counts[0]
+	require.NotNil(t, result, "comment counts should not be nil")
+	assert.GreaterOrEqual(t, result.Total, 0, "total should be non-negative")
+	assert.GreaterOrEqual(t, result.Resolved, 0, "resolved should be non-negative")
+	assert.GreaterOrEqual(t, result.Unresolved, 0, "unresolved should be non-negative")
+	assert.Equal(t, result.Total, result.Resolved+result.Unresolved,
+		"total should equal resolved + unresolved")
 }
 
 // testRepository manages a local Git repository clone for testing.

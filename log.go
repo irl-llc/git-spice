@@ -86,6 +86,9 @@ var (
 	_stateOpenStyle   = ui.NewStyle().Foreground(ui.Green).SetString("open")
 	_stateClosedStyle = ui.NewStyle().Foreground(ui.Gray).SetString("closed")
 	_stateMergedStyle = ui.NewStyle().Foreground(ui.Magenta).SetString("merged")
+
+	_commentCountsStyle         = ui.NewStyle().Foreground(ui.Yellow)
+	_commentCountsResolvedStyle = ui.NewStyle().Foreground(ui.Green)
 )
 
 type ListHandler interface {
@@ -102,6 +105,8 @@ type branchLogCmd struct {
 
 	CRStatus bool `name:"cr-status" short:"S" config:"log.crStatus" help:"Request and include information about the Change Request" default:"false" negatable:""`
 	// TODO: When needed, add a crStatusFormat config to control presentation.
+
+	Comments bool `name:"comments" short:"C" config:"log.comments" help:"Include comment resolution counts for changes" default:"false" negatable:""`
 
 	PushStatusFormat pushStatusFormat `config:"log.pushStatusFormat" help:"Show indicator for branches that are out of sync with their remotes. One of 'true', 'false' and 'aheadbehind'." hidden:"" default:"true"`
 
@@ -127,12 +132,13 @@ func (cmd *branchLogCmd) run(
 	}
 
 	var presenter logPresenter
-	var wantChangeURL, wantPushStatus, wantChangeState bool
+	var wantChangeURL, wantPushStatus, wantChangeState, wantCommentCounts bool
 	if cmd.JSON {
-		// JSON always wants URLs and push status, but respects --status for change state.
+		// JSON always wants URLs and push status, but respects flags for change state/comments.
 		wantChangeURL = true
 		wantPushStatus = true
 		wantChangeState = cmd.CRStatus
+		wantCommentCounts = cmd.Comments
 
 		presenter = &jsonLogPresenter{
 			Stdout:          kctx.Stdout,
@@ -151,13 +157,15 @@ func (cmd *branchLogCmd) run(
 		wantChangeURL = changeFormat == changeFormatURL
 		wantPushStatus = cmd.PushStatusFormat.Enabled()
 		wantChangeState = cmd.CRStatus
+		wantCommentCounts = cmd.Comments
 
 		presenter = &graphLogPresenter{
-			Stderr:           kctx.Stderr,
-			ChangeFormat:     changeFormat,
-			ShowCRStatus:     wantChangeState,
-			PushStatusFormat: cmd.PushStatusFormat,
-			CurrentWorktree:  wt.RootDir(),
+			Stderr:            kctx.Stderr,
+			ChangeFormat:      changeFormat,
+			ShowCRStatus:      wantChangeState,
+			ShowCommentCounts: wantCommentCounts,
+			PushStatusFormat:  cmd.PushStatusFormat,
+			CurrentWorktree:   wt.RootDir(),
 		}
 	}
 
@@ -177,6 +185,9 @@ func (cmd *branchLogCmd) run(
 	if wantPushStatus {
 		req.Include |= list.IncludePushStatus
 	}
+	if wantCommentCounts {
+		req.Include |= list.IncludeCommentCounts
+	}
 
 	res, err := listHandler.ListBranches(ctx, &req)
 	if err != nil {
@@ -191,11 +202,12 @@ type logPresenter interface {
 }
 
 type graphLogPresenter struct {
-	Stderr           io.Writer        // required
-	ChangeFormat     changeFormat     // required
-	ShowCRStatus     bool             // required
-	PushStatusFormat pushStatusFormat // required
-	CurrentWorktree  string           // required
+	Stderr            io.Writer        // required
+	ChangeFormat      changeFormat     // required
+	ShowCRStatus      bool             // required
+	ShowCommentCounts bool             // required
+	PushStatusFormat  pushStatusFormat // required
+	CurrentWorktree   string           // required
 }
 
 func (p *graphLogPresenter) Present(res *list.BranchesResponse, currentBranch string) error {
@@ -222,6 +234,16 @@ func (p *graphLogPresenter) Present(res *list.BranchesResponse, currentBranch st
 				o.WriteString(_currentBranchStyle.Render(b.Name))
 			} else {
 				o.WriteString(_branchStyle.Render(b.Name))
+			}
+
+			// Show comment counts if enabled and available.
+			if p.ShowCommentCounts && b.CommentCounts != nil && b.CommentCounts.Total > 0 {
+				counts := b.CommentCounts
+				style := _commentCountsStyle
+				if counts.Resolved == counts.Total {
+					style = _commentCountsResolvedStyle
+				}
+				o.WriteString(style.Render(fmt.Sprintf(" [%d/%d]☑", counts.Resolved, counts.Total)))
 			}
 
 			if cid := b.ChangeID; cid != nil {
@@ -371,6 +393,13 @@ func (p *jsonLogPresenter) Present(res *list.BranchesResponse, currentBranch str
 					jc.Status = "merged"
 				}
 			}
+			if cc := branch.CommentCounts; cc != nil {
+				jc.Comments = &jsonLogComments{
+					Total:      cc.Total,
+					Resolved:   cc.Resolved,
+					Unresolved: cc.Unresolved,
+				}
+			}
 			logBranch.Change = jc
 		}
 
@@ -468,6 +497,20 @@ type jsonLogChange struct {
 
 	// Status is the current state of the change (open|closed|merged).
 	Status string `json:"status,omitempty"`
+
+	// Comments contains comment resolution counts for the change.
+	Comments *jsonLogComments `json:"comments,omitempty"`
+}
+
+type jsonLogComments struct {
+	// Total is the total number of resolvable comments or threads.
+	Total int `json:"total"`
+
+	// Resolved is the number of resolved comments or threads.
+	Resolved int `json:"resolved"`
+
+	// Unresolved is the number of unresolved comments or threads.
+	Unresolved int `json:"unresolved"`
 }
 
 type jsonLogPushStatus struct {

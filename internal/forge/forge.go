@@ -247,6 +247,7 @@ type Repository interface {
 	FindChangesByBranch(ctx context.Context, branch string, opts FindChangesOptions) ([]*FindChangeItem, error)
 	FindChangeByID(ctx context.Context, id ChangeID) (*FindChangeItem, error)
 	ChangesStates(ctx context.Context, ids []ChangeID) ([]ChangeState, error)
+	CommentCountsByChange(ctx context.Context, ids []ChangeID) ([]*CommentCounts, error)
 
 	// Post and update comments on changes.
 	PostChangeComment(context.Context, ChangeID, string) (ChangeCommentID, error)
@@ -459,6 +460,18 @@ type ChangeTemplate struct {
 
 	// Body is the content of the template file.
 	Body string
+}
+
+// CommentCounts represents comment/thread resolution counts on a change.
+type CommentCounts struct {
+	// Total is the total number of resolvable comments or threads.
+	Total int
+
+	// Resolved is the number of resolved comments or threads.
+	Resolved int
+
+	// Unresolved is the number of unresolved comments or threads.
+	Unresolved int
 }
 
 // ChangeState is the current state of a change.
