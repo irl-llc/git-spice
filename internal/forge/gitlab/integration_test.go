@@ -63,6 +63,7 @@ func newGitLabClient(
 	token := forgetest.Token(t, "https://gitlab.com", "GITLAB_TOKEN")
 	client, _ := gogitlab.NewClient(token, gogitlab.WithHTTPClient(httpClient))
 	return &gitlab.Client{
+		Discussions:      client.Discussions,
 		MergeRequests:    client.MergeRequests,
 		Notes:            client.Notes,
 		ProjectTemplates: client.ProjectTemplates,
