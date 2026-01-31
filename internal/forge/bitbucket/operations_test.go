@@ -262,8 +262,13 @@ func TestChangesStates(t *testing.T) {
 
 func TestSubmitChange(t *testing.T) {
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path == "/users/reviewer1" {
-			resp := apiUser{UUID: "{user-uuid}"}
+		// Handle workspace members lookup for reviewer resolution.
+		if r.URL.Path == "/workspaces/workspace/members" {
+			resp := apiWorkspaceMemberList{
+				Values: []apiWorkspaceMember{
+					{User: apiUser{UUID: "{user-uuid}", Nickname: "reviewer1"}},
+				},
+			}
 			assert.NoError(t, json.NewEncoder(w).Encode(resp))
 			return
 		}
@@ -333,9 +338,13 @@ func TestEditChange(t *testing.T) {
 
 func newEditChangeServer(t *testing.T, _ forge.EditChangeOptions) *httptest.Server {
 	return httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Handle user lookup for reviewers.
-		if r.Method == http.MethodGet && r.URL.Path == "/users/reviewer1" {
-			resp := apiUser{UUID: "{user-uuid}"}
+		// Handle workspace members lookup for reviewer resolution.
+		if r.Method == http.MethodGet && r.URL.Path == "/workspaces/workspace/members" {
+			resp := apiWorkspaceMemberList{
+				Values: []apiWorkspaceMember{
+					{User: apiUser{UUID: "{user-uuid}", Nickname: "reviewer1"}},
+				},
+			}
 			assert.NoError(t, json.NewEncoder(w).Encode(resp))
 			return
 		}
