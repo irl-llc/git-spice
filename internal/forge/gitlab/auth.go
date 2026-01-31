@@ -56,6 +56,9 @@ const (
 	// AuthTypeGitLabCLI states that GitLab CLI authentication was used.
 	AuthTypeGitLabCLI
 
+	// AuthTypeGCM states that git-credential-manager was used.
+	AuthTypeGCM
+
 	// AuthTypeEnvironmentVariable states
 	// that the token was set via an environment variable.
 	//
@@ -72,6 +75,8 @@ func (a AuthType) MarshalText() ([]byte, error) {
 		return []byte("oauth2"), nil
 	case AuthTypeGitLabCLI:
 		return []byte("gitlab-cli"), nil
+	case AuthTypeGCM:
+		return []byte("gcm"), nil
 	case AuthTypeEnvironmentVariable:
 		return nil, errors.New("should never save AuthTypeEnvironmentVariable")
 	default:
@@ -88,6 +93,8 @@ func (a *AuthType) UnmarshalText(b []byte) error {
 		*a = AuthTypeOAuth2
 	case "gitlab-cli":
 		*a = AuthTypeGitLabCLI
+	case "gcm":
+		*a = AuthTypeGCM
 	default:
 		return fmt.Errorf("unknown auth type: %q", b)
 	}
@@ -103,6 +110,8 @@ func (a AuthType) String() string {
 		return "OAuth2"
 	case AuthTypeGitLabCLI:
 		return "GitLab CLI"
+	case AuthTypeGCM:
+		return "Git Credential Manager"
 	case AuthTypeEnvironmentVariable:
 		return "Environment Variable"
 	default:
@@ -153,6 +162,7 @@ func (f *Forge) AuthenticationFlow(ctx context.Context, view ui.View) (forge.Aut
 		Endpoint: oauthEndpoint,
 		ClientID: f.Options.ClientID,
 		Hostname: hostname,
+		ForgeURL: f.URL(),
 	})
 	if err != nil {
 		return nil, fmt.Errorf("select authenticator: %w", err)
@@ -172,7 +182,7 @@ func (f *Forge) SaveAuthenticationToken(stash secret.Stash, t forge.Authenticati
 
 	// Validate before saving:
 	switch ght.AuthType {
-	case AuthTypePAT, AuthTypeOAuth2:
+	case AuthTypePAT, AuthTypeOAuth2, AuthTypeGCM:
 		if ght.AccessToken == "" {
 			return errors.New("access token is required")
 		}
@@ -284,6 +294,17 @@ var _authenticationMethods = []struct {
 			}
 		},
 	},
+	{
+		Title:       "Git Credential Manager",
+		Description: gcmDesc,
+		Build: func(a authenticatorOptions) authenticator {
+			// Offer this option only if git is available.
+			if _, err := _execLookPath("git"); err != nil {
+				return nil
+			}
+			return &GCMAuthenticator{URL: a.ForgeURL}
+		},
+	},
 }
 
 // authenticatorOptions presents the user with multiple authentication methods,
@@ -292,6 +313,7 @@ type authenticatorOptions struct {
 	Endpoint oauth2.Endpoint // required
 	ClientID string          // required
 	Hostname string          // required
+	ForgeURL string          // required
 }
 
 func selectAuthenticator(view ui.View, a authenticatorOptions) (authenticator, error) {
@@ -345,6 +367,13 @@ func glDesc(focused bool) string {
 	You must be logged into glab with 'glab auth login' for this to work.
 	You can use this if you're just experimenting and don't want to set up a token yet.
 	`, urlStyle(focused).Render("https://gitlab.com/gitlab-org/cli"))
+}
+
+func gcmDesc(bool) string {
+	return text.Dedent(`
+	Use credentials from git-credential-manager.
+	The stored token must have 'api' scope for git-spice to work.
+	`)
 }
 
 func urlStyle(focused bool) lipgloss.Style {
@@ -521,6 +550,25 @@ func (gc *glabCLI) Token(ctx context.Context, host string) (string, error) {
 	}
 
 	return string(matches[1]), nil
+}
+
+// GCMAuthenticator loads credentials from git-credential-manager.
+type GCMAuthenticator struct {
+	URL string // required
+}
+
+// Authenticate loads credentials from git-credential-manager.
+func (a *GCMAuthenticator) Authenticate(
+	_ context.Context, _ ui.View,
+) (*AuthenticationToken, error) {
+	cred, err := forge.LoadGCMCredential(a.URL)
+	if err != nil {
+		return nil, fmt.Errorf("load GCM credentials: %w", err)
+	}
+	return &AuthenticationToken{
+		AccessToken: cred.Password,
+		AuthType:    AuthTypeGCM,
+	}, nil
 }
 
 func urlHostname(urlstr string) (string, error) {
