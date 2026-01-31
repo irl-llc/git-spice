@@ -114,6 +114,7 @@ func TestIntegration(t *testing.T) {
 		},
 		SetCommentsPageSize:   gitlab.SetListChangeCommentsPageSize,
 		BaseBranchMayBeAbsent: true,
+		SkipMerge:             true, // Merge requires MR approval settings to be disabled
 		Reviewers:             []string{},
 		Assignees:             []string{},
 	})
