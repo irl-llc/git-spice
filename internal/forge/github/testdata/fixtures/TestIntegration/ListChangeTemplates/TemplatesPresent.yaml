@@ -9,7 +9,7 @@ interactions:
         content_length: 175
         host: api.github.com
         body: |
-            {"query":"query($name:String!$owner:String!){repository(owner: $owner, name: $name){pullRequestTemplates{filename,body}}}","variables":{"name":"test-repo","owner":"abhinav"}}
+            {"query":"query($name:String!$owner:String!){repository(owner: $owner, name: $name){pullRequestTemplates{filename,body}}}","variables":{"name":"test-repo","owner":"test-owner"}}
         headers:
             Content-Type:
                 - application/json

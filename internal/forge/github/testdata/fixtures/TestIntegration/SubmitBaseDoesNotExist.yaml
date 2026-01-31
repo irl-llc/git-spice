@@ -36,7 +36,7 @@ interactions:
         content_length: 210
         host: api.github.com
         body: |
-            {"query":"query($owner:String!$ref:String!$repo:String!){repository(owner: $owner, name: $repo){ref(qualifiedName: $ref){name}}}","variables":{"owner":"abhinav","ref":"refs/heads/cP73dsmB","repo":"test-repo"}}
+            {"query":"query($owner:String!$ref:String!$repo:String!){repository(owner: $owner, name: $repo){ref(qualifiedName: $ref){name}}}","variables":{"owner":"test-owner","ref":"refs/heads/cP73dsmB","repo":"test-repo"}}
         headers:
             Content-Type:
                 - application/json
