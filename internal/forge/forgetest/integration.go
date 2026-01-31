@@ -100,6 +100,37 @@ func loadStashToken(t *testing.T, forgeURL string) string {
 	return tok.AccessToken
 }
 
+// Credential retrieves full authentication credentials (username and password)
+// for the given forge URL. This is useful for forges like Bitbucket that require
+// both username and token for Basic auth.
+//
+// In update mode, it tries GCM first, then falls back to environment variables.
+// In replay mode, it returns dummy credentials.
+func Credential(t *testing.T, forgeURL, userEnvVar, passEnvVar string) (username, password string) {
+	if !Update() {
+		return "user@example.com", "token"
+	}
+
+	// Try environment variables first for explicit override.
+	user := os.Getenv(userEnvVar)
+	pass := os.Getenv(passEnvVar)
+	if user != "" && pass != "" {
+		t.Logf("Using %s/%s from environment", userEnvVar, passEnvVar)
+		return user, pass
+	}
+
+	// Try GCM.
+	cred, err := forge.LoadGCMCredential(forgeURL)
+	if err == nil {
+		t.Logf("Using credentials from git-credential-manager for %s", forgeURL)
+		return cred.Username, cred.Password
+	}
+
+	t.Fatalf("No credentials available for %s: set %s/%s or configure git-credential-manager",
+		forgeURL, userEnvVar, passEnvVar)
+	return "", ""
+}
+
 // NewHTTPRecorder creates a new HTTP recorder for the given test and name.
 func NewHTTPRecorder(t *testing.T, name string) *recorder.Recorder {
 	return httptest.NewTransportRecorder(t, name, httptest.TransportRecorderOptions{
