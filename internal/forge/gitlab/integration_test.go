@@ -48,6 +48,8 @@ func newGitLabClient(
 	t *testing.T,
 	httpClient *http.Client,
 ) *gitlab.Client {
+	// GitLab API requires a Personal Access Token with 'api' scope.
+	// GCM tokens don't have sufficient scope, so GITLAB_TOKEN env var is required.
 	token := forgetest.Token(t, "https://gitlab.com", "GITLAB_TOKEN")
 	client, _ := gogitlab.NewClient(token, gogitlab.WithHTTPClient(httpClient))
 	return &gitlab.Client{
@@ -79,8 +81,10 @@ func TestIntegration(t *testing.T) {
 		Log: silogtest.New(t),
 	}
 
+	const remoteURL = "https://gitlab.com/" + _testOwner + "/" + _testRepo
+
 	forgetest.RunIntegration(t, forgetest.IntegrationConfig{
-		RemoteURL: "git@gitlab.com:" + _testOwner + "/" + _testRepo + ".git",
+		RemoteURL: remoteURL,
 		Forge:     &gitlabForge,
 		OpenRepository: func(t *testing.T, httpClient *http.Client) forge.Repository {
 			ghc := newGitLabClient(t, httpClient)
@@ -137,7 +141,7 @@ func TestIntegration_Repository_SubmitChange_removeSourceBranch(t *testing.T) {
 
 		t.Logf("Cloning test-repo...")
 		repoDir := t.TempDir()
-		cmd := exec.Command("git", "clone", "git@gitlab.com:"+_testOwner+"/"+_testRepo+".git", repoDir)
+		cmd := exec.Command("git", "clone", "https://gitlab.com/"+_testOwner+"/"+_testRepo+".git", repoDir)
 		cmd.Stdout = output
 		cmd.Stderr = output
 		require.NoError(t, cmd.Run(), "failed to clone test-repo")
