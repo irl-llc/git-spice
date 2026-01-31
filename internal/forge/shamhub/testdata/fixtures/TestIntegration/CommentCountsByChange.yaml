@@ -1,0 +1,64 @@
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 98
+        host: 127.0.0.1:54223
+        body: '{"subject":"Testing p7z0fBLw","body":"Test PR for comment counts","base":"main","head":"p7z0fBLw"}'
+        url: http://127.0.0.1:54223/abhinav/test-repo/changes
+        method: POST
+      response:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 80
+        body: |
+            {
+              "number": 1,
+              "url": "http://127.0.0.1:54224/abhinav/test-repo/change/1"
+            }
+        headers:
+            Content-Length:
+                - "80"
+            Content-Type:
+                - application/json
+        status: 200 OK
+        code: 200
+        duration: 21.773167ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 11
+        host: 127.0.0.1:54223
+        body: '{"ids":[1]}'
+        url: http://127.0.0.1:54223/abhinav/test-repo/change/comment-counts
+        method: POST
+      response:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 95
+        body: |
+            {
+              "counts": [
+                {
+                  "total": 0,
+                  "resolved": 0,
+                  "unresolved": 0
+                }
+              ]
+            }
+        headers:
+            Content-Length:
+                - "95"
+            Content-Type:
+                - application/json
+        status: 200 OK
+        code: 200
+        duration: 181.125µs
