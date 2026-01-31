@@ -106,7 +106,7 @@ type branchLogCmd struct {
 	CRStatus bool `name:"cr-status" short:"S" config:"log.crStatus" help:"Request and include information about the Change Request" default:"false" negatable:""`
 	// TODO: When needed, add a crStatusFormat config to control presentation.
 
-	Comments bool `name:"comments" short:"C" config:"log.comments" help:"Include comment resolution counts for changes" default:"false" negatable:""`
+	Comments bool `name:"comments" short:"c" config:"log.comments" help:"Include comment resolution counts for changes" default:"false" negatable:""`
 
 	PushStatusFormat pushStatusFormat `config:"log.pushStatusFormat" help:"Show indicator for branches that are out of sync with their remotes. One of 'true', 'false' and 'aheadbehind'." hidden:"" default:"true"`
 
