@@ -38,6 +38,35 @@ func init() {
 	}
 }
 
+// Token retrieves authentication credentials for the given forge URL.
+// In update mode, it tries GCM first, then falls back to the environment variable.
+// In replay mode, it returns a dummy token.
+//
+// The envVar parameter should be the name of the environment variable
+// to check (e.g., "GITHUB_TOKEN").
+func Token(t *testing.T, forgeURL, envVar string) string {
+	if !Update() {
+		return "token"
+	}
+
+	// Try environment variable first for explicit override.
+	if token := os.Getenv(envVar); token != "" {
+		t.Logf("Using %s from environment", envVar)
+		return token
+	}
+
+	// Try GCM.
+	cred, err := forge.LoadGCMCredential(forgeURL)
+	if err == nil {
+		t.Logf("Using token from git-credential-manager for %s", forgeURL)
+		return cred.Password
+	}
+
+	t.Fatalf("No credentials available for %s: set %s or configure git-credential-manager",
+		forgeURL, envVar)
+	return ""
+}
+
 // NewHTTPRecorder creates a new HTTP recorder for the given test and name.
 func NewHTTPRecorder(t *testing.T, name string) *recorder.Recorder {
 	return httptest.NewTransportRecorder(t, name, httptest.TransportRecorderOptions{
