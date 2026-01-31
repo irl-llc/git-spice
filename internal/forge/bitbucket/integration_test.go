@@ -2,7 +2,6 @@ package bitbucket_test
 
 import (
 	"net/http"
-	"os"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -16,6 +15,8 @@ import (
 // using recorded fixtures.
 
 func TestIntegration(t *testing.T) {
+	const remoteURL = "https://bitbucket.org/shambucket/shambucket.git"
+
 	t.Cleanup(func() {
 		if t.Failed() && !forgetest.Update() {
 			t.Logf("To update the test fixtures, run:")
@@ -28,17 +29,21 @@ func TestIntegration(t *testing.T) {
 	}
 
 	forgetest.RunIntegration(t, forgetest.IntegrationConfig{
-		RemoteURL: "https://bitbucket.org/shambucket/shambucket.git",
+		RemoteURL: remoteURL,
 		Forge:     &bitbucketForge,
 		OpenRepository: func(t *testing.T, httpClient *http.Client) forge.Repository {
-			token := getBitbucketToken()
+			email, token := forgetest.Credential(t, remoteURL, "BITBUCKET_EMAIL", "BITBUCKET_TOKEN")
 			return bitbucket.NewRepositoryForTest(
 				&bitbucketForge,
 				bitbucket.DefaultURL,
 				"shambucket", "shambucket",
 				silogtest.New(t),
 				httpClient,
-				token,
+				&bitbucket.AuthenticationToken{
+					AuthType:    bitbucket.AuthTypeAppPassword,
+					AccessToken: token,
+					Email:       email,
+				},
 			)
 		},
 		MergeChange: func(t *testing.T, repo forge.Repository, change forge.ChangeID) {
@@ -60,23 +65,4 @@ func TestIntegration(t *testing.T) {
 		SkipMerge:             true, // Merge requires repository-specific branch permissions
 		SkipCommentPagination: true, // Bitbucket returns 403 with small page sizes
 	})
-}
-
-func getBitbucketToken() *bitbucket.AuthenticationToken {
-	token := os.Getenv("BITBUCKET_TOKEN")
-	if token == "" {
-		token = "token"
-	}
-
-	email := os.Getenv("BITBUCKET_EMAIL")
-	if email == "" {
-		email = "test@example.com"
-	}
-
-	// Bitbucket API tokens require Basic auth with email:token format.
-	return &bitbucket.AuthenticationToken{
-		AuthType:    bitbucket.AuthTypeAppPassword,
-		AccessToken: token,
-		Email:       email,
-	}
 }
