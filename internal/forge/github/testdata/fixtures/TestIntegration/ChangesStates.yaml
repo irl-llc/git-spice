@@ -21,7 +21,7 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: '{"data":{"createPullRequest":{"pullRequest":{"id":"PR_kwDOMVd0xs64PI_i","number":49,"url":"https://github.com/abhinav/test-repo/pull/49"}}}}'
+        body: '{"data":{"createPullRequest":{"pullRequest":{"id":"PR_kwDOMVd0xs64PI_i","number":49,"url":"https://github.com/test-owner/test-repo/pull/49"}}}}'
         headers:
             Content-Type:
                 - application/json; charset=utf-8
@@ -48,7 +48,7 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: '{"data":{"createPullRequest":{"pullRequest":{"id":"PR_kwDOMVd0xs64PI_9","number":50,"url":"https://github.com/abhinav/test-repo/pull/50"}}}}'
+        body: '{"data":{"createPullRequest":{"pullRequest":{"id":"PR_kwDOMVd0xs64PI_9","number":50,"url":"https://github.com/test-owner/test-repo/pull/50"}}}}'
         headers:
             Content-Type:
                 - application/json; charset=utf-8
@@ -102,7 +102,7 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: '{"data":{"createPullRequest":{"pullRequest":{"id":"PR_kwDOMVd0xs64PJBd","number":51,"url":"https://github.com/abhinav/test-repo/pull/51"}}}}'
+        body: '{"data":{"createPullRequest":{"pullRequest":{"id":"PR_kwDOMVd0xs64PJBd","number":51,"url":"https://github.com/test-owner/test-repo/pull/51"}}}}'
         headers:
             Content-Type:
                 - application/json; charset=utf-8

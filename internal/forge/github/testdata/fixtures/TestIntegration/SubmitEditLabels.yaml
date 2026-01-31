@@ -21,7 +21,7 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: '{"data":{"createPullRequest":{"pullRequest":{"id":"PR_kwDOMVd0xs64rFp9","number":54,"url":"https://github.com/abhinav/test-repo/pull/54"}}}}'
+        body: '{"data":{"createPullRequest":{"pullRequest":{"id":"PR_kwDOMVd0xs64rFp9","number":54,"url":"https://github.com/test-owner/test-repo/pull/54"}}}}'
         headers:
             Content-Type:
                 - application/json; charset=utf-8
@@ -36,7 +36,7 @@ interactions:
         content_length: 196
         host: api.github.com
         body: |
-            {"query":"query($label:String!$name:String!$owner:String!){repository(owner: $owner, name: $name){label(name: $label){id}}}","variables":{"label":"spY7ubZK","name":"test-repo","owner":"abhinav"}}
+            {"query":"query($label:String!$name:String!$owner:String!){repository(owner: $owner, name: $name){label(name: $label){id}}}","variables":{"label":"spY7ubZK","name":"test-repo","owner":"test-owner"}}
         headers:
             Content-Type:
                 - application/json
@@ -117,7 +117,7 @@ interactions:
         content_length: 392
         host: api.github.com
         body: |
-            {"query":"query($number:Int!$owner:String!$repo:String!){repository(owner: $owner, name: $repo){pullRequest(number: $number){id,number,url,title,state,headRefOid,baseRefName,isDraft,labels(first: 100){nodes{name}},reviewRequests(first: 100){nodes{requestedReviewer{... on Actor{login}}}},assignees(first: 100){nodes{login}}}}}","variables":{"number":54,"owner":"abhinav","repo":"test-repo"}}
+            {"query":"query($number:Int!$owner:String!$repo:String!){repository(owner: $owner, name: $repo){pullRequest(number: $number){id,number,url,title,state,headRefOid,baseRefName,isDraft,labels(first: 100){nodes{name}},reviewRequests(first: 100){nodes{requestedReviewer{... on Actor{login}}}},assignees(first: 100){nodes{login}}}}}","variables":{"number":54,"owner":"test-owner","repo":"test-repo"}}
         headers:
             Content-Type:
                 - application/json
@@ -129,7 +129,7 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: '{"data":{"repository":{"pullRequest":{"id":"PR_kwDOMVd0xs64rFp9","number":54,"url":"https://github.com/abhinav/test-repo/pull/54","title":"Testing uxu1C6Cu","state":"OPEN","headRefOid":"6981b4ab1c0bd94ea8972d636eefc22c9fcb6330","baseRefName":"main","isDraft":false,"labels":{"nodes":[{"name":"spY7ubZK"}]},"reviewRequests":{"nodes":[]},"assignees":{"nodes":[]}}}}}'
+        body: '{"data":{"repository":{"pullRequest":{"id":"PR_kwDOMVd0xs64rFp9","number":54,"url":"https://github.com/test-owner/test-repo/pull/54","title":"Testing uxu1C6Cu","state":"OPEN","headRefOid":"6981b4ab1c0bd94ea8972d636eefc22c9fcb6330","baseRefName":"main","isDraft":false,"labels":{"nodes":[{"name":"spY7ubZK"}]},"reviewRequests":{"nodes":[]},"assignees":{"nodes":[]}}}}}'
         headers:
             Content-Type:
                 - application/json; charset=utf-8
@@ -144,7 +144,7 @@ interactions:
         content_length: 196
         host: api.github.com
         body: |
-            {"query":"query($label:String!$name:String!$owner:String!){repository(owner: $owner, name: $name){label(name: $label){id}}}","variables":{"label":"h29reHa2","name":"test-repo","owner":"abhinav"}}
+            {"query":"query($label:String!$name:String!$owner:String!){repository(owner: $owner, name: $name){label(name: $label){id}}}","variables":{"label":"h29reHa2","name":"test-repo","owner":"test-owner"}}
         headers:
             Content-Type:
                 - application/json
@@ -225,7 +225,7 @@ interactions:
         content_length: 196
         host: api.github.com
         body: |
-            {"query":"query($label:String!$name:String!$owner:String!){repository(owner: $owner, name: $name){label(name: $label){id}}}","variables":{"label":"PzZmJFxx","name":"test-repo","owner":"abhinav"}}
+            {"query":"query($label:String!$name:String!$owner:String!){repository(owner: $owner, name: $name){label(name: $label){id}}}","variables":{"label":"PzZmJFxx","name":"test-repo","owner":"test-owner"}}
         headers:
             Content-Type:
                 - application/json
@@ -252,7 +252,7 @@ interactions:
         content_length: 196
         host: api.github.com
         body: |
-            {"query":"query($label:String!$name:String!$owner:String!){repository(owner: $owner, name: $name){label(name: $label){id}}}","variables":{"label":"h29reHa2","name":"test-repo","owner":"abhinav"}}
+            {"query":"query($label:String!$name:String!$owner:String!){repository(owner: $owner, name: $name){label(name: $label){id}}}","variables":{"label":"h29reHa2","name":"test-repo","owner":"test-owner"}}
         headers:
             Content-Type:
                 - application/json
@@ -333,7 +333,7 @@ interactions:
         content_length: 581
         host: api.github.com
         body: |
-            {"query":"query($branch:String!$limit:Int!$owner:String!$repo:String!$states:[PullRequestState!]!){repository(owner: $owner, name: $repo){pullRequests(first: $limit, headRefName: $branch, states: $states, orderBy: {field: UPDATED_AT, direction: DESC}){nodes{id,number,url,title,state,headRefOid,baseRefName,isDraft,labels(first: 100){nodes{name}},reviewRequests(first: 100){nodes{requestedReviewer{... on Actor{login}}}},assignees(first: 100){nodes{login}}}}}}","variables":{"branch":"uxu1C6Cu","limit":10,"owner":"abhinav","repo":"test-repo","states":["OPEN","CLOSED","MERGED"]}}
+            {"query":"query($branch:String!$limit:Int!$owner:String!$repo:String!$states:[PullRequestState!]!){repository(owner: $owner, name: $repo){pullRequests(first: $limit, headRefName: $branch, states: $states, orderBy: {field: UPDATED_AT, direction: DESC}){nodes{id,number,url,title,state,headRefOid,baseRefName,isDraft,labels(first: 100){nodes{name}},reviewRequests(first: 100){nodes{requestedReviewer{... on Actor{login}}}},assignees(first: 100){nodes{login}}}}}}","variables":{"branch":"uxu1C6Cu","limit":10,"owner":"test-owner","repo":"test-repo","states":["OPEN","CLOSED","MERGED"]}}
         headers:
             Content-Type:
                 - application/json
@@ -345,7 +345,7 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: '{"data":{"repository":{"pullRequests":{"nodes":[{"id":"PR_kwDOMVd0xs64rFp9","number":54,"url":"https://github.com/abhinav/test-repo/pull/54","title":"Testing uxu1C6Cu","state":"OPEN","headRefOid":"6981b4ab1c0bd94ea8972d636eefc22c9fcb6330","baseRefName":"main","isDraft":false,"labels":{"nodes":[{"name":"spY7ubZK"},{"name":"h29reHa2"},{"name":"PzZmJFxx"}]},"reviewRequests":{"nodes":[]},"assignees":{"nodes":[]}}]}}}}'
+        body: '{"data":{"repository":{"pullRequests":{"nodes":[{"id":"PR_kwDOMVd0xs64rFp9","number":54,"url":"https://github.com/test-owner/test-repo/pull/54","title":"Testing uxu1C6Cu","state":"OPEN","headRefOid":"6981b4ab1c0bd94ea8972d636eefc22c9fcb6330","baseRefName":"main","isDraft":false,"labels":{"nodes":[{"name":"spY7ubZK"},{"name":"h29reHa2"},{"name":"PzZmJFxx"}]},"reviewRequests":{"nodes":[]},"assignees":{"nodes":[]}}]}}}}'
         headers:
             Content-Type:
                 - application/json; charset=utf-8
