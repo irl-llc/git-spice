@@ -25,13 +25,15 @@ import (
 
 var _fixtures = fixturetest.Config{Update: forgetest.Update}
 
-// testRepo returns the owner/repo for tests and sanitizers for VCR fixtures.
-// In update mode, reads from GITHUB_TEST_OWNER and GITHUB_TEST_REPO env vars.
+// testConfig returns the GitHub test configuration and sanitizers for VCR fixtures.
+// In update mode, loads from testconfig.yaml.
 // In replay mode, returns canonical placeholders.
-func testRepo(t *testing.T) (owner, repo string, sanitizers []httptest.Sanitizer) {
-	owner, repo = forgetest.TestRepo(t, "GITHUB_TEST_OWNER", "GITHUB_TEST_REPO")
-	sanitizers = forgetest.RepoSanitizers(owner, repo)
-	return owner, repo, sanitizers
+func testConfig(t *testing.T) (cfg forgetest.ForgeConfig, sanitizers []httptest.Sanitizer) {
+	config := forgetest.Config(t)
+	cfg = config.GitHub
+	canonical := forgetest.CanonicalGitHubConfig()
+	sanitizers = forgetest.ConfigSanitizers(cfg, canonical)
+	return cfg, sanitizers
 }
 
 // TODO: delete newRecorder when tests have been migrated to forgetest.
@@ -58,21 +60,21 @@ func newGitHubClient(
 }
 
 func TestIntegration_Repository(t *testing.T) {
-	owner, repo, sanitizers := testRepo(t)
+	cfg, sanitizers := testConfig(t)
 	rec := newRecorder(t, t.Name(), sanitizers)
 	ghc := newGitHubClient(rec.GetDefaultClient())
-	_, err := github.NewRepository(t.Context(), new(github.Forge), owner, repo, silogtest.New(t), ghc, nil)
+	_, err := github.NewRepository(t.Context(), new(github.Forge), cfg.Owner, cfg.Repo, silogtest.New(t), ghc, nil)
 	require.NoError(t, err)
 }
 
 func TestIntegration(t *testing.T) {
-	owner, repo, sanitizers := testRepo(t)
-	remoteURL := "https://github.com/" + owner + "/" + repo
+	cfg, sanitizers := testConfig(t)
+	remoteURL := "https://github.com/" + cfg.Owner + "/" + cfg.Repo
 
 	t.Cleanup(func() {
 		if t.Failed() && !forgetest.Update() {
 			t.Logf("To update the test fixtures, run:")
-			t.Logf("    GITHUB_TEST_OWNER=$owner GITHUB_TEST_REPO=$repo GITHUB_TOKEN=$token go test -update -run '^%s$'", t.Name())
+			t.Logf("    Configure testconfig.yaml and run: GITHUB_TOKEN=$token go test -update -run '^%s$'", t.Name())
 		}
 	})
 
@@ -95,7 +97,7 @@ func TestIntegration(t *testing.T) {
 
 			ghc := newGitHubClient(httpClient)
 			newRepo, err := github.NewRepository(
-				t.Context(), &githubForge, owner, repo,
+				t.Context(), &githubForge, cfg.Owner, cfg.Repo,
 				silogtest.New(t), ghc, nil,
 			)
 			require.NoError(t, err)
@@ -108,19 +110,19 @@ func TestIntegration(t *testing.T) {
 			require.NoError(t, github.CloseChange(t.Context(), repo.(*github.Repository), change.(*github.PR)))
 		},
 		SetCommentsPageSize: github.SetListChangeCommentsPageSize,
-		Reviewers:           []string{},
-		Assignees:           []string{},
+		Reviewers:           []string{cfg.Reviewer},
+		Assignees:           []string{cfg.Assignee},
 	})
 }
 
 func TestIntegration_Repository_LabelCreateDelete(t *testing.T) {
-	owner, repoName, sanitizers := testRepo(t)
+	cfg, sanitizers := testConfig(t)
 	label := fixturetest.New(_fixtures, "label1", func() string { return randomString(8) }).Get(t)
 
 	rec := newRecorder(t, t.Name(), sanitizers)
 	ghc := newGitHubClient(rec.GetDefaultClient())
 	repo, err := github.NewRepository(
-		t.Context(), new(github.Forge), owner, repoName, silogtest.New(t), ghc, nil,
+		t.Context(), new(github.Forge), cfg.Owner, cfg.Repo, silogtest.New(t), ghc, nil,
 	)
 	require.NoError(t, err)
 
@@ -154,13 +156,13 @@ func TestIntegration_Repository_LabelCreateDelete(t *testing.T) {
 }
 
 func TestIntegration_Repository_notFoundError(t *testing.T) {
-	owner, _, sanitizers := testRepo(t)
+	cfg, sanitizers := testConfig(t)
 	ctx := t.Context()
 	rec := newRecorder(t, t.Name(), sanitizers)
 	client := rec.GetDefaultClient()
 	client.Transport = graphqlutil.WrapTransport(client.Transport)
 	ghc := newGitHubClient(client)
-	_, err := github.NewRepository(ctx, new(github.Forge), owner, "does-not-exist-repo", silogtest.New(t), ghc, nil)
+	_, err := github.NewRepository(ctx, new(github.Forge), cfg.Owner, "does-not-exist-repo", silogtest.New(t), ghc, nil)
 	require.Error(t, err)
 	assert.ErrorIs(t, err, graphqlutil.ErrNotFound)
 
@@ -168,7 +170,7 @@ func TestIntegration_Repository_notFoundError(t *testing.T) {
 	if assert.ErrorAs(t, err, &gqlError) {
 		assert.Equal(t, "NOT_FOUND", gqlError.Type)
 		assert.Equal(t, []any{"repository"}, gqlError.Path)
-		assert.Contains(t, gqlError.Message, owner+"/does-not-exist-repo")
+		assert.Contains(t, gqlError.Message, cfg.Owner+"/does-not-exist-repo")
 	}
 }
 

@@ -27,7 +27,7 @@ interactions:
                 - application/json; charset=utf-8
         status: 200 OK
         code: 200
-        duration: 196.756ms
+        duration: 175.305916ms
     - id: 1
       request:
         proto: HTTP/1.1
@@ -36,7 +36,7 @@ interactions:
         content_length: 286
         host: api.github.com
         body: |
-            {"query":"mutation($input:CreatePullRequestInput!){createPullRequest(input: $input){pullRequest{id,number,url}}}","variables":{"input":{"repositoryId":"R_kgDORFeuHw","baseRefName":"5eYuOV3D","headRefName":"Q4VFZbim","title":"Testing Q4VFZbim","body":"Test PR with non-existent base"}}}
+            {"query":"mutation($input:CreatePullRequestInput!){createPullRequest(input: $input){pullRequest{id,number,url}}}","variables":{"input":{"repositoryId":"R_kgDORFeuHw","baseRefName":"cwtF8DNE","headRefName":"dm51RnEI","title":"Testing dm51RnEI","body":"Test PR with non-existent base"}}}
         headers:
             Content-Type:
                 - application/json
@@ -48,13 +48,13 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: '{"data":{"createPullRequest":{"pullRequest":null}},"errors":[{"type":"UNPROCESSABLE","path":["createPullRequest"],"locations":[{"line":1,"column":42}],"message":"Head sha can''t be blank, Base sha can''t be blank, No commits between 5eYuOV3D and Q4VFZbim, Base ref must be a branch"}]}'
+        body: '{"data":{"createPullRequest":{"pullRequest":null}},"errors":[{"type":"UNPROCESSABLE","path":["createPullRequest"],"locations":[{"line":1,"column":42}],"message":"Head sha can''t be blank, Base sha can''t be blank, No commits between cwtF8DNE and dm51RnEI, Base ref must be a branch"}]}'
         headers:
             Content-Type:
                 - application/json; charset=utf-8
         status: 200 OK
         code: 200
-        duration: 274.188708ms
+        duration: 210.422458ms
     - id: 2
       request:
         proto: HTTP/1.1
@@ -63,7 +63,7 @@ interactions:
         content_length: 214
         host: api.github.com
         body: |
-            {"query":"query($owner:String!$ref:String!$repo:String!){repository(owner: $owner, name: $repo){ref(qualifiedName: $ref){name}}}","variables":{"owner":"test-owner","ref":"refs/heads/5eYuOV3D","repo":"test-repo"}}
+            {"query":"query($owner:String!$ref:String!$repo:String!){repository(owner: $owner, name: $repo){ref(qualifiedName: $ref){name}}}","variables":{"owner":"test-owner","ref":"refs/heads/cwtF8DNE","repo":"test-repo"}}
         headers:
             Content-Type:
                 - application/json
@@ -81,4 +81,4 @@ interactions:
                 - application/json; charset=utf-8
         status: 200 OK
         code: 200
-        duration: 159.29575ms
+        duration: 335.871458ms

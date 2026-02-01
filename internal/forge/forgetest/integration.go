@@ -47,35 +47,6 @@ const (
 	CanonicalRepo  = "test-repo"
 )
 
-// TestRepo returns the owner and repository name for integration tests.
-// In update mode, it reads from environment variables (ownerEnv, repoEnv).
-// In replay mode, it returns the canonical placeholders.
-func TestRepo(t *testing.T, ownerEnv, repoEnv string) (owner, repo string) {
-	if !Update() {
-		return CanonicalOwner, CanonicalRepo
-	}
-
-	owner = os.Getenv(ownerEnv)
-	repo = os.Getenv(repoEnv)
-	if owner == "" || repo == "" {
-		t.Fatalf("In update mode, %s and %s must be set", ownerEnv, repoEnv)
-	}
-	t.Logf("Using test repo: %s/%s", owner, repo)
-	return owner, repo
-}
-
-// RepoSanitizers returns sanitizers that replace actual owner/repo values
-// with canonical placeholders. Use these when creating HTTP recorders.
-func RepoSanitizers(owner, repo string) []httptest.Sanitizer {
-	if owner == CanonicalOwner && repo == CanonicalRepo {
-		return nil // No sanitization needed in replay mode.
-	}
-	return []httptest.Sanitizer{
-		{Replace: owner, With: CanonicalOwner},
-		{Replace: repo, With: CanonicalRepo},
-	}
-}
-
 // Token retrieves authentication credentials for the given forge URL.
 // In update mode, it tries multiple sources in order:
 //  1. Environment variable (explicit override)
@@ -188,9 +159,15 @@ func NewHTTPRecorder(
 			assert.NoError(t, r.Body.Close())
 
 			r.Body = io.NopCloser(bytes.NewBuffer(reqBody))
+
+			// Trim trailing newlines for comparison.
+			// YAML block scalars add a trailing newline to the body.
+			actualBody := strings.TrimRight(string(reqBody), "\n")
+			expectedBody := strings.TrimRight(i.Body, "\n")
+
 			return r.Method == i.Method &&
 				r.URL.String() == i.URL &&
-				string(reqBody) == i.Body
+				actualBody == expectedBody
 		},
 	})
 }
@@ -280,7 +257,7 @@ type IntegrationConfig struct {
 	SkipCommentPagination bool // optional
 
 	// Sanitizers are applied to recorded HTTP fixtures.
-	// Use RepoSanitizers to create sanitizers for owner/repo values.
+	// Use ConfigSanitizers to create sanitizers from test configuration.
 	Sanitizers []httptest.Sanitizer // optional
 }
 

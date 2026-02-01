@@ -27,13 +27,15 @@ import (
 
 var _fixtures = fixturetest.Config{Update: forgetest.Update}
 
-// testRepo returns the owner/repo for tests and sanitizers for VCR fixtures.
-// In update mode, reads from GITLAB_TEST_OWNER and GITLAB_TEST_REPO env vars.
+// testConfig returns the GitLab test configuration and sanitizers for VCR fixtures.
+// In update mode, loads from testconfig.yaml.
 // In replay mode, returns canonical placeholders.
-func testRepo(t *testing.T) (owner, repo string, sanitizers []httptest.Sanitizer) {
-	owner, repo = forgetest.TestRepo(t, "GITLAB_TEST_OWNER", "GITLAB_TEST_REPO")
-	sanitizers = forgetest.RepoSanitizers(owner, repo)
-	return owner, repo, sanitizers
+func testConfig(t *testing.T) (cfg forgetest.ForgeConfig, sanitizers []httptest.Sanitizer) {
+	config := forgetest.Config(t)
+	cfg = config.GitLab
+	canonical := forgetest.CanonicalGitLabConfig()
+	sanitizers = forgetest.ConfigSanitizers(cfg, canonical)
+	return cfg, sanitizers
 }
 
 // TODO: delete newRecorder when tests have been migrated to forgetest.
@@ -70,22 +72,22 @@ func newGitLabClient(
 }
 
 func TestIntegration_Repository(t *testing.T) {
-	owner, repo, sanitizers := testRepo(t)
+	cfg, sanitizers := testConfig(t)
 	ctx := t.Context()
 	rec := newRecorder(t, t.Name(), sanitizers)
 	ghc := newGitLabClient(t, rec.GetDefaultClient())
-	_, err := gitlab.NewRepository(ctx, new(gitlab.Forge), owner, repo, silogtest.New(t), ghc, nil)
+	_, err := gitlab.NewRepository(ctx, new(gitlab.Forge), cfg.Owner, cfg.Repo, silogtest.New(t), ghc, nil)
 	require.NoError(t, err)
 }
 
 func TestIntegration(t *testing.T) {
-	owner, repo, sanitizers := testRepo(t)
-	remoteURL := "https://gitlab.com/" + owner + "/" + repo
+	cfg, sanitizers := testConfig(t)
+	remoteURL := "https://gitlab.com/" + cfg.Owner + "/" + cfg.Repo
 
 	t.Cleanup(func() {
 		if t.Failed() && !forgetest.Update() {
 			t.Logf("To update the test fixtures, run:")
-			t.Logf("    GITLAB_TEST_OWNER=$owner GITLAB_TEST_REPO=$repo GITLAB_TOKEN=$token go test -update -run '^%s$'", t.Name())
+			t.Logf("    Configure testconfig.yaml and run: GITLAB_TOKEN=$token go test -update -run '^%s$'", t.Name())
 		}
 	})
 
@@ -100,7 +102,7 @@ func TestIntegration(t *testing.T) {
 		OpenRepository: func(t *testing.T, httpClient *http.Client) forge.Repository {
 			ghc := newGitLabClient(t, httpClient)
 			newRepo, err := gitlab.NewRepository(
-				t.Context(), &gitlabForge, owner, repo,
+				t.Context(), &gitlabForge, cfg.Owner, cfg.Repo,
 				silogtest.New(t), ghc, nil,
 			)
 			require.NoError(t, err)
@@ -115,24 +117,24 @@ func TestIntegration(t *testing.T) {
 		SetCommentsPageSize:   gitlab.SetListChangeCommentsPageSize,
 		BaseBranchMayBeAbsent: true,
 		SkipMerge:             true, // Merge requires MR approval settings to be disabled
-		Reviewers:             []string{},
-		Assignees:             []string{},
+		Reviewers:             []string{cfg.Reviewer},
+		Assignees:             []string{cfg.Assignee},
 	})
 }
 
 func TestIntegration_Repository_notFoundError(t *testing.T) {
-	owner, _, sanitizers := testRepo(t)
+	cfg, sanitizers := testConfig(t)
 	ctx := t.Context()
 	rec := newRecorder(t, t.Name(), sanitizers)
 	client := rec.GetDefaultClient()
 	ghc := newGitLabClient(t, client)
-	_, err := gitlab.NewRepository(ctx, new(gitlab.Forge), owner, "does-not-exist-repo", silogtest.New(t), ghc, nil)
+	_, err := gitlab.NewRepository(ctx, new(gitlab.Forge), cfg.Owner, "does-not-exist-repo", silogtest.New(t), ghc, nil)
 	require.Error(t, err)
 	assert.ErrorContains(t, err, "404 Not Found")
 }
 
 func TestIntegration_Repository_SubmitChange_removeSourceBranch(t *testing.T) {
-	owner, repoName, sanitizers := testRepo(t)
+	cfg, sanitizers := testConfig(t)
 	ctx := t.Context()
 	branchFixture := fixturetest.New(_fixtures, "branch", func() string {
 		return randomString(8)
@@ -155,7 +157,7 @@ func TestIntegration_Repository_SubmitChange_removeSourceBranch(t *testing.T) {
 
 		t.Logf("Cloning test-repo...")
 		repoDir := t.TempDir()
-		cmd := exec.Command("git", "clone", "https://gitlab.com/"+owner+"/"+repoName+".git", repoDir)
+		cmd := exec.Command("git", "clone", "https://gitlab.com/"+cfg.Owner+"/"+cfg.Repo+".git", repoDir)
 		cmd.Stdout = output
 		cmd.Stderr = output
 		require.NoError(t, cmd.Run(), "failed to clone test-repo")
@@ -208,7 +210,7 @@ func TestIntegration_Repository_SubmitChange_removeSourceBranch(t *testing.T) {
 	rec := newRecorder(t, t.Name(), sanitizers)
 	ghc := newGitLabClient(t, rec.GetDefaultClient())
 	repo, err := gitlab.NewRepository(
-		ctx, new(gitlab.Forge), owner, repoName, silogtest.New(t), ghc,
+		ctx, new(gitlab.Forge), cfg.Owner, cfg.Repo, silogtest.New(t), ghc,
 		&gitlab.RepositoryOptions{
 			RemoveSourceBranchOnMerge: true,
 		},
@@ -224,7 +226,7 @@ func TestIntegration_Repository_SubmitChange_removeSourceBranch(t *testing.T) {
 	require.NoError(t, err, "error creating MR")
 
 	mrID := change.ID.(*gitlab.MR)
-	projectPath := owner + "/" + repoName
+	projectPath := cfg.Owner + "/" + cfg.Repo
 	mr, _, err := ghc.MergeRequests.GetMergeRequest(
 		projectPath, mrID.Number, nil,
 		gogitlab.WithContext(ctx),

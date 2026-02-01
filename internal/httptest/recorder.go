@@ -52,19 +52,8 @@ func NewTransportRecorder(
 	t.Helper()
 
 	mode := recorder.ModeReplayOnly
-	realTransport := http.DefaultTransport
-	afterCaptureHook := func(*cassette.Interaction) error {
-		return nil
-	}
-
 	if opts.Update != nil && opts.Update() {
 		mode = recorder.ModeRecordOnly
-
-		afterCaptureHook = func(i *cassette.Interaction) error {
-			sanitizeHeaders(i)
-			applySanitizers(i, opts.Sanitizers)
-			return nil
-		}
 	}
 
 	matcher := cassette.DefaultMatcher
@@ -72,11 +61,20 @@ func NewTransportRecorder(
 		matcher = opts.Matcher
 	}
 
+	// BeforeSaveHook runs before saving to disk, sanitizing recorded data.
+	// This ensures real API responses are returned to tests during recording,
+	// while fixtures contain canonical placeholders.
+	beforeSaveHook := func(i *cassette.Interaction) error {
+		sanitizeHeaders(i)
+		applySanitizers(i, opts.Sanitizers)
+		return nil
+	}
+
 	rec, err := recorder.New(filepath.Join("testdata", "fixtures", name),
 		recorder.WithMode(mode),
-		recorder.WithRealTransport(realTransport),
+		recorder.WithRealTransport(http.DefaultTransport),
 		recorder.WithSkipRequestLatency(true),
-		recorder.WithHook(afterCaptureHook, recorder.AfterCaptureHook),
+		recorder.WithHook(beforeSaveHook, recorder.BeforeSaveHook),
 		recorder.WithMatcher(matcher),
 	)
 	require.NoError(t, err)
