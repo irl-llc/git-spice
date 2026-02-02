@@ -116,24 +116,49 @@ func (r *Repository) resolveReviewerUUIDs(
 	return reviewers, nil
 }
 
-func (r *Repository) getUser(ctx context.Context, username string) (*apiUser, error) {
-	user, err := r.findWorkspaceMember(ctx, username)
+func (r *Repository) getUser(ctx context.Context, identifier string) (*apiUser, error) {
+	if isAccountID(identifier) {
+		return r.getUserByAccountID(ctx, identifier)
+	}
+	return r.getUserByNickname(ctx, identifier)
+}
+
+func (r *Repository) getUserByNickname(
+	ctx context.Context,
+	nickname string,
+) (*apiUser, error) {
+	user, err := r.findWorkspaceMember(ctx, nickname)
 	if err != nil {
 		return nil, err
 	}
 	if user == nil {
-		return nil, fmt.Errorf("user %q not found in workspace %q", username, r.workspace)
+		return nil, fmt.Errorf("user %q not found in workspace %q", nickname, r.workspace)
 	}
 	return user, nil
 }
 
-func (r *Repository) findWorkspaceMember(
+func (r *Repository) getUserByAccountID(
 	ctx context.Context,
-	username string,
+	accountID string,
+) (*apiUser, error) {
+	user, err := r.findWorkspaceMemberByAccountID(ctx, accountID)
+	if err != nil {
+		return nil, err
+	}
+	if user == nil {
+		return nil, fmt.Errorf("account_id %q not found in workspace %q", accountID, r.workspace)
+	}
+	return user, nil
+}
+
+func (r *Repository) findWorkspaceMemberByAccountID(
+	ctx context.Context,
+	accountID string,
 ) (*apiUser, error) {
 	path := fmt.Sprintf("/workspaces/%s/members", r.workspace)
+
 	for path != "" {
-		user, nextPath, err := r.searchMemberPage(ctx, path, username)
+		user, nextPath, err := r.searchMemberPageByAccountID(ctx, path, accountID)
 		if err != nil {
 			return nil, err
 		}
@@ -145,9 +170,9 @@ func (r *Repository) findWorkspaceMember(
 	return nil, nil
 }
 
-func (r *Repository) searchMemberPage(
+func (r *Repository) searchMemberPageByAccountID(
 	ctx context.Context,
-	path, username string,
+	path, accountID string,
 ) (*apiUser, string, error) {
 	var resp apiWorkspaceMemberList
 	if err := r.client.get(ctx, path, &resp); err != nil {
@@ -155,19 +180,92 @@ func (r *Repository) searchMemberPage(
 	}
 
 	for _, member := range resp.Values {
-		if matchesUsername(&member.User, username) {
+		if member.User.AccountID == accountID {
 			return &member.User, "", nil
 		}
 	}
 	return nil, resp.Next, nil
 }
 
-// matchesUsername checks if the user matches the given username.
+func (r *Repository) findWorkspaceMember(
+	ctx context.Context,
+	nickname string,
+) (*apiUser, error) {
+	var matches []apiUser
+	path := fmt.Sprintf("/workspaces/%s/members", r.workspace)
+
+	for path != "" {
+		pageMatches, nextPath, err := r.searchMemberPage(ctx, path, nickname)
+		if err != nil {
+			return nil, err
+		}
+		matches = append(matches, pageMatches...)
+		path = nextPath
+	}
+
+	return r.selectUniqueMatch(nickname, matches)
+}
+
+func (r *Repository) selectUniqueMatch(
+	nickname string,
+	matches []apiUser,
+) (*apiUser, error) {
+	switch len(matches) {
+	case 0:
+		return nil, nil
+	case 1:
+		return &matches[0], nil
+	default:
+		return nil, &ambiguousUserError{Nickname: nickname, Matches: matches}
+	}
+}
+
+func (r *Repository) searchMemberPage(
+	ctx context.Context,
+	path, nickname string,
+) ([]apiUser, string, error) {
+	var resp apiWorkspaceMemberList
+	if err := r.client.get(ctx, path, &resp); err != nil {
+		return nil, "", fmt.Errorf("list workspace members: %w", err)
+	}
+
+	var matches []apiUser
+	for _, member := range resp.Values {
+		if matchesNickname(&member.User, nickname) {
+			matches = append(matches, member.User)
+		}
+	}
+	return matches, resp.Next, nil
+}
+
+// matchesNickname checks if the user matches the given nickname.
 // It checks Username first (for backward compatibility), then Nickname
 // (since Bitbucket deprecated usernames in favor of account IDs).
-func matchesUsername(user *apiUser, username string) bool {
-	if user.Username != "" && strings.EqualFold(user.Username, username) {
+func matchesNickname(user *apiUser, nickname string) bool {
+	if user.Username != "" && strings.EqualFold(user.Username, nickname) {
 		return true
 	}
-	return strings.EqualFold(user.Nickname, username)
+	return strings.EqualFold(user.Nickname, nickname)
+}
+
+// isAccountID checks if the identifier looks like a Bitbucket account ID.
+// Account IDs have the format "number:uuid" (e.g., "712020:f766d886-...").
+func isAccountID(identifier string) bool {
+	return strings.Contains(identifier, ":")
+}
+
+// ambiguousUserError indicates multiple workspace members match the nickname.
+type ambiguousUserError struct {
+	Nickname string
+	Matches  []apiUser
+}
+
+func (e *ambiguousUserError) Error() string {
+	var ids []string
+	for _, u := range e.Matches {
+		ids = append(ids, u.AccountID)
+	}
+	return fmt.Sprintf(
+		"multiple users match %q: %v (use account_id to disambiguate)",
+		e.Nickname, ids)
 }
