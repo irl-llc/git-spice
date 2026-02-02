@@ -61,8 +61,17 @@ func newGitHubClient(
 
 func TestIntegration_Repository(t *testing.T) {
 	cfg, sanitizers := testConfig(t)
+	remoteURL := "https://github.com/" + cfg.Owner + "/" + cfg.Repo
 	rec := newRecorder(t, t.Name(), sanitizers)
-	ghc := newGitHubClient(rec.GetDefaultClient())
+
+	httpClient := rec.GetDefaultClient()
+	token := forgetest.Token(t, remoteURL, "GITHUB_TOKEN")
+	httpClient.Transport = &oauth2.Transport{
+		Base:   httpClient.Transport,
+		Source: oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token}),
+	}
+
+	ghc := newGitHubClient(httpClient)
 	_, err := github.NewRepository(t.Context(), new(github.Forge), cfg.Owner, cfg.Repo, silogtest.New(t), ghc, nil)
 	require.NoError(t, err)
 }
@@ -117,10 +126,18 @@ func TestIntegration(t *testing.T) {
 
 func TestIntegration_Repository_LabelCreateDelete(t *testing.T) {
 	cfg, sanitizers := testConfig(t)
+	remoteURL := "https://github.com/" + cfg.Owner + "/" + cfg.Repo
 	label := fixturetest.New(_fixtures, "label1", func() string { return randomString(8) }).Get(t)
 
 	rec := newRecorder(t, t.Name(), sanitizers)
-	ghc := newGitHubClient(rec.GetDefaultClient())
+	httpClient := rec.GetDefaultClient()
+	token := forgetest.Token(t, remoteURL, "GITHUB_TOKEN")
+	httpClient.Transport = &oauth2.Transport{
+		Base:   httpClient.Transport,
+		Source: oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token}),
+	}
+
+	ghc := newGitHubClient(httpClient)
 	repo, err := github.NewRepository(
 		t.Context(), new(github.Forge), cfg.Owner, cfg.Repo, silogtest.New(t), ghc, nil,
 	)
@@ -157,9 +174,15 @@ func TestIntegration_Repository_LabelCreateDelete(t *testing.T) {
 
 func TestIntegration_Repository_notFoundError(t *testing.T) {
 	cfg, sanitizers := testConfig(t)
+	remoteURL := "https://github.com/" + cfg.Owner + "/" + cfg.Repo
 	ctx := t.Context()
 	rec := newRecorder(t, t.Name(), sanitizers)
 	client := rec.GetDefaultClient()
+	token := forgetest.Token(t, remoteURL, "GITHUB_TOKEN")
+	client.Transport = &oauth2.Transport{
+		Base:   client.Transport,
+		Source: oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token}),
+	}
 	client.Transport = graphqlutil.WrapTransport(client.Transport)
 	ghc := newGitHubClient(client)
 	_, err := github.NewRepository(ctx, new(github.Forge), cfg.Owner, "does-not-exist-repo", silogtest.New(t), ghc, nil)
