@@ -1,4 +1,4 @@
-module go.abhg.dev/gs
+module github.com/irl-llc/git-spice
 
 go 1.25.0
 
