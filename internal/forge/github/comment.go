@@ -2,13 +2,11 @@ package github
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"iter"
 
 	"github.com/shurcooL/githubv4"
-	"go.abhg.dev/gs/internal/forge"
-	"go.abhg.dev/gs/internal/graphqlutil"
+	"github.com/irl-llc/git-spice/internal/forge"
 )
 
 // PRComment is a ChangeCommentID for a GitHub PR comment.
@@ -97,9 +95,6 @@ func (r *Repository) UpdateChangeComment(
 		ID:   gqlID,
 	}
 	if err := r.client.Mutate(ctx, &m, input, nil); err != nil {
-		if errors.Is(err, graphqlutil.ErrNotFound) {
-			return fmt.Errorf("update comment: %w", forge.ErrNotFound)
-		}
 		return fmt.Errorf("update comment: %w", err)
 	}
 

@@ -7,12 +7,12 @@ import (
 	"slices"
 	"strings"
 
-	"go.abhg.dev/gs/internal/git"
-	"go.abhg.dev/gs/internal/handler/split"
-	"go.abhg.dev/gs/internal/text"
-	"go.abhg.dev/gs/internal/ui"
-	"go.abhg.dev/gs/internal/ui/commit"
-	"go.abhg.dev/gs/internal/ui/widget"
+	"github.com/irl-llc/git-spice/internal/git"
+	"github.com/irl-llc/git-spice/internal/handler/split"
+	"github.com/irl-llc/git-spice/internal/text"
+	"github.com/irl-llc/git-spice/internal/ui"
+	"github.com/irl-llc/git-spice/internal/ui/commit"
+	"github.com/irl-llc/git-spice/internal/ui/widget"
 )
 
 type branchSplitCmd struct {

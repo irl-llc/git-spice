@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	gitlab "gitlab.com/gitlab-org/api/client-go"
-	"go.abhg.dev/gs/internal/must"
+	"github.com/irl-llc/git-spice/internal/must"
 	"golang.org/x/oauth2"
 )
 

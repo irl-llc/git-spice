@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"go.abhg.dev/gs/internal/cmputil"
+	"github.com/irl-llc/git-spice/internal/cmputil"
 )
 
 func TestZero(t *testing.T) {

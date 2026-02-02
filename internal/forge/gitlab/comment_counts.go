@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	gitlab "gitlab.com/gitlab-org/api/client-go"
-	"go.abhg.dev/gs/internal/forge"
+	"github.com/irl-llc/git-spice/internal/forge"
 )
 
 // CommentCountsByChange retrieves comment resolution counts for multiple MRs.

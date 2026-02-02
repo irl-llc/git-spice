@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"go.abhg.dev/gs/internal/scanutil"
+	"github.com/irl-llc/git-spice/internal/scanutil"
 )
 
 // Signature holds authorship information for a commit.

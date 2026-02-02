@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"strconv"
 
-	"go.abhg.dev/gs/internal/forge"
-	"go.abhg.dev/gs/internal/git"
+	"github.com/irl-llc/git-spice/internal/forge"
+	"github.com/irl-llc/git-spice/internal/git"
 )
 
 var (

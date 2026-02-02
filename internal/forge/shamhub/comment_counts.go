@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"go.abhg.dev/gs/internal/forge"
+	"github.com/irl-llc/git-spice/internal/forge"
 )
 
 type commentCountsRequest struct {

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"iter"
 
-	"go.abhg.dev/gs/internal/scanutil"
+	"github.com/irl-llc/git-spice/internal/scanutil"
 )
 
 // ListFilesOptions shows information about files

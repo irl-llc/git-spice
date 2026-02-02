@@ -12,8 +12,8 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"go.abhg.dev/gs/internal/text"
-	"go.abhg.dev/gs/internal/ui"
+	"github.com/irl-llc/git-spice/internal/text"
+	"github.com/irl-llc/git-spice/internal/ui"
 )
 
 func TestRobotView_simple(t *testing.T) {

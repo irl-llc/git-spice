@@ -9,7 +9,7 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/vito/midterm"
-	"go.abhg.dev/gs/internal/ui"
+	"github.com/irl-llc/git-spice/internal/ui"
 )
 
 // Driver drives a ui.InteractiveView from outside

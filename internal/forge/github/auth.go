@@ -9,11 +9,11 @@ import (
 	"strings"
 
 	"github.com/charmbracelet/lipgloss"
-	"go.abhg.dev/gs/internal/forge"
-	"go.abhg.dev/gs/internal/secret"
-	"go.abhg.dev/gs/internal/text"
-	"go.abhg.dev/gs/internal/ui"
-	"go.abhg.dev/gs/internal/xec"
+	"github.com/irl-llc/git-spice/internal/forge"
+	"github.com/irl-llc/git-spice/internal/secret"
+	"github.com/irl-llc/git-spice/internal/text"
+	"github.com/irl-llc/git-spice/internal/ui"
+	"github.com/irl-llc/git-spice/internal/xec"
 	"golang.org/x/oauth2"
 )
 

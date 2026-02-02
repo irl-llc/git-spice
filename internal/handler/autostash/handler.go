@@ -11,9 +11,9 @@ import (
 	"errors"
 	"fmt"
 
-	"go.abhg.dev/gs/internal/git"
-	"go.abhg.dev/gs/internal/silog"
-	"go.abhg.dev/gs/internal/spice"
+	"github.com/irl-llc/git-spice/internal/git"
+	"github.com/irl-llc/git-spice/internal/silog"
+	"github.com/irl-llc/git-spice/internal/spice"
 )
 
 //go:generate mockgen -package autostash -destination mocks_test.go -typed . GitWorktree,Service

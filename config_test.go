@@ -9,8 +9,8 @@ import (
 	"github.com/alecthomas/kong"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"go.abhg.dev/gs/internal/git"
-	"go.abhg.dev/gs/internal/spice"
+	"github.com/irl-llc/git-spice/internal/git"
+	"github.com/irl-llc/git-spice/internal/spice"
 )
 
 // List of Git configuration sections besides "spice."

@@ -7,7 +7,7 @@ import (
 	"log/slog"
 	"strings"
 
-	"go.abhg.dev/gs/internal/silog"
+	"github.com/irl-llc/git-spice/internal/silog"
 )
 
 // PushOptions specifies options for the Push operation.

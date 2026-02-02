@@ -9,8 +9,8 @@ import (
 	"github.com/rogpeppe/go-internal/testscript"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"go.abhg.dev/gs/internal/ui"
-	"go.abhg.dev/gs/internal/ui/uitest"
+	"github.com/irl-llc/git-spice/internal/ui"
+	"github.com/irl-llc/git-spice/internal/ui/uitest"
 )
 
 // Runs tests inside testdata/script/branch_select.

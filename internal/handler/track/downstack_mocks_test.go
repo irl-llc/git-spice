@@ -12,7 +12,7 @@ package track
 import (
 	reflect "reflect"
 
-	git "go.abhg.dev/gs/internal/git"
+	git "github.com/irl-llc/git-spice/internal/git"
 	gomock "go.uber.org/mock/gomock"
 )
 

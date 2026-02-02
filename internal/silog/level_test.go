@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"go.abhg.dev/gs/internal/silog"
+	"github.com/irl-llc/git-spice/internal/silog"
 )
 
 func TestLevel_String(t *testing.T) {

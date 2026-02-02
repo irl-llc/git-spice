@@ -5,8 +5,8 @@ import (
 	"fmt"
 
 	"github.com/shurcooL/githubv4"
-	"go.abhg.dev/gs/internal/cmputil"
-	"go.abhg.dev/gs/internal/forge"
+	"github.com/irl-llc/git-spice/internal/cmputil"
+	"github.com/irl-llc/git-spice/internal/forge"
 )
 
 // EditChange edits an existing change in a repository.

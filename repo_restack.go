@@ -4,12 +4,12 @@ import (
 	"context"
 	"fmt"
 
-	"go.abhg.dev/gs/internal/git"
-	"go.abhg.dev/gs/internal/handler/autostash"
-	"go.abhg.dev/gs/internal/handler/restack"
-	"go.abhg.dev/gs/internal/silog"
-	"go.abhg.dev/gs/internal/spice/state"
-	"go.abhg.dev/gs/internal/text"
+	"github.com/irl-llc/git-spice/internal/git"
+	"github.com/irl-llc/git-spice/internal/handler/autostash"
+	"github.com/irl-llc/git-spice/internal/handler/restack"
+	"github.com/irl-llc/git-spice/internal/silog"
+	"github.com/irl-llc/git-spice/internal/spice/state"
+	"github.com/irl-llc/git-spice/internal/text"
 )
 
 type repoRestackCmd struct{}

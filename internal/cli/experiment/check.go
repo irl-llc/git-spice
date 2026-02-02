@@ -27,7 +27,7 @@ import (
 	"fmt"
 
 	"github.com/alecthomas/kong"
-	"go.abhg.dev/gs/internal/silog"
+	"github.com/irl-llc/git-spice/internal/silog"
 )
 
 // Enabler reports whether an experiment is enabled.

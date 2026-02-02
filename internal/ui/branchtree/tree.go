@@ -8,10 +8,10 @@ import (
 	"strings"
 
 	"github.com/charmbracelet/lipgloss"
-	"go.abhg.dev/gs/internal/forge"
-	"go.abhg.dev/gs/internal/ui"
-	"go.abhg.dev/gs/internal/ui/commit"
-	"go.abhg.dev/gs/internal/ui/fliptree"
+	"github.com/irl-llc/git-spice/internal/forge"
+	"github.com/irl-llc/git-spice/internal/ui"
+	"github.com/irl-llc/git-spice/internal/ui/commit"
+	"github.com/irl-llc/git-spice/internal/ui/fliptree"
 )
 
 // Graph holds the tree structure for rendering.

@@ -11,8 +11,8 @@ import (
 
 	"github.com/alecthomas/kong"
 	"github.com/buildkite/shellwords"
-	"go.abhg.dev/gs/internal/git"
-	"go.abhg.dev/gs/internal/silog"
+	"github.com/irl-llc/git-spice/internal/git"
+	"github.com/irl-llc/git-spice/internal/silog"
 )
 
 const (

@@ -6,10 +6,10 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"go.abhg.dev/gs/internal/silog/silogtest"
-	"go.abhg.dev/gs/internal/spice/state"
-	"go.abhg.dev/gs/internal/spice/state/statetest"
-	"go.abhg.dev/gs/internal/spice/state/storage"
+	"github.com/irl-llc/git-spice/internal/silog/silogtest"
+	"github.com/irl-llc/git-spice/internal/spice/state"
+	"github.com/irl-llc/git-spice/internal/spice/state/statetest"
+	"github.com/irl-llc/git-spice/internal/spice/state/storage"
 )
 
 func TestStore(t *testing.T) {

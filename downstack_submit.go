@@ -6,12 +6,12 @@ import (
 	"fmt"
 	"slices"
 
-	"go.abhg.dev/gs/internal/git"
-	"go.abhg.dev/gs/internal/handler/submit"
-	"go.abhg.dev/gs/internal/must"
-	"go.abhg.dev/gs/internal/spice"
-	"go.abhg.dev/gs/internal/spice/state"
-	"go.abhg.dev/gs/internal/text"
+	"github.com/irl-llc/git-spice/internal/git"
+	"github.com/irl-llc/git-spice/internal/handler/submit"
+	"github.com/irl-llc/git-spice/internal/must"
+	"github.com/irl-llc/git-spice/internal/spice"
+	"github.com/irl-llc/git-spice/internal/spice/state"
+	"github.com/irl-llc/git-spice/internal/text"
 )
 
 type downstackSubmitCmd struct {

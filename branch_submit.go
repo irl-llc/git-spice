@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"go.abhg.dev/gs/internal/git"
-	"go.abhg.dev/gs/internal/handler/submit"
-	"go.abhg.dev/gs/internal/text"
+	"github.com/irl-llc/git-spice/internal/git"
+	"github.com/irl-llc/git-spice/internal/handler/submit"
+	"github.com/irl-llc/git-spice/internal/text"
 )
 
 // submitOptions defines options that are common to all submit commands.

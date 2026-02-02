@@ -1,6 +1,6 @@
 package graph
 
-import "go.abhg.dev/gs/internal/must"
+import "github.com/irl-llc/git-spice/internal/must"
 
 // Toposort performs a topological sort of the given nodes.
 // parent returns the parent of a node, or false if the node doesn't have one.

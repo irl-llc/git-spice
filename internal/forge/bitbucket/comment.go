@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"iter"
 
-	"go.abhg.dev/gs/internal/forge"
+	"github.com/irl-llc/git-spice/internal/forge"
 )
 
 // _listChangeCommentsPageSize is the number of comments to fetch per page.

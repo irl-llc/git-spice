@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"go.abhg.dev/gs/internal/forge"
+	"github.com/irl-llc/git-spice/internal/forge"
 )
 
 func TestMRMetadata(t *testing.T) {

@@ -8,11 +8,11 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"go.abhg.dev/gs/internal/git"
-	"go.abhg.dev/gs/internal/handler/track"
-	"go.abhg.dev/gs/internal/silog"
-	"go.abhg.dev/gs/internal/spice"
-	"go.abhg.dev/gs/internal/spice/state"
+	"github.com/irl-llc/git-spice/internal/git"
+	"github.com/irl-llc/git-spice/internal/handler/track"
+	"github.com/irl-llc/git-spice/internal/silog"
+	"github.com/irl-llc/git-spice/internal/spice"
+	"github.com/irl-llc/git-spice/internal/spice/state"
 	"go.uber.org/mock/gomock"
 )
 

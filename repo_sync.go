@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 
-	"go.abhg.dev/gs/internal/handler/sync"
-	"go.abhg.dev/gs/internal/text"
+	"github.com/irl-llc/git-spice/internal/handler/sync"
+	"github.com/irl-llc/git-spice/internal/text"
 )
 
 type repoSyncCmd struct {

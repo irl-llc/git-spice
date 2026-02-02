@@ -9,7 +9,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	"go.abhg.dev/gs/internal/xec"
+	"github.com/irl-llc/git-spice/internal/xec"
 )
 
 // Version is a Git version string.

@@ -3,7 +3,7 @@ package git
 import (
 	"context"
 
-	"go.abhg.dev/gs/internal/xec"
+	"github.com/irl-llc/git-spice/internal/xec"
 )
 
 // Head reports the commit hash of HEAD.

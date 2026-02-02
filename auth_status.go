@@ -4,9 +4,9 @@ import (
 	"errors"
 	"fmt"
 
-	"go.abhg.dev/gs/internal/forge"
-	"go.abhg.dev/gs/internal/secret"
-	"go.abhg.dev/gs/internal/silog"
+	"github.com/irl-llc/git-spice/internal/forge"
+	"github.com/irl-llc/git-spice/internal/secret"
+	"github.com/irl-llc/git-spice/internal/silog"
 )
 
 type authStatusCmd struct{}

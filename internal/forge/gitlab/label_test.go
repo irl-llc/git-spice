@@ -4,7 +4,7 @@ import (
 	"context"
 
 	gitlab "gitlab.com/gitlab-org/api/client-go"
-	"go.abhg.dev/gs/internal/forge"
+	"github.com/irl-llc/git-spice/internal/forge"
 )
 
 func (r *Repository) ChangeLabels(ctx context.Context, id forge.ChangeID) ([]string, error) {

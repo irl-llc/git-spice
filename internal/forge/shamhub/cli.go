@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/rogpeppe/go-internal/testscript"
-	"go.abhg.dev/gs/internal/silog/silogtest"
+	"github.com/irl-llc/git-spice/internal/silog/silogtest"
 	"go.abhg.dev/io/ioutil"
 	"gopkg.in/yaml.v3"
 )

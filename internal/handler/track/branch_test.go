@@ -9,14 +9,14 @@ import (
 	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"
 
-	"go.abhg.dev/gs/internal/git"
-	"go.abhg.dev/gs/internal/git/gittest"
-	"go.abhg.dev/gs/internal/silog"
-	"go.abhg.dev/gs/internal/spice"
-	"go.abhg.dev/gs/internal/spice/state"
-	"go.abhg.dev/gs/internal/spice/state/statetest"
-	"go.abhg.dev/gs/internal/text"
-	"go.abhg.dev/gs/internal/ui"
+	"github.com/irl-llc/git-spice/internal/git"
+	"github.com/irl-llc/git-spice/internal/git/gittest"
+	"github.com/irl-llc/git-spice/internal/silog"
+	"github.com/irl-llc/git-spice/internal/spice"
+	"github.com/irl-llc/git-spice/internal/spice/state"
+	"github.com/irl-llc/git-spice/internal/spice/state/statetest"
+	"github.com/irl-llc/git-spice/internal/text"
+	"github.com/irl-llc/git-spice/internal/ui"
 )
 
 func TestHandler_TrackBranch(t *testing.T) {

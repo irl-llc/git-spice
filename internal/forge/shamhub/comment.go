@@ -8,7 +8,7 @@ import (
 	"slices"
 	"strconv"
 
-	"go.abhg.dev/gs/internal/forge"
+	"github.com/irl-llc/git-spice/internal/forge"
 )
 
 // ChangeComment is a comment made on ShamHub.

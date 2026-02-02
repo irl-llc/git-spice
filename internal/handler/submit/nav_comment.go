@@ -12,10 +12,10 @@ import (
 	"strings"
 	"sync"
 
-	"go.abhg.dev/gs/internal/forge"
-	"go.abhg.dev/gs/internal/forge/stacknav"
-	"go.abhg.dev/gs/internal/silog"
-	"go.abhg.dev/gs/internal/spice/state"
+	"github.com/irl-llc/git-spice/internal/forge"
+	"github.com/irl-llc/git-spice/internal/forge/stacknav"
+	"github.com/irl-llc/git-spice/internal/silog"
+	"github.com/irl-llc/git-spice/internal/spice/state"
 )
 
 // NavCommentWhen specifies when a navigation comment should be posted

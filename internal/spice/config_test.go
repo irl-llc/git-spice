@@ -9,10 +9,10 @@ import (
 	"github.com/alecthomas/kong"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"go.abhg.dev/gs/internal/git"
-	"go.abhg.dev/gs/internal/silog/silogtest"
-	"go.abhg.dev/gs/internal/spice"
-	"go.abhg.dev/gs/internal/text"
+	"github.com/irl-llc/git-spice/internal/git"
+	"github.com/irl-llc/git-spice/internal/silog/silogtest"
+	"github.com/irl-llc/git-spice/internal/spice"
+	"github.com/irl-llc/git-spice/internal/text"
 )
 
 func TestIntegrationConfig_loadFromGit(t *testing.T) {

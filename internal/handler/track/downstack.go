@@ -8,11 +8,11 @@ import (
 	"sort"
 	"strings"
 
-	"go.abhg.dev/gs/internal/git"
-	"go.abhg.dev/gs/internal/must"
-	"go.abhg.dev/gs/internal/silog"
-	"go.abhg.dev/gs/internal/spice/state"
-	"go.abhg.dev/gs/internal/ui"
+	"github.com/irl-llc/git-spice/internal/git"
+	"github.com/irl-llc/git-spice/internal/must"
+	"github.com/irl-llc/git-spice/internal/silog"
+	"github.com/irl-llc/git-spice/internal/spice/state"
+	"github.com/irl-llc/git-spice/internal/ui"
 )
 
 // DownstackRequest is the request for tracking a branch

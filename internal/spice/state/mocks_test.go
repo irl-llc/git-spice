@@ -13,7 +13,7 @@ import (
 	context "context"
 	reflect "reflect"
 
-	storage "go.abhg.dev/gs/internal/spice/state/storage"
+	storage "github.com/irl-llc/git-spice/internal/spice/state/storage"
 	gomock "go.uber.org/mock/gomock"
 )
 

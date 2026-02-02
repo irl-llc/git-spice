@@ -10,10 +10,10 @@ import (
 	"slices"
 	"strings"
 
-	"go.abhg.dev/gs/internal/git"
-	"go.abhg.dev/gs/internal/handler/restack"
-	"go.abhg.dev/gs/internal/silog"
-	"go.abhg.dev/gs/internal/spice"
+	"github.com/irl-llc/git-spice/internal/git"
+	"github.com/irl-llc/git-spice/internal/handler/restack"
+	"github.com/irl-llc/git-spice/internal/silog"
+	"github.com/irl-llc/git-spice/internal/spice"
 )
 
 //go:generate mockgen -package fixup -typed -destination mocks_test.go . RestackHandler,GitWorktree,GitRepository,Service

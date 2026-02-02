@@ -10,7 +10,7 @@ import (
 	"strconv"
 	"strings"
 
-	"go.abhg.dev/gs/internal/scanutil"
+	"github.com/irl-llc/git-spice/internal/scanutil"
 )
 
 // MergeTreeRequest specifies the parameters for a merge-tree operation.

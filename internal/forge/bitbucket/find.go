@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/url"
 
-	"go.abhg.dev/gs/internal/forge"
-	"go.abhg.dev/gs/internal/git"
+	"github.com/irl-llc/git-spice/internal/forge"
+	"github.com/irl-llc/git-spice/internal/git"
 )
 
 // FindChangesByBranch finds pull requests by source branch name.

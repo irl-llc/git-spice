@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"go.abhg.dev/gs/internal/cli/shorthand"
+	"github.com/irl-llc/git-spice/internal/cli/shorthand"
 )
 
 func TestExpand(t *testing.T) {

@@ -12,7 +12,7 @@ import (
 	"time"
 
 	"github.com/creack/pty"
-	"go.abhg.dev/gs/internal/ui/uitest"
+	"github.com/irl-llc/git-spice/internal/ui/uitest"
 )
 
 // WithTerm is an entry point for a command line program "with-term".

@@ -9,8 +9,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/zalando/go-keyring"
-	"go.abhg.dev/gs/internal/secret"
-	"go.abhg.dev/gs/internal/silog/silogtest"
+	"github.com/irl-llc/git-spice/internal/secret"
+	"github.com/irl-llc/git-spice/internal/silog/silogtest"
 )
 
 func TestMain(m *testing.M) {

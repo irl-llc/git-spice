@@ -10,9 +10,9 @@ import (
 	"iter"
 	"sync"
 
-	"go.abhg.dev/gs/internal/git"
-	"go.abhg.dev/gs/internal/must"
-	"go.abhg.dev/gs/internal/silog"
+	"github.com/irl-llc/git-spice/internal/git"
+	"github.com/irl-llc/git-spice/internal/must"
+	"github.com/irl-llc/git-spice/internal/silog"
 )
 
 // GitRepository is the subset of the git.Repository API used by the state package.

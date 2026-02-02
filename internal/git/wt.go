@@ -7,9 +7,9 @@ import (
 	"iter"
 	"strings"
 
-	"go.abhg.dev/gs/internal/scanutil"
-	"go.abhg.dev/gs/internal/silog"
-	"go.abhg.dev/gs/internal/xec"
+	"github.com/irl-llc/git-spice/internal/scanutil"
+	"github.com/irl-llc/git-spice/internal/silog"
+	"github.com/irl-llc/git-spice/internal/xec"
 )
 
 // Worktree is a checkout of a Git repository at a specific path.

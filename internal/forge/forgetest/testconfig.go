@@ -7,7 +7,7 @@ import (
 	"sync"
 	"testing"
 
-	"go.abhg.dev/gs/internal/httptest"
+	"github.com/irl-llc/git-spice/internal/httptest"
 	"gopkg.in/yaml.v3"
 )
 

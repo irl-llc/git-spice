@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/shurcooL/githubv4"
-	"go.abhg.dev/gs/internal/forge"
+	"github.com/irl-llc/git-spice/internal/forge"
 )
 
 // ChangeTemplatePaths reports the allowed paths for possible PR templates.

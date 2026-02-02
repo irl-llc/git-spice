@@ -8,7 +8,7 @@ import (
 	"sync"
 
 	"github.com/shurcooL/githubv4"
-	"go.abhg.dev/gs/internal/graphqlutil"
+	"github.com/irl-llc/git-spice/internal/graphqlutil"
 )
 
 func (r *Repository) addLabelsToPullRequest(ctx context.Context, labels []string, prGraphQLID githubv4.ID) error {

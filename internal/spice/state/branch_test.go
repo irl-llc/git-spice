@@ -9,10 +9,10 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"go.abhg.dev/gs/internal/sliceutil"
-	"go.abhg.dev/gs/internal/spice/state"
-	"go.abhg.dev/gs/internal/spice/state/statetest"
-	"go.abhg.dev/gs/internal/spice/state/storage"
+	"github.com/irl-llc/git-spice/internal/sliceutil"
+	"github.com/irl-llc/git-spice/internal/spice/state"
+	"github.com/irl-llc/git-spice/internal/spice/state/statetest"
+	"github.com/irl-llc/git-spice/internal/spice/state/storage"
 	"pgregory.net/rapid"
 )
 

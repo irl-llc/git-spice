@@ -19,7 +19,7 @@ import (
 
 	"github.com/rogpeppe/go-internal/testscript"
 	"github.com/stretchr/testify/require"
-	"go.abhg.dev/gs/internal/ui"
+	"github.com/irl-llc/git-spice/internal/ui"
 )
 
 // RunScriptsOptions defines options for RunScripts.

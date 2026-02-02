@@ -12,7 +12,7 @@ import (
 	"sync"
 
 	"github.com/tidwall/gjson"
-	"go.abhg.dev/gs/internal/must"
+	"github.com/irl-llc/git-spice/internal/must"
 )
 
 // Common errors that may be returned by GraphQL APIs.

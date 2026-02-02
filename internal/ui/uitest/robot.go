@@ -14,8 +14,8 @@ import (
 	"strings"
 
 	tea "github.com/charmbracelet/bubbletea"
-	"go.abhg.dev/gs/internal/silog"
-	"go.abhg.dev/gs/internal/ui"
+	"github.com/irl-llc/git-spice/internal/silog"
+	"github.com/irl-llc/git-spice/internal/ui"
 )
 
 const (

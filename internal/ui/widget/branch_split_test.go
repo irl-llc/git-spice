@@ -10,10 +10,10 @@ import (
 	"github.com/rogpeppe/go-internal/testscript"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"go.abhg.dev/gs/internal/git"
-	"go.abhg.dev/gs/internal/ui"
-	"go.abhg.dev/gs/internal/ui/commit"
-	"go.abhg.dev/gs/internal/ui/uitest"
+	"github.com/irl-llc/git-spice/internal/git"
+	"github.com/irl-llc/git-spice/internal/ui"
+	"github.com/irl-llc/git-spice/internal/ui/commit"
+	"github.com/irl-llc/git-spice/internal/ui/uitest"
 	"go.abhg.dev/testing/stub"
 )
 

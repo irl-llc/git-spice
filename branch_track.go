@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"go.abhg.dev/gs/internal/git"
-	"go.abhg.dev/gs/internal/handler/track"
-	"go.abhg.dev/gs/internal/text"
+	"github.com/irl-llc/git-spice/internal/git"
+	"github.com/irl-llc/git-spice/internal/handler/track"
+	"github.com/irl-llc/git-spice/internal/text"
 )
 
 type branchTrackCmd struct {

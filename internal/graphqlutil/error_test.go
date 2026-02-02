@@ -10,7 +10,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"go.abhg.dev/gs/internal/graphqlutil"
+	"github.com/irl-llc/git-spice/internal/graphqlutil"
 )
 
 func TestResponseError(t *testing.T) {

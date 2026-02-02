@@ -10,7 +10,7 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/vito/midterm"
-	"go.abhg.dev/gs/internal/ui"
+	"github.com/irl-llc/git-spice/internal/ui"
 )
 
 // EmulatorView is a [ui.InteractiveView] that renders to an in-memory

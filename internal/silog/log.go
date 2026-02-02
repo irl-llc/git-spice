@@ -17,7 +17,7 @@ import (
 
 	"github.com/charmbracelet/lipgloss"
 	"github.com/mattn/go-isatty"
-	"go.abhg.dev/gs/internal/must"
+	"github.com/irl-llc/git-spice/internal/must"
 	"go.abhg.dev/log/silog"
 )
 

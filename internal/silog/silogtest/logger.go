@@ -4,7 +4,7 @@ package silogtest
 import (
 	"io"
 
-	"go.abhg.dev/gs/internal/silog"
+	"github.com/irl-llc/git-spice/internal/silog"
 )
 
 // T is a subset of the testing.TB interface.

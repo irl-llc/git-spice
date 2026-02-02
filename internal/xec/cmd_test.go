@@ -14,8 +14,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"go.abhg.dev/gs/internal/silog"
-	"go.abhg.dev/gs/internal/xec/xectest"
+	"github.com/irl-llc/git-spice/internal/silog"
+	"github.com/irl-llc/git-spice/internal/xec/xectest"
 	"go.uber.org/mock/gomock"
 )
 

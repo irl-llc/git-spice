@@ -3,7 +3,7 @@ package bitbucket
 import (
 	"net/http"
 
-	"go.abhg.dev/gs/internal/silog"
+	"github.com/irl-llc/git-spice/internal/silog"
 )
 
 // NewRepositoryForTest creates a Repository for integration testing.

@@ -15,9 +15,9 @@ import (
 	iter "iter"
 	reflect "reflect"
 
-	forge "go.abhg.dev/gs/internal/forge"
-	secret "go.abhg.dev/gs/internal/secret"
-	ui "go.abhg.dev/gs/internal/ui"
+	forge "github.com/irl-llc/git-spice/internal/forge"
+	secret "github.com/irl-llc/git-spice/internal/secret"
+	ui "github.com/irl-llc/git-spice/internal/ui"
 	gomock "go.uber.org/mock/gomock"
 )
 

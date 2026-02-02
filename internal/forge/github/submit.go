@@ -6,8 +6,8 @@ import (
 	"fmt"
 
 	"github.com/shurcooL/githubv4"
-	"go.abhg.dev/gs/internal/forge"
-	"go.abhg.dev/gs/internal/graphqlutil"
+	"github.com/irl-llc/git-spice/internal/forge"
+	"github.com/irl-llc/git-spice/internal/graphqlutil"
 )
 
 // SubmitChange creates a new change in a repository.

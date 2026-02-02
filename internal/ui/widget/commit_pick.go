@@ -9,10 +9,10 @@ import (
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"go.abhg.dev/gs/internal/git"
-	"go.abhg.dev/gs/internal/ui"
-	"go.abhg.dev/gs/internal/ui/commit"
-	"go.abhg.dev/gs/internal/ui/fliptree"
+	"github.com/irl-llc/git-spice/internal/git"
+	"github.com/irl-llc/git-spice/internal/ui"
+	"github.com/irl-llc/git-spice/internal/ui/commit"
+	"github.com/irl-llc/git-spice/internal/ui/fliptree"
 )
 
 // TODO: support multi-select

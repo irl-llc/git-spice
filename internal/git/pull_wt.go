@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"go.abhg.dev/gs/internal/silog"
+	"github.com/irl-llc/git-spice/internal/silog"
 )
 
 // PullOptions specifies options for the Pull operation.

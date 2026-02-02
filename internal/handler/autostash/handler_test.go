@@ -11,10 +11,10 @@ import (
 	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"
 
-	"go.abhg.dev/gs/internal/git"
-	"go.abhg.dev/gs/internal/silog"
-	"go.abhg.dev/gs/internal/silog/silogtest"
-	"go.abhg.dev/gs/internal/spice"
+	"github.com/irl-llc/git-spice/internal/git"
+	"github.com/irl-llc/git-spice/internal/silog"
+	"github.com/irl-llc/git-spice/internal/silog/silogtest"
+	"github.com/irl-llc/git-spice/internal/spice"
 )
 
 func TestHandler_AutoStash(t *testing.T) {

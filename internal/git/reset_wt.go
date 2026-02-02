@@ -6,7 +6,7 @@ import (
 	"os"
 	"strconv"
 
-	"go.abhg.dev/gs/internal/must"
+	"github.com/irl-llc/git-spice/internal/must"
 )
 
 // ResetMode specifies the reset mode used in the form:

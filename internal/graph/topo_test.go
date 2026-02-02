@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"go.abhg.dev/gs/internal/graph"
+	"github.com/irl-llc/git-spice/internal/graph"
 )
 
 func TestToposort(t *testing.T) {

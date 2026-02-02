@@ -18,7 +18,7 @@ import (
 	"strings"
 
 	"github.com/charmbracelet/lipgloss"
-	"go.abhg.dev/gs/internal/ui"
+	"github.com/irl-llc/git-spice/internal/ui"
 )
 
 // DefaultNodeMarker is the marker used for each node in the tree.

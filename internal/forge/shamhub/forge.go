@@ -10,9 +10,9 @@ import (
 	"net/url"
 	"strings"
 
-	"go.abhg.dev/gs/internal/forge"
-	"go.abhg.dev/gs/internal/must"
-	"go.abhg.dev/gs/internal/silog"
+	"github.com/irl-llc/git-spice/internal/forge"
+	"github.com/irl-llc/git-spice/internal/must"
+	"github.com/irl-llc/git-spice/internal/silog"
 )
 
 // Options defines CLI options for the ShamHub forge.

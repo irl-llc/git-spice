@@ -8,7 +8,7 @@ import (
 	"strconv"
 
 	gitlab "gitlab.com/gitlab-org/api/client-go"
-	"go.abhg.dev/gs/internal/forge"
+	"github.com/irl-llc/git-spice/internal/forge"
 )
 
 // MRComment identifies a comment on a GitLab MR.

@@ -7,11 +7,11 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"go.abhg.dev/gs/internal/git"
-	"go.abhg.dev/gs/internal/git/gittest"
-	"go.abhg.dev/gs/internal/silog/silogtest"
-	"go.abhg.dev/gs/internal/sliceutil"
-	"go.abhg.dev/gs/internal/text"
+	"github.com/irl-llc/git-spice/internal/git"
+	"github.com/irl-llc/git-spice/internal/git/gittest"
+	"github.com/irl-llc/git-spice/internal/silog/silogtest"
+	"github.com/irl-llc/git-spice/internal/sliceutil"
+	"github.com/irl-llc/git-spice/internal/text"
 )
 
 func TestListFilesPaths(t *testing.T) {

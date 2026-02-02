@@ -6,8 +6,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"go.abhg.dev/gs/internal/forge"
-	"go.abhg.dev/gs/internal/forge/forgetest"
+	"github.com/irl-llc/git-spice/internal/forge"
+	"github.com/irl-llc/git-spice/internal/forge/forgetest"
 	"go.uber.org/mock/gomock"
 )
 

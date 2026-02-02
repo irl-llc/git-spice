@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"go.abhg.dev/gs/internal/silog"
+	"github.com/irl-llc/git-spice/internal/silog"
 )
 
 // InsecureStash is a secrets stash that stores secrets in plain text.

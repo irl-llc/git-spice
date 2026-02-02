@@ -5,10 +5,10 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	"go.abhg.dev/gs/internal/forge"
-	"go.abhg.dev/gs/internal/forge/bitbucket"
-	"go.abhg.dev/gs/internal/forge/forgetest"
-	"go.abhg.dev/gs/internal/silog/silogtest"
+	"github.com/irl-llc/git-spice/internal/forge"
+	"github.com/irl-llc/git-spice/internal/forge/bitbucket"
+	"github.com/irl-llc/git-spice/internal/forge/forgetest"
+	"github.com/irl-llc/git-spice/internal/silog/silogtest"
 )
 
 // This file tests basic, end-to-end interactions with the Bitbucket API

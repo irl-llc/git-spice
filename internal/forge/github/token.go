@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"go.abhg.dev/gs/internal/xec"
+	"github.com/irl-llc/git-spice/internal/xec"
 	"golang.org/x/oauth2"
 )
 

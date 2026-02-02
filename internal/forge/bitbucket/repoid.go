@@ -3,7 +3,7 @@ package bitbucket
 import (
 	"fmt"
 
-	"go.abhg.dev/gs/internal/forge"
+	"github.com/irl-llc/git-spice/internal/forge"
 )
 
 // RepositoryID is a unique identifier for a Bitbucket repository.

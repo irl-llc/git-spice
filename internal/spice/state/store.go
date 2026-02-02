@@ -6,8 +6,8 @@ import (
 	"errors"
 	"fmt"
 
-	"go.abhg.dev/gs/internal/silog"
-	"go.abhg.dev/gs/internal/spice/state/storage"
+	"github.com/irl-llc/git-spice/internal/silog"
+	"github.com/irl-llc/git-spice/internal/spice/state/storage"
 )
 
 // DB provides a key-value store that holds JSON values.

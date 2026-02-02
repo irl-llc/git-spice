@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"go.abhg.dev/gs/internal/silog"
-	"go.abhg.dev/gs/internal/xec"
+	"github.com/irl-llc/git-spice/internal/silog"
+	"github.com/irl-llc/git-spice/internal/xec"
 )
 
 // InitOptions configures the behavior of Init.

@@ -8,11 +8,11 @@ import (
 	"strings"
 	"time"
 
-	"go.abhg.dev/gs/internal/forge"
-	"go.abhg.dev/gs/internal/git"
-	"go.abhg.dev/gs/internal/sliceutil"
-	"go.abhg.dev/gs/internal/spice/state"
-	"go.abhg.dev/gs/internal/text"
+	"github.com/irl-llc/git-spice/internal/forge"
+	"github.com/irl-llc/git-spice/internal/git"
+	"github.com/irl-llc/git-spice/internal/sliceutil"
+	"github.com/irl-llc/git-spice/internal/spice/state"
+	"github.com/irl-llc/git-spice/internal/text"
 	"go.abhg.dev/komplete"
 )
 

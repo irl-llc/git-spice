@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"go.abhg.dev/gs/internal/xec"
+	"github.com/irl-llc/git-spice/internal/xec"
 )
 
 type refExistsRequest struct {

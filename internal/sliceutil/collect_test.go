@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"go.abhg.dev/gs/internal/sliceutil"
+	"github.com/irl-llc/git-spice/internal/sliceutil"
 )
 
 func TestCollectErr(t *testing.T) {

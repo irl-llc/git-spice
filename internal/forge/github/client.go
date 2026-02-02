@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/shurcooL/githubv4"
-	"go.abhg.dev/gs/internal/graphqlutil"
+	"github.com/irl-llc/git-spice/internal/graphqlutil"
 )
 
 func newGitHubEnterpriseClient(

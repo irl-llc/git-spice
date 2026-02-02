@@ -9,9 +9,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"go.abhg.dev/gs/internal/git"
-	"go.abhg.dev/gs/internal/silog/silogtest"
-	"go.abhg.dev/gs/internal/sliceutil"
+	"github.com/irl-llc/git-spice/internal/git"
+	"github.com/irl-llc/git-spice/internal/silog/silogtest"
+	"github.com/irl-llc/git-spice/internal/sliceutil"
 )
 
 func TestParseMode(t *testing.T) {

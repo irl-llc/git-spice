@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"strings"
 
-	"go.abhg.dev/gs/internal/xec"
+	"github.com/irl-llc/git-spice/internal/xec"
 )
 
 // GCMCredential holds credentials retrieved from git-credential-manager.

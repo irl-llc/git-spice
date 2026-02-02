@@ -8,12 +8,12 @@ import (
 	"fmt"
 	"io"
 
-	"go.abhg.dev/gs/internal/git"
-	"go.abhg.dev/gs/internal/handler/track"
-	"go.abhg.dev/gs/internal/must"
-	"go.abhg.dev/gs/internal/silog"
-	"go.abhg.dev/gs/internal/spice"
-	"go.abhg.dev/gs/internal/spice/state"
+	"github.com/irl-llc/git-spice/internal/git"
+	"github.com/irl-llc/git-spice/internal/handler/track"
+	"github.com/irl-llc/git-spice/internal/must"
+	"github.com/irl-llc/git-spice/internal/silog"
+	"github.com/irl-llc/git-spice/internal/spice"
+	"github.com/irl-llc/git-spice/internal/spice/state"
 )
 
 //go:generate mockgen -destination mocks_test.go -package checkout -typed . GitRepository,GitWorktree,TrackHandler,Service,Store

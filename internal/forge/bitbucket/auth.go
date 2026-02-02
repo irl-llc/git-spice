@@ -7,10 +7,10 @@ import (
 	"fmt"
 	"strings"
 
-	"go.abhg.dev/gs/internal/forge"
-	"go.abhg.dev/gs/internal/secret"
-	"go.abhg.dev/gs/internal/silog"
-	"go.abhg.dev/gs/internal/ui"
+	"github.com/irl-llc/git-spice/internal/forge"
+	"github.com/irl-llc/git-spice/internal/secret"
+	"github.com/irl-llc/git-spice/internal/silog"
+	"github.com/irl-llc/git-spice/internal/ui"
 )
 
 // AuthType identifies the authentication method used.

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 
-	"go.abhg.dev/gs/internal/browser"
+	"github.com/irl-llc/git-spice/internal/browser"
 )
 
 // Recorder is a [Launcher] that records the URLs it is asked to open

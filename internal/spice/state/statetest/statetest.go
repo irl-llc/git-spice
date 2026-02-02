@@ -8,10 +8,10 @@ import (
 	"fmt"
 	"testing"
 
-	"go.abhg.dev/gs/internal/silog"
-	"go.abhg.dev/gs/internal/silog/silogtest"
-	"go.abhg.dev/gs/internal/spice/state"
-	"go.abhg.dev/gs/internal/spice/state/storage"
+	"github.com/irl-llc/git-spice/internal/silog"
+	"github.com/irl-llc/git-spice/internal/silog/silogtest"
+	"github.com/irl-llc/git-spice/internal/spice/state"
+	"github.com/irl-llc/git-spice/internal/spice/state/storage"
 )
 
 // NewMemoryStore creates a new, fully initialized in-memory state store.

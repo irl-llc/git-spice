@@ -13,9 +13,9 @@ import (
 	context "context"
 	reflect "reflect"
 
-	git "go.abhg.dev/gs/internal/git"
-	restack "go.abhg.dev/gs/internal/handler/restack"
-	spice "go.abhg.dev/gs/internal/spice"
+	git "github.com/irl-llc/git-spice/internal/git"
+	restack "github.com/irl-llc/git-spice/internal/handler/restack"
+	spice "github.com/irl-llc/git-spice/internal/spice"
 	gomock "go.uber.org/mock/gomock"
 )
 

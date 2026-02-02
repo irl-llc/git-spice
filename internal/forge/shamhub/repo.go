@@ -7,9 +7,9 @@ import (
 	"os"
 	"slices"
 
-	"go.abhg.dev/gs/internal/forge"
-	"go.abhg.dev/gs/internal/silog"
-	"go.abhg.dev/gs/internal/xec"
+	"github.com/irl-llc/git-spice/internal/forge"
+	"github.com/irl-llc/git-spice/internal/silog"
+	"github.com/irl-llc/git-spice/internal/xec"
 )
 
 // shamRepo is the internal representation of a repository.

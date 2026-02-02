@@ -9,8 +9,8 @@ import (
 	"slices"
 
 	gitlab "gitlab.com/gitlab-org/api/client-go"
-	"go.abhg.dev/gs/internal/cmputil"
-	"go.abhg.dev/gs/internal/forge"
+	"github.com/irl-llc/git-spice/internal/cmputil"
+	"github.com/irl-llc/git-spice/internal/forge"
 )
 
 // GitLab tracks draft status in the title of a merge request

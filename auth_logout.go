@@ -1,10 +1,10 @@
 package main
 
 import (
-	"go.abhg.dev/gs/internal/forge"
-	"go.abhg.dev/gs/internal/secret"
-	"go.abhg.dev/gs/internal/silog"
-	"go.abhg.dev/gs/internal/text"
+	"github.com/irl-llc/git-spice/internal/forge"
+	"github.com/irl-llc/git-spice/internal/secret"
+	"github.com/irl-llc/git-spice/internal/silog"
+	"github.com/irl-llc/git-spice/internal/text"
 )
 
 type authLogoutCmd struct{}

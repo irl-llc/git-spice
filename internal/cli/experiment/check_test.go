@@ -7,8 +7,8 @@ import (
 	"github.com/alecthomas/kong"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"go.abhg.dev/gs/internal/cli/experiment"
-	"go.abhg.dev/gs/internal/silog"
+	"github.com/irl-llc/git-spice/internal/cli/experiment"
+	"github.com/irl-llc/git-spice/internal/silog"
 )
 
 func TestCheck(t *testing.T) {

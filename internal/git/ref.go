@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"go.abhg.dev/gs/internal/silog"
+	"github.com/irl-llc/git-spice/internal/silog"
 )
 
 // Refspec specifies which refs to fetch/submit for fetch/push operations.

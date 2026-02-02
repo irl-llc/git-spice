@@ -14,8 +14,8 @@ import (
 	iter "iter"
 	reflect "reflect"
 
-	git "go.abhg.dev/gs/internal/git"
-	state "go.abhg.dev/gs/internal/spice/state"
+	git "github.com/irl-llc/git-spice/internal/git"
+	state "github.com/irl-llc/git-spice/internal/spice/state"
 	gomock "go.uber.org/mock/gomock"
 )
 

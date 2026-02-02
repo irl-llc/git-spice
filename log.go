@@ -10,18 +10,22 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/alecthomas/kong"
-	"go.abhg.dev/gs/internal/forge"
-	"go.abhg.dev/gs/internal/git"
-	"go.abhg.dev/gs/internal/handler/list"
-	"go.abhg.dev/gs/internal/secret"
-	"go.abhg.dev/gs/internal/silog"
-	"go.abhg.dev/gs/internal/spice"
-	"go.abhg.dev/gs/internal/spice/state"
-	"go.abhg.dev/gs/internal/ui/branchtree"
-	"go.abhg.dev/gs/internal/ui/commit"
+	"github.com/charmbracelet/lipgloss"
+	"github.com/irl-llc/git-spice/internal/forge"
+	"github.com/irl-llc/git-spice/internal/git"
+	"github.com/irl-llc/git-spice/internal/handler/list"
+	"github.com/irl-llc/git-spice/internal/must"
+	"github.com/irl-llc/git-spice/internal/secret"
+	"github.com/irl-llc/git-spice/internal/silog"
+	"github.com/irl-llc/git-spice/internal/spice"
+	"github.com/irl-llc/git-spice/internal/spice/state"
+	"github.com/irl-llc/git-spice/internal/ui"
+	"github.com/irl-llc/git-spice/internal/ui/commit"
+	"github.com/irl-llc/git-spice/internal/ui/fliptree"
 )
 
 type logCmd struct {
@@ -50,6 +54,42 @@ func (*logCmd) AfterApply(kctx *kong.Context) error {
 		}, nil
 	})
 }
+
+var (
+	_branchStyle        = ui.NewStyle().Bold(true)
+	_currentBranchStyle = ui.NewStyle().
+				Foreground(ui.Cyan).
+				Bold(true)
+
+	_logCommitStyle = commit.SummaryStyle{
+		Hash:    ui.NewStyle().Foreground(ui.Yellow),
+		Subject: ui.NewStyle().Foreground(ui.Plain),
+		Time:    ui.NewStyle().Foreground(ui.Gray),
+	}
+	_logCommitFaintStyle = _logCommitStyle.Faint(true)
+
+	_needsRestackStyle = ui.NewStyle().
+				Foreground(ui.Gray).
+				SetString(" (needs restack)")
+
+	_pushStatusStyle = ui.NewStyle().
+				Foreground(ui.Yellow).
+				Faint(true)
+
+	_worktreeStyle = ui.NewStyle().Faint(true)
+
+	_markerStyle = ui.NewStyle().
+			Foreground(ui.Yellow).
+			Bold(true).
+			SetString("◀")
+
+	_stateOpenStyle   = ui.NewStyle().Foreground(ui.Green).SetString("open")
+	_stateClosedStyle = ui.NewStyle().Foreground(ui.Gray).SetString("closed")
+	_stateMergedStyle = ui.NewStyle().Foreground(ui.Magenta).SetString("merged")
+
+	_commentCountsStyle         = ui.NewStyle().Foreground(ui.Yellow)
+	_commentCountsResolvedStyle = ui.NewStyle().Foreground(ui.Green)
+)
 
 type ListHandler interface {
 	ListBranches(context.Context, *list.BranchesRequest) (*list.BranchesResponse, error)
@@ -171,88 +211,120 @@ type graphLogPresenter struct {
 }
 
 func (p *graphLogPresenter) Present(res *list.BranchesResponse, currentBranch string) error {
+	treeStyle := fliptree.DefaultStyle[*list.BranchItem]()
+	treeStyle.NodeMarker = func(b *list.BranchItem) lipgloss.Style {
+		if b.Name == currentBranch {
+			return fliptree.DefaultNodeMarker.SetString("■")
+		}
+		return fliptree.DefaultNodeMarker
+	}
+
 	home, err := os.UserHomeDir()
 	if err != nil {
 		home = "" // if no home directory, we won't substitute paths
 	}
 
-	// Convert list.BranchItem to widget.BranchItem.
-	items := make([]*branchtree.Item, len(res.Branches))
-	for i, b := range res.Branches {
-		item := &branchtree.Item{
-			Branch:       b.Name,
-			Worktree:     b.Worktree,
-			NeedsRestack: b.NeedsRestack,
-			Aboves:       b.Aboves,
-			Highlighted:  b.Name == currentBranch,
-		}
-
-		// Format change ID based on requested format.
-		if b.ChangeID != nil {
-			switch p.ChangeFormat {
-			case changeFormatID:
-				item.ChangeID = b.ChangeID.String()
-			case changeFormatURL:
-				item.ChangeID = b.ChangeURL
+	var s strings.Builder
+	err = fliptree.Write(&s, fliptree.Graph[*list.BranchItem]{
+		Roots:  []int{res.TrunkIdx},
+		Values: res.Branches,
+		View: func(b *list.BranchItem) string {
+			var o strings.Builder
+			if b.Name == currentBranch {
+				o.WriteString(_currentBranchStyle.Render(b.Name))
+			} else {
+				o.WriteString(_branchStyle.Render(b.Name))
 			}
 
-			// Include change state if requested.
-			if p.ShowCRStatus && b.ChangeState != 0 {
-				item.ChangeState = &b.ChangeState
+			// Show comment counts if enabled and available.
+			if p.ShowCommentCounts && b.CommentCounts != nil && b.CommentCounts.Total > 0 {
+				counts := b.CommentCounts
+				style := _commentCountsStyle
+				if counts.Resolved == counts.Total {
+					style = _commentCountsResolvedStyle
+				}
+				o.WriteString(style.Render(fmt.Sprintf(" [%d/%d]☑", counts.Resolved, counts.Total)))
 			}
 
-			// Include comment counts if requested and available.
-			if p.ShowCommentCounts && b.CommentCounts != nil {
-				item.CommentCounts = b.CommentCounts
-			}
-		}
+			if cid := b.ChangeID; cid != nil {
+				var crText strings.Builder
+				crText.WriteString(" (")
+				switch p.ChangeFormat {
+				case changeFormatID:
+					crText.WriteString(cid.String())
+				case changeFormatURL:
+					crText.WriteString(b.ChangeURL)
+				default:
+					must.Failf("unknown change format: %v", p.ChangeFormat)
+				}
 
-		if s := b.PushStatus; s != nil {
-			item.PushStatus = branchtree.PushStatus{
-				Ahead:     s.Ahead,
-				Behind:    s.Behind,
-				NeedsPush: s.NeedsPush,
-			}
-		}
+				var crStatus string
+				if p.ShowCRStatus {
+					switch b.ChangeState {
+					case forge.ChangeOpen:
+						crStatus = _stateOpenStyle.String()
+					case forge.ChangeClosed:
+						crStatus = _stateClosedStyle.String()
+					case forge.ChangeMerged:
+						crStatus = _stateMergedStyle.String()
+					}
+				}
 
-		if len(b.Commits) > 0 {
-			item.Commits = make([]commit.Summary, len(b.Commits))
-			for j, c := range b.Commits {
-				item.Commits[j] = commit.Summary{
+				if crStatus != "" {
+					crText.WriteString(" ")
+					crText.WriteString(crStatus)
+				}
+				crText.WriteString(")")
+				o.WriteString(crText.String())
+			}
+
+			// TODO: share this logic with branch_select.
+			if wt := b.Worktree; wt != "" && wt != p.CurrentWorktree {
+				// If the path is relative to the user's home directory
+				// use "~/$rel" instead.
+				rel, err := filepath.Rel(home, wt)
+				if err == nil && filepath.IsLocal(rel) {
+					wt = filepath.Join("~", rel)
+				}
+
+				o.WriteString(_worktreeStyle.Render(" [wt: "))
+				o.WriteString(_worktreeStyle.Render(wt))
+				o.WriteString(_worktreeStyle.Render("]"))
+			}
+
+			if b.NeedsRestack {
+				o.WriteString(_needsRestackStyle.String())
+			}
+
+			if s := b.PushStatus; s != nil {
+				p.PushStatusFormat.FormatTo(&o, s.Ahead, s.Behind, s.NeedsPush)
+			}
+
+			if b.Name == currentBranch {
+				o.WriteString(" " + _markerStyle.String())
+			}
+
+			commitStyle := _logCommitStyle
+			if b.Name != currentBranch {
+				commitStyle = _logCommitFaintStyle
+			}
+
+			for _, c := range b.Commits {
+				o.WriteString("\n")
+				(&commit.Summary{
 					ShortHash:  c.ShortHash,
 					Subject:    c.Subject,
 					AuthorDate: c.AuthorDate,
-				}
+				}).Render(&o, commitStyle, nil)
 			}
-		}
 
-		items[i] = item
-	}
-
-	// Convert push status format.
-	var pushFmt branchtree.PushStatusFormat
-	switch p.PushStatusFormat {
-	case pushStatusEnabled:
-		pushFmt = branchtree.PushStatusSimple
-	case pushStatusAheadBehind:
-		pushFmt = branchtree.PushStatusAheadBehind
-	default:
-		pushFmt = branchtree.PushStatusDisabled
-	}
-
-	g := branchtree.Graph{
-		Items: items,
-		Roots: []int{res.TrunkIdx},
-	}
-
-	opts := &branchtree.GraphOptions{
-		PushStatusFormat: pushFmt,
-		CurrentWorktree:  p.CurrentWorktree,
-		HomeDir:          home,
-	}
-
-	var s strings.Builder
-	if err := branchtree.Write(&s, g, opts); err != nil {
+			return o.String()
+		},
+		Edges: func(bi *list.BranchItem) []int {
+			return bi.Aboves
+		},
+	}, fliptree.Options[*list.BranchItem]{Style: treeStyle})
+	if err != nil {
 		return fmt.Errorf("write tree: %w", err)
 	}
 
@@ -497,6 +569,36 @@ func (f pushStatusFormat) String() string {
 
 func (f pushStatusFormat) Enabled() bool {
 	return f == pushStatusEnabled || f == pushStatusAheadBehind
+}
+
+func (f pushStatusFormat) FormatTo(sb *strings.Builder, ahead, behind int, needsPush bool) {
+	switch f {
+	case pushStatusEnabled:
+		if needsPush {
+			sb.WriteString(_pushStatusStyle.Render(" (needs push)"))
+		}
+
+	case pushStatusAheadBehind:
+		if ahead == 0 && behind == 0 {
+			break
+		}
+
+		// TODO: Should we support changing these symbols?
+		var ab strings.Builder
+		ab.WriteString(" (")
+		if ahead > 0 {
+			_, _ = fmt.Fprintf(&ab, "⇡%d", ahead)
+		}
+		if behind > 0 {
+			_, _ = fmt.Fprintf(&ab, "⇣%d", behind)
+		}
+		ab.WriteString(")")
+
+		sb.WriteString(_pushStatusStyle.Render(ab.String()))
+
+	case pushStatusDisabled:
+		// do nothing
+	}
 }
 
 // changeFormat enumerates the possible values for the changeFormat config.

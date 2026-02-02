@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 
-	"go.abhg.dev/gs/internal/handler/checkout"
-	"go.abhg.dev/gs/internal/spice/state"
+	"github.com/irl-llc/git-spice/internal/handler/checkout"
+	"github.com/irl-llc/git-spice/internal/spice/state"
 )
 
 type trunkCmd struct {

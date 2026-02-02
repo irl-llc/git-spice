@@ -5,8 +5,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"go.abhg.dev/gs/internal/silog"
-	"go.abhg.dev/gs/internal/xec/xectest"
+	"github.com/irl-llc/git-spice/internal/silog"
+	"github.com/irl-llc/git-spice/internal/xec/xectest"
 )
 
 var NewMockExecer = xectest.NewMockExecer

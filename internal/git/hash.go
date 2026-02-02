@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"log/slog"
 
-	"go.abhg.dev/gs/internal/xec"
+	"github.com/irl-llc/git-spice/internal/xec"
 )
 
 // ErrNotExist is returned when a Git object does not exist.

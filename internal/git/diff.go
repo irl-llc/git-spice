@@ -8,8 +8,8 @@ import (
 	"io"
 	"iter"
 
-	"go.abhg.dev/gs/internal/scanutil"
-	"go.abhg.dev/gs/internal/silog"
+	"github.com/irl-llc/git-spice/internal/scanutil"
+	"github.com/irl-llc/git-spice/internal/silog"
 )
 
 // FileStatusCode specifies the status of a file in a diff.

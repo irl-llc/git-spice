@@ -11,10 +11,10 @@ import (
 	"sort"
 	"strings"
 
-	"go.abhg.dev/gs/internal/git"
-	"go.abhg.dev/gs/internal/handler/autostash"
-	"go.abhg.dev/gs/internal/handler/restack"
-	"go.abhg.dev/gs/internal/silog"
+	"github.com/irl-llc/git-spice/internal/git"
+	"github.com/irl-llc/git-spice/internal/handler/autostash"
+	"github.com/irl-llc/git-spice/internal/handler/restack"
+	"github.com/irl-llc/git-spice/internal/silog"
 )
 
 // RestackHandler is a subset of the restack.Handler interface.

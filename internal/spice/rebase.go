@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"strings"
 
-	"go.abhg.dev/gs/internal/git"
-	"go.abhg.dev/gs/internal/must"
-	"go.abhg.dev/gs/internal/spice/state"
+	"github.com/irl-llc/git-spice/internal/git"
+	"github.com/irl-llc/git-spice/internal/must"
+	"github.com/irl-llc/git-spice/internal/spice/state"
 )
 
 // RebaseRescueRequest is a request to rescue a rebase operation.

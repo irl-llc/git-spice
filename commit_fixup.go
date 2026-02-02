@@ -8,17 +8,17 @@ import (
 	"sync"
 
 	"github.com/alecthomas/kong"
-	"go.abhg.dev/gs/internal/git"
-	"go.abhg.dev/gs/internal/handler/autostash"
-	"go.abhg.dev/gs/internal/handler/fixup"
-	"go.abhg.dev/gs/internal/must"
-	"go.abhg.dev/gs/internal/silog"
-	"go.abhg.dev/gs/internal/sliceutil"
-	"go.abhg.dev/gs/internal/spice"
-	"go.abhg.dev/gs/internal/text"
-	"go.abhg.dev/gs/internal/ui"
-	"go.abhg.dev/gs/internal/ui/commit"
-	"go.abhg.dev/gs/internal/ui/widget"
+	"github.com/irl-llc/git-spice/internal/git"
+	"github.com/irl-llc/git-spice/internal/handler/autostash"
+	"github.com/irl-llc/git-spice/internal/handler/fixup"
+	"github.com/irl-llc/git-spice/internal/must"
+	"github.com/irl-llc/git-spice/internal/silog"
+	"github.com/irl-llc/git-spice/internal/sliceutil"
+	"github.com/irl-llc/git-spice/internal/spice"
+	"github.com/irl-llc/git-spice/internal/text"
+	"github.com/irl-llc/git-spice/internal/ui"
+	"github.com/irl-llc/git-spice/internal/ui/commit"
+	"github.com/irl-llc/git-spice/internal/ui/widget"
 )
 
 type commitFixupCmd struct {

@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"go.abhg.dev/gs/internal/git"
-	"go.abhg.dev/gs/internal/handler/squash"
-	"go.abhg.dev/gs/internal/text"
+	"github.com/irl-llc/git-spice/internal/git"
+	"github.com/irl-llc/git-spice/internal/handler/squash"
+	"github.com/irl-llc/git-spice/internal/text"
 )
 
 type branchSquashCmd struct {

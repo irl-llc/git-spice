@@ -8,7 +8,7 @@ import (
 	"io"
 	"net/http"
 
-	"go.abhg.dev/gs/internal/silog"
+	"github.com/irl-llc/git-spice/internal/silog"
 )
 
 // client is an HTTP client for the Bitbucket API.

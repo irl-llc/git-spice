@@ -11,8 +11,8 @@ import (
 	"os"
 	"slices"
 
-	"go.abhg.dev/gs/internal/must"
-	"go.abhg.dev/gs/internal/xec"
+	"github.com/irl-llc/git-spice/internal/must"
+	"github.com/irl-llc/git-spice/internal/xec"
 )
 
 // ErrStackEditAborted is returned when the user requests

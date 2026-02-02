@@ -41,7 +41,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"go.abhg.dev/gs/internal/silog"
+	"github.com/irl-llc/git-spice/internal/silog"
 )
 
 const _gitSpiceEnv = "GIT_SPICE=1"

@@ -10,9 +10,9 @@ import (
 	"sort"
 	"strings"
 
-	"go.abhg.dev/gs/internal/must"
-	"go.abhg.dev/gs/internal/silog"
-	"go.abhg.dev/gs/internal/xec"
+	"github.com/irl-llc/git-spice/internal/must"
+	"github.com/irl-llc/git-spice/internal/silog"
+	"github.com/irl-llc/git-spice/internal/xec"
 )
 
 // RebaseInterruptKind specifies the kind of rebase interruption.

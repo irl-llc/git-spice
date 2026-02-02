@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	"github.com/shurcooL/githubv4"
-	"go.abhg.dev/gs/internal/forge"
+	"github.com/irl-llc/git-spice/internal/forge"
 )
 
 // PRMetadata is the metadata for a pull request.
