@@ -2,6 +2,7 @@ package bitbucket
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"iter"
 
@@ -72,6 +73,12 @@ func (r *Repository) updateComment(
 	}
 
 	if err := r.client.put(ctx, path, req, nil); err != nil {
+		// 404 means the comment doesn't exist (deleted or wrong PR).
+		// Return sentinel error so caller can recreate it.
+		var apiErr *apiError
+		if errors.As(err, &apiErr) && apiErr.StatusCode == 404 {
+			return fmt.Errorf("comment %d not found: %w", commentID, forge.ErrNotFound)
+		}
 		return fmt.Errorf("update comment: %w", err)
 	}
 	return nil

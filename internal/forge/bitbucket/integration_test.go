@@ -32,7 +32,13 @@ func TestIntegration(t *testing.T) {
 		RemoteURL: remoteURL,
 		Forge:     &bitbucketForge,
 		OpenRepository: func(t *testing.T, httpClient *http.Client) forge.Repository {
-			email, token := forgetest.Credential(t, remoteURL, "BITBUCKET_EMAIL", "BITBUCKET_TOKEN")
+			email, token, source := forgetest.Credential(
+				t, remoteURL, "BITBUCKET_EMAIL", "BITBUCKET_TOKEN",
+			)
+			authType := bitbucket.AuthTypeAppPassword
+			if source == forgetest.CredentialSourceGCM {
+				authType = bitbucket.AuthTypeGCM
+			}
 			return bitbucket.NewRepositoryForTest(
 				&bitbucketForge,
 				bitbucket.DefaultURL,
@@ -40,7 +46,7 @@ func TestIntegration(t *testing.T) {
 				silogtest.New(t),
 				httpClient,
 				&bitbucket.AuthenticationToken{
-					AuthType:    bitbucket.AuthTypeAppPassword,
+					AuthType:    authType,
 					AccessToken: token,
 					Email:       email,
 				},
