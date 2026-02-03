@@ -9,9 +9,9 @@ import (
 	"github.com/charmbracelet/lipgloss"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"go.abhg.dev/gs/internal/forge"
-	"go.abhg.dev/gs/internal/ui"
-	"go.abhg.dev/gs/internal/ui/commit"
+	"github.com/irl-llc/git-spice/internal/forge"
+	"github.com/irl-llc/git-spice/internal/ui"
+	"github.com/irl-llc/git-spice/internal/ui/commit"
 	"go.abhg.dev/testing/stub"
 )
 
