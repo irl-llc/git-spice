@@ -27,7 +27,7 @@ interactions:
                 - application/json; charset=utf-8
         status: 200 OK
         code: 200
-        duration: 112.76025ms
+        duration: 308.747875ms
     - id: 1
       request:
         proto: HTTP/1.1
@@ -36,7 +36,7 @@ interactions:
         content_length: 272
         host: api.github.com
         body: |
-            {"query":"mutation($input:CreatePullRequestInput!){createPullRequest(input: $input){pullRequest{id,number,url}}}","variables":{"input":{"repositoryId":"R_kgDORFeuHw","baseRefName":"main","headRefName":"cCf4JuNA","title":"Testing cCf4JuNA","body":"Test PR for comments"}}}
+            {"query":"mutation($input:CreatePullRequestInput!){createPullRequest(input: $input){pullRequest{id,number,url}}}","variables":{"input":{"repositoryId":"R_kgDORFeuHw","baseRefName":"main","headRefName":"BqcVctCy","title":"Testing BqcVctCy","body":"Test PR for comments"}}}
         headers:
             Content-Type:
                 - application/json
@@ -48,13 +48,13 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: '{"data":{"createPullRequest":{"pullRequest":{"id":"PR_kwDORFeuH87AtZ9a","number":52,"url":"https://github.com/test-owner/test-repo/pull/52"}}}}'
+        body: '{"data":{"createPullRequest":{"pullRequest":{"id":"PR_kwDORFeuH87BP-K1","number":65,"url":"https://github.com/test-owner/test-repo/pull/65"}}}}'
         headers:
             Content-Type:
                 - application/json; charset=utf-8
         status: 200 OK
         code: 200
-        duration: 595.829583ms
+        duration: 1.40765225s
     - id: 2
       request:
         proto: HTTP/1.1
@@ -63,7 +63,7 @@ interactions:
         content_length: 200
         host: api.github.com
         body: |
-            {"query":"mutation($input:AddCommentInput!){addComment(input: $input){commentEdge{node{id,url}}}}","variables":{"input":{"subjectId":"PR_kwDORFeuH87AtZ9a","body":"X0JgnWtGDbge8qMudALOHuR95vled4iG"}}}
+            {"query":"mutation($input:AddCommentInput!){addComment(input: $input){commentEdge{node{id,url}}}}","variables":{"input":{"subjectId":"PR_kwDORFeuH87BP-K1","body":"edxdOHWzxUU9rAlWVYQ1tdtOMIvoOl8B"}}}
         headers:
             Content-Type:
                 - application/json
@@ -75,13 +75,13 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: '{"data":{"addComment":{"commentEdge":{"node":{"id":"IC_kwDORFeuH87kV_rb","url":"https://github.com/test-owner/test-repo/pull/52#issuecomment-3830971099"}}}}}'
+        body: '{"data":{"addComment":{"commentEdge":{"node":{"id":"IC_kwDORFeuH87lCfC1","url":"https://github.com/test-owner/test-repo/pull/65#issuecomment-3842633909"}}}}}'
         headers:
             Content-Type:
                 - application/json; charset=utf-8
         status: 200 OK
         code: 200
-        duration: 1.009204625s
+        duration: 708.036208ms
     - id: 3
       request:
         proto: HTTP/1.1
@@ -90,7 +90,7 @@ interactions:
         content_length: 200
         host: api.github.com
         body: |
-            {"query":"mutation($input:AddCommentInput!){addComment(input: $input){commentEdge{node{id,url}}}}","variables":{"input":{"subjectId":"PR_kwDORFeuH87AtZ9a","body":"EoYOh6eJMujSrnOrCOxlIuVGK9O9Byeg"}}}
+            {"query":"mutation($input:AddCommentInput!){addComment(input: $input){commentEdge{node{id,url}}}}","variables":{"input":{"subjectId":"PR_kwDORFeuH87BP-K1","body":"YvFtzAcHvDbm1AtAD1i0TxQVCx9S332E"}}}
         headers:
             Content-Type:
                 - application/json
@@ -102,13 +102,13 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: '{"data":{"addComment":{"commentEdge":{"node":{"id":"IC_kwDORFeuH87kV_ri","url":"https://github.com/test-owner/test-repo/pull/52#issuecomment-3830971106"}}}}}'
+        body: '{"data":{"addComment":{"commentEdge":{"node":{"id":"IC_kwDORFeuH87lCfDp","url":"https://github.com/test-owner/test-repo/pull/65#issuecomment-3842633961"}}}}}'
         headers:
             Content-Type:
                 - application/json; charset=utf-8
         status: 200 OK
         code: 200
-        duration: 309.857792ms
+        duration: 613.741125ms
     - id: 4
       request:
         proto: HTTP/1.1
@@ -117,7 +117,7 @@ interactions:
         content_length: 200
         host: api.github.com
         body: |
-            {"query":"mutation($input:AddCommentInput!){addComment(input: $input){commentEdge{node{id,url}}}}","variables":{"input":{"subjectId":"PR_kwDORFeuH87AtZ9a","body":"gw3NJcSgtqAXCotawQYeNlYz1sUlq2Zl"}}}
+            {"query":"mutation($input:AddCommentInput!){addComment(input: $input){commentEdge{node{id,url}}}}","variables":{"input":{"subjectId":"PR_kwDORFeuH87BP-K1","body":"r7Gqd2Y1cTkDnUTjDU7ysX5xSUkQt7I1"}}}
         headers:
             Content-Type:
                 - application/json
@@ -129,13 +129,13 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: '{"data":{"addComment":{"commentEdge":{"node":{"id":"IC_kwDORFeuH87kV_rp","url":"https://github.com/test-owner/test-repo/pull/52#issuecomment-3830971113"}}}}}'
+        body: '{"data":{"addComment":{"commentEdge":{"node":{"id":"IC_kwDORFeuH87lCfEn","url":"https://github.com/test-owner/test-repo/pull/65#issuecomment-3842634023"}}}}}'
         headers:
             Content-Type:
                 - application/json; charset=utf-8
         status: 200 OK
         code: 200
-        duration: 441.944ms
+        duration: 613.784833ms
     - id: 5
       request:
         proto: HTTP/1.1
@@ -144,7 +144,7 @@ interactions:
         content_length: 200
         host: api.github.com
         body: |
-            {"query":"mutation($input:AddCommentInput!){addComment(input: $input){commentEdge{node{id,url}}}}","variables":{"input":{"subjectId":"PR_kwDORFeuH87AtZ9a","body":"zRCbETPzO8JuhVYa7QmmwBr3GBxA73DY"}}}
+            {"query":"mutation($input:AddCommentInput!){addComment(input: $input){commentEdge{node{id,url}}}}","variables":{"input":{"subjectId":"PR_kwDORFeuH87BP-K1","body":"N86zKJah5CIfSdFb7apGAbjX03lOJR1H"}}}
         headers:
             Content-Type:
                 - application/json
@@ -156,13 +156,13 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: '{"data":{"addComment":{"commentEdge":{"node":{"id":"IC_kwDORFeuH87kV_rv","url":"https://github.com/test-owner/test-repo/pull/52#issuecomment-3830971119"}}}}}'
+        body: '{"data":{"addComment":{"commentEdge":{"node":{"id":"IC_kwDORFeuH87lCfFP","url":"https://github.com/test-owner/test-repo/pull/65#issuecomment-3842634063"}}}}}'
         headers:
             Content-Type:
                 - application/json; charset=utf-8
         status: 200 OK
         code: 200
-        duration: 339.116292ms
+        duration: 569.657708ms
     - id: 6
       request:
         proto: HTTP/1.1
@@ -171,7 +171,7 @@ interactions:
         content_length: 200
         host: api.github.com
         body: |
-            {"query":"mutation($input:AddCommentInput!){addComment(input: $input){commentEdge{node{id,url}}}}","variables":{"input":{"subjectId":"PR_kwDORFeuH87AtZ9a","body":"AmbALdPqV9f7tvFnqR86mvU6Et0tuuL7"}}}
+            {"query":"mutation($input:AddCommentInput!){addComment(input: $input){commentEdge{node{id,url}}}}","variables":{"input":{"subjectId":"PR_kwDORFeuH87BP-K1","body":"wf7vSeJx9lLuE9bQm0OYMaLsEatyMxOl"}}}
         headers:
             Content-Type:
                 - application/json
@@ -183,13 +183,13 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: '{"data":{"addComment":{"commentEdge":{"node":{"id":"IC_kwDORFeuH87kV_r1","url":"https://github.com/test-owner/test-repo/pull/52#issuecomment-3830971125"}}}}}'
+        body: '{"data":{"addComment":{"commentEdge":{"node":{"id":"IC_kwDORFeuH87lCfGB","url":"https://github.com/test-owner/test-repo/pull/65#issuecomment-3842634113"}}}}}'
         headers:
             Content-Type:
                 - application/json; charset=utf-8
         status: 200 OK
         code: 200
-        duration: 423.256125ms
+        duration: 555.595875ms
     - id: 7
       request:
         proto: HTTP/1.1
@@ -198,7 +198,7 @@ interactions:
         content_length: 200
         host: api.github.com
         body: |
-            {"query":"mutation($input:AddCommentInput!){addComment(input: $input){commentEdge{node{id,url}}}}","variables":{"input":{"subjectId":"PR_kwDORFeuH87AtZ9a","body":"BTzS3SYjdSbrFf6OpU4OGsq250HaIZmX"}}}
+            {"query":"mutation($input:AddCommentInput!){addComment(input: $input){commentEdge{node{id,url}}}}","variables":{"input":{"subjectId":"PR_kwDORFeuH87BP-K1","body":"eZI6P2g263G9Sih46I21FJhCV8pfmdOS"}}}
         headers:
             Content-Type:
                 - application/json
@@ -210,13 +210,13 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: '{"data":{"addComment":{"commentEdge":{"node":{"id":"IC_kwDORFeuH87kV_r7","url":"https://github.com/test-owner/test-repo/pull/52#issuecomment-3830971131"}}}}}'
+        body: '{"data":{"addComment":{"commentEdge":{"node":{"id":"IC_kwDORFeuH87lCfGq","url":"https://github.com/test-owner/test-repo/pull/65#issuecomment-3842634154"}}}}}'
         headers:
             Content-Type:
                 - application/json; charset=utf-8
         status: 200 OK
         code: 200
-        duration: 406.036792ms
+        duration: 406.089375ms
     - id: 8
       request:
         proto: HTTP/1.1
@@ -225,7 +225,7 @@ interactions:
         content_length: 200
         host: api.github.com
         body: |
-            {"query":"mutation($input:AddCommentInput!){addComment(input: $input){commentEdge{node{id,url}}}}","variables":{"input":{"subjectId":"PR_kwDORFeuH87AtZ9a","body":"1cAphO6VHYgEdUlhs3C1m6hLHMmO5IFo"}}}
+            {"query":"mutation($input:AddCommentInput!){addComment(input: $input){commentEdge{node{id,url}}}}","variables":{"input":{"subjectId":"PR_kwDORFeuH87BP-K1","body":"uGrwCM01Ha3rxGuWL8PYaApTluqTHOaC"}}}
         headers:
             Content-Type:
                 - application/json
@@ -237,13 +237,13 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: '{"data":{"addComment":{"commentEdge":{"node":{"id":"IC_kwDORFeuH87kV_sA","url":"https://github.com/test-owner/test-repo/pull/52#issuecomment-3830971136"}}}}}'
+        body: '{"data":{"addComment":{"commentEdge":{"node":{"id":"IC_kwDORFeuH87lCfHV","url":"https://github.com/test-owner/test-repo/pull/65#issuecomment-3842634197"}}}}}'
         headers:
             Content-Type:
                 - application/json; charset=utf-8
         status: 200 OK
         code: 200
-        duration: 388.407167ms
+        duration: 523.397791ms
     - id: 9
       request:
         proto: HTTP/1.1
@@ -252,7 +252,7 @@ interactions:
         content_length: 200
         host: api.github.com
         body: |
-            {"query":"mutation($input:AddCommentInput!){addComment(input: $input){commentEdge{node{id,url}}}}","variables":{"input":{"subjectId":"PR_kwDORFeuH87AtZ9a","body":"7oD69zJbSaMCsiA0YgNnYt8TBPv07qiv"}}}
+            {"query":"mutation($input:AddCommentInput!){addComment(input: $input){commentEdge{node{id,url}}}}","variables":{"input":{"subjectId":"PR_kwDORFeuH87BP-K1","body":"YQilv9JjT4ZCNPlcnQWbF0TU2LfmbGvb"}}}
         headers:
             Content-Type:
                 - application/json
@@ -264,13 +264,13 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: '{"data":{"addComment":{"commentEdge":{"node":{"id":"IC_kwDORFeuH87kV_sE","url":"https://github.com/test-owner/test-repo/pull/52#issuecomment-3830971140"}}}}}'
+        body: '{"data":{"addComment":{"commentEdge":{"node":{"id":"IC_kwDORFeuH87lCfIA","url":"https://github.com/test-owner/test-repo/pull/65#issuecomment-3842634240"}}}}}'
         headers:
             Content-Type:
                 - application/json; charset=utf-8
         status: 200 OK
         code: 200
-        duration: 310.105875ms
+        duration: 503.775416ms
     - id: 10
       request:
         proto: HTTP/1.1
@@ -279,7 +279,7 @@ interactions:
         content_length: 200
         host: api.github.com
         body: |
-            {"query":"mutation($input:AddCommentInput!){addComment(input: $input){commentEdge{node{id,url}}}}","variables":{"input":{"subjectId":"PR_kwDORFeuH87AtZ9a","body":"HDi2RdfnGtpgiXPhTk9YDy2YR5DDY3EP"}}}
+            {"query":"mutation($input:AddCommentInput!){addComment(input: $input){commentEdge{node{id,url}}}}","variables":{"input":{"subjectId":"PR_kwDORFeuH87BP-K1","body":"fMM658Nf0cMzls3BQwxfZINcRseTzzhH"}}}
         headers:
             Content-Type:
                 - application/json
@@ -291,13 +291,13 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: '{"data":{"addComment":{"commentEdge":{"node":{"id":"IC_kwDORFeuH87kV_sF","url":"https://github.com/test-owner/test-repo/pull/52#issuecomment-3830971141"}}}}}'
+        body: '{"data":{"addComment":{"commentEdge":{"node":{"id":"IC_kwDORFeuH87lCfIm","url":"https://github.com/test-owner/test-repo/pull/65#issuecomment-3842634278"}}}}}'
         headers:
             Content-Type:
                 - application/json; charset=utf-8
         status: 200 OK
         code: 200
-        duration: 477.267833ms
+        duration: 604.96975ms
     - id: 11
       request:
         proto: HTTP/1.1
@@ -306,7 +306,7 @@ interactions:
         content_length: 200
         host: api.github.com
         body: |
-            {"query":"mutation($input:AddCommentInput!){addComment(input: $input){commentEdge{node{id,url}}}}","variables":{"input":{"subjectId":"PR_kwDORFeuH87AtZ9a","body":"VfJ7M3aBOz4PEqO4khM1GNebwaPLnwWt"}}}
+            {"query":"mutation($input:AddCommentInput!){addComment(input: $input){commentEdge{node{id,url}}}}","variables":{"input":{"subjectId":"PR_kwDORFeuH87BP-K1","body":"VXs2CY5aLB7ptM0uDssOg2NpUvRPP7bf"}}}
         headers:
             Content-Type:
                 - application/json
@@ -318,13 +318,13 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: '{"data":{"addComment":{"commentEdge":{"node":{"id":"IC_kwDORFeuH87kV_sO","url":"https://github.com/test-owner/test-repo/pull/52#issuecomment-3830971150"}}}}}'
+        body: '{"data":{"addComment":{"commentEdge":{"node":{"id":"IC_kwDORFeuH87lCfJh","url":"https://github.com/test-owner/test-repo/pull/65#issuecomment-3842634337"}}}}}'
         headers:
             Content-Type:
                 - application/json; charset=utf-8
         status: 200 OK
         code: 200
-        duration: 898.709875ms
+        duration: 725.413208ms
     - id: 12
       request:
         proto: HTTP/1.1
@@ -333,7 +333,7 @@ interactions:
         content_length: 200
         host: api.github.com
         body: |
-            {"query":"mutation($input:UpdateIssueCommentInput!){updateIssueComment(input: $input){issueComment{id}}}","variables":{"input":{"id":"IC_kwDORFeuH87kV_rb","body":"zeNUAq172wahvEtSkyRlaGaHMXCYGOPF"}}}
+            {"query":"mutation($input:UpdateIssueCommentInput!){updateIssueComment(input: $input){issueComment{id}}}","variables":{"input":{"id":"IC_kwDORFeuH87lCfC1","body":"96aS9LE56UrAdu7lI0DfJC2QoJKBxMPi"}}}
         headers:
             Content-Type:
                 - application/json
@@ -345,14 +345,68 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: '{"data":{"updateIssueComment":{"issueComment":{"id":"IC_kwDORFeuH87kV_rb"}}}}'
+        body: '{"data":{"updateIssueComment":{"issueComment":{"id":"IC_kwDORFeuH87lCfC1"}}}}'
         headers:
             Content-Type:
                 - application/json; charset=utf-8
         status: 200 OK
         code: 200
-        duration: 646.008958ms
+        duration: 921.173958ms
     - id: 13
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 158
+        host: api.github.com
+        body: |
+            {"query":"mutation($input:DeleteIssueCommentInput!){deleteIssueComment(input: $input){clientMutationId}}","variables":{"input":{"id":"IC_kwDORFeuH87lCfDp"}}}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://api.github.com/graphql
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '{"data":{"deleteIssueComment":{"clientMutationId":null}}}'
+        headers:
+            Content-Type:
+                - application/json; charset=utf-8
+        status: 200 OK
+        code: 200
+        duration: 754.371084ms
+    - id: 14
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 179
+        host: api.github.com
+        body: |
+            {"query":"mutation($input:UpdateIssueCommentInput!){updateIssueComment(input: $input){issueComment{id}}}","variables":{"input":{"id":"IC_kwDORFeuH87lCfDp","body":"should fail"}}}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://api.github.com/graphql
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '{"data":{"updateIssueComment":null},"errors":[{"type":"NOT_FOUND","path":["updateIssueComment"],"locations":[{"line":1,"column":43}],"message":"Could not resolve to a node with the global id of ''IC_kwDORFeuH87lCfDp''."}]}'
+        headers:
+            Content-Type:
+                - application/json; charset=utf-8
+        status: 200 OK
+        code: 200
+        duration: 158.069208ms
+    - id: 15
       request:
         proto: HTTP/1.1
         proto_major: 1
@@ -360,7 +414,7 @@ interactions:
         content_length: 294
         host: api.github.com
         body: |
-            {"query":"query($after:String$first:Int!$id:ID!){node(id: $id){... on PullRequest{comments(first: $first, after: $after){pageInfo{endCursor,hasNextPage},nodes{id,body,url,viewerCanUpdate,viewerDidAuthor,createdAt,updatedAt}}}}}","variables":{"after":null,"first":3,"id":"PR_kwDORFeuH87AtZ9a"}}
+            {"query":"query($after:String$first:Int!$id:ID!){node(id: $id){... on PullRequest{comments(first: $first, after: $after){pageInfo{endCursor,hasNextPage},nodes{id,body,url,viewerCanUpdate,viewerDidAuthor,createdAt,updatedAt}}}}}","variables":{"after":null,"first":3,"id":"PR_kwDORFeuH87BP-K1"}}
         headers:
             Content-Type:
                 - application/json
@@ -372,67 +426,13 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: '{"data":{"node":{"comments":{"pageInfo":{"endCursor":"Y3Vyc29yOnYyOpHO5Ff66Q==","hasNextPage":true},"nodes":[{"id":"IC_kwDORFeuH87kV_rb","body":"zeNUAq172wahvEtSkyRlaGaHMXCYGOPF","url":"https://github.com/test-owner/test-repo/pull/52#issuecomment-3830971099","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-01T12:20:12Z","updatedAt":"2026-02-01T12:20:17Z"},{"id":"IC_kwDORFeuH87kV_ri","body":"EoYOh6eJMujSrnOrCOxlIuVGK9O9Byeg","url":"https://github.com/test-owner/test-repo/pull/52#issuecomment-3830971106","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-01T12:20:13Z","updatedAt":"2026-02-01T12:20:13Z"},{"id":"IC_kwDORFeuH87kV_rp","body":"gw3NJcSgtqAXCotawQYeNlYz1sUlq2Zl","url":"https://github.com/test-owner/test-repo/pull/52#issuecomment-3830971113","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-01T12:20:13Z","updatedAt":"2026-02-01T12:20:13Z"}]}}}}'
+        body: '{"data":{"node":{"comments":{"pageInfo":{"endCursor":"Y3Vyc29yOnYyOpHO5QnxTw==","hasNextPage":true},"nodes":[{"id":"IC_kwDORFeuH87lCfC1","body":"96aS9LE56UrAdu7lI0DfJC2QoJKBxMPi","url":"https://github.com/test-owner/test-repo/pull/65#issuecomment-3842633909","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-03T17:23:42Z","updatedAt":"2026-02-03T17:23:47Z"},{"id":"IC_kwDORFeuH87lCfEn","body":"r7Gqd2Y1cTkDnUTjDU7ysX5xSUkQt7I1","url":"https://github.com/test-owner/test-repo/pull/65#issuecomment-3842634023","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-03T17:23:43Z","updatedAt":"2026-02-03T17:23:43Z"},{"id":"IC_kwDORFeuH87lCfFP","body":"N86zKJah5CIfSdFb7apGAbjX03lOJR1H","url":"https://github.com/test-owner/test-repo/pull/65#issuecomment-3842634063","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-03T17:23:44Z","updatedAt":"2026-02-03T17:23:44Z"}]}}}}'
         headers:
             Content-Type:
                 - application/json; charset=utf-8
         status: 200 OK
         code: 200
-        duration: 240.173084ms
-    - id: 14
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 317
-        host: api.github.com
-        body: |
-            {"query":"query($after:String!$first:Int!$id:ID!){node(id: $id){... on PullRequest{comments(first: $first, after: $after){pageInfo{endCursor,hasNextPage},nodes{id,body,url,viewerCanUpdate,viewerDidAuthor,createdAt,updatedAt}}}}}","variables":{"after":"Y3Vyc29yOnYyOpHO5Ff66Q==","first":3,"id":"PR_kwDORFeuH87AtZ9a"}}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://api.github.com/graphql
-        method: POST
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        content_length: -1
-        uncompressed: true
-        body: '{"data":{"node":{"comments":{"pageInfo":{"endCursor":"Y3Vyc29yOnYyOpHO5Ff6-w==","hasNextPage":true},"nodes":[{"id":"IC_kwDORFeuH87kV_rv","body":"zRCbETPzO8JuhVYa7QmmwBr3GBxA73DY","url":"https://github.com/test-owner/test-repo/pull/52#issuecomment-3830971119","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-01T12:20:13Z","updatedAt":"2026-02-01T12:20:13Z"},{"id":"IC_kwDORFeuH87kV_r1","body":"AmbALdPqV9f7tvFnqR86mvU6Et0tuuL7","url":"https://github.com/test-owner/test-repo/pull/52#issuecomment-3830971125","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-01T12:20:14Z","updatedAt":"2026-02-01T12:20:14Z"},{"id":"IC_kwDORFeuH87kV_r7","body":"BTzS3SYjdSbrFf6OpU4OGsq250HaIZmX","url":"https://github.com/test-owner/test-repo/pull/52#issuecomment-3830971131","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-01T12:20:14Z","updatedAt":"2026-02-01T12:20:14Z"}]}}}}'
-        headers:
-            Content-Type:
-                - application/json; charset=utf-8
-        status: 200 OK
-        code: 200
-        duration: 186.469041ms
-    - id: 15
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 317
-        host: api.github.com
-        body: |
-            {"query":"query($after:String!$first:Int!$id:ID!){node(id: $id){... on PullRequest{comments(first: $first, after: $after){pageInfo{endCursor,hasNextPage},nodes{id,body,url,viewerCanUpdate,viewerDidAuthor,createdAt,updatedAt}}}}}","variables":{"after":"Y3Vyc29yOnYyOpHO5Ff6-w==","first":3,"id":"PR_kwDORFeuH87AtZ9a"}}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://api.github.com/graphql
-        method: POST
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        content_length: -1
-        uncompressed: true
-        body: '{"data":{"node":{"comments":{"pageInfo":{"endCursor":"Y3Vyc29yOnYyOpHO5Ff7BQ==","hasNextPage":true},"nodes":[{"id":"IC_kwDORFeuH87kV_sA","body":"1cAphO6VHYgEdUlhs3C1m6hLHMmO5IFo","url":"https://github.com/test-owner/test-repo/pull/52#issuecomment-3830971136","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-01T12:20:15Z","updatedAt":"2026-02-01T12:20:15Z"},{"id":"IC_kwDORFeuH87kV_sE","body":"7oD69zJbSaMCsiA0YgNnYt8TBPv07qiv","url":"https://github.com/test-owner/test-repo/pull/52#issuecomment-3830971140","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-01T12:20:15Z","updatedAt":"2026-02-01T12:20:15Z"},{"id":"IC_kwDORFeuH87kV_sF","body":"HDi2RdfnGtpgiXPhTk9YDy2YR5DDY3EP","url":"https://github.com/test-owner/test-repo/pull/52#issuecomment-3830971141","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-01T12:20:15Z","updatedAt":"2026-02-01T12:20:15Z"}]}}}}'
-        headers:
-            Content-Type:
-                - application/json; charset=utf-8
-        status: 200 OK
-        code: 200
-        duration: 190.747208ms
+        duration: 224.27475ms
     - id: 16
       request:
         proto: HTTP/1.1
@@ -441,7 +441,7 @@ interactions:
         content_length: 317
         host: api.github.com
         body: |
-            {"query":"query($after:String!$first:Int!$id:ID!){node(id: $id){... on PullRequest{comments(first: $first, after: $after){pageInfo{endCursor,hasNextPage},nodes{id,body,url,viewerCanUpdate,viewerDidAuthor,createdAt,updatedAt}}}}}","variables":{"after":"Y3Vyc29yOnYyOpHO5Ff7BQ==","first":3,"id":"PR_kwDORFeuH87AtZ9a"}}
+            {"query":"query($after:String!$first:Int!$id:ID!){node(id: $id){... on PullRequest{comments(first: $first, after: $after){pageInfo{endCursor,hasNextPage},nodes{id,body,url,viewerCanUpdate,viewerDidAuthor,createdAt,updatedAt}}}}}","variables":{"after":"Y3Vyc29yOnYyOpHO5QnxTw==","first":3,"id":"PR_kwDORFeuH87BP-K1"}}
         headers:
             Content-Type:
                 - application/json
@@ -453,14 +453,41 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: '{"data":{"node":{"comments":{"pageInfo":{"endCursor":"Y3Vyc29yOnYyOpHO5Ff7Dg==","hasNextPage":false},"nodes":[{"id":"IC_kwDORFeuH87kV_sO","body":"VfJ7M3aBOz4PEqO4khM1GNebwaPLnwWt","url":"https://github.com/test-owner/test-repo/pull/52#issuecomment-3830971150","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-01T12:20:16Z","updatedAt":"2026-02-01T12:20:16Z"}]}}}}'
+        body: '{"data":{"node":{"comments":{"pageInfo":{"endCursor":"Y3Vyc29yOnYyOpHO5Qnx1Q==","hasNextPage":true},"nodes":[{"id":"IC_kwDORFeuH87lCfGB","body":"wf7vSeJx9lLuE9bQm0OYMaLsEatyMxOl","url":"https://github.com/test-owner/test-repo/pull/65#issuecomment-3842634113","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-03T17:23:44Z","updatedAt":"2026-02-03T17:23:44Z"},{"id":"IC_kwDORFeuH87lCfGq","body":"eZI6P2g263G9Sih46I21FJhCV8pfmdOS","url":"https://github.com/test-owner/test-repo/pull/65#issuecomment-3842634154","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-03T17:23:45Z","updatedAt":"2026-02-03T17:23:45Z"},{"id":"IC_kwDORFeuH87lCfHV","body":"uGrwCM01Ha3rxGuWL8PYaApTluqTHOaC","url":"https://github.com/test-owner/test-repo/pull/65#issuecomment-3842634197","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-03T17:23:45Z","updatedAt":"2026-02-03T17:23:45Z"}]}}}}'
         headers:
             Content-Type:
                 - application/json; charset=utf-8
         status: 200 OK
         code: 200
-        duration: 187.244958ms
+        duration: 218.700875ms
     - id: 17
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 317
+        host: api.github.com
+        body: |
+            {"query":"query($after:String!$first:Int!$id:ID!){node(id: $id){... on PullRequest{comments(first: $first, after: $after){pageInfo{endCursor,hasNextPage},nodes{id,body,url,viewerCanUpdate,viewerDidAuthor,createdAt,updatedAt}}}}}","variables":{"after":"Y3Vyc29yOnYyOpHO5Qnx1Q==","first":3,"id":"PR_kwDORFeuH87BP-K1"}}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://api.github.com/graphql
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '{"data":{"node":{"comments":{"pageInfo":{"endCursor":"Y3Vyc29yOnYyOpHO5QnyYQ==","hasNextPage":false},"nodes":[{"id":"IC_kwDORFeuH87lCfIA","body":"YQilv9JjT4ZCNPlcnQWbF0TU2LfmbGvb","url":"https://github.com/test-owner/test-repo/pull/65#issuecomment-3842634240","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-03T17:23:46Z","updatedAt":"2026-02-03T17:23:46Z"},{"id":"IC_kwDORFeuH87lCfIm","body":"fMM658Nf0cMzls3BQwxfZINcRseTzzhH","url":"https://github.com/test-owner/test-repo/pull/65#issuecomment-3842634278","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-03T17:23:46Z","updatedAt":"2026-02-03T17:23:46Z"},{"id":"IC_kwDORFeuH87lCfJh","body":"VXs2CY5aLB7ptM0uDssOg2NpUvRPP7bf","url":"https://github.com/test-owner/test-repo/pull/65#issuecomment-3842634337","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-03T17:23:47Z","updatedAt":"2026-02-03T17:23:47Z"}]}}}}'
+        headers:
+            Content-Type:
+                - application/json; charset=utf-8
+        status: 200 OK
+        code: 200
+        duration: 281.245292ms
+    - id: 18
       request:
         proto: HTTP/1.1
         proto_major: 1
@@ -468,7 +495,7 @@ interactions:
         content_length: 295
         host: api.github.com
         body: |
-            {"query":"query($after:String$first:Int!$id:ID!){node(id: $id){... on PullRequest{comments(first: $first, after: $after){pageInfo{endCursor,hasNextPage},nodes{id,body,url,viewerCanUpdate,viewerDidAuthor,createdAt,updatedAt}}}}}","variables":{"after":null,"first":10,"id":"PR_kwDORFeuH87AtZ9a"}}
+            {"query":"query($after:String$first:Int!$id:ID!){node(id: $id){... on PullRequest{comments(first: $first, after: $after){pageInfo{endCursor,hasNextPage},nodes{id,body,url,viewerCanUpdate,viewerDidAuthor,createdAt,updatedAt}}}}}","variables":{"after":null,"first":10,"id":"PR_kwDORFeuH87BP-K1"}}
         headers:
             Content-Type:
                 - application/json
@@ -480,10 +507,10 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: '{"data":{"node":{"comments":{"pageInfo":{"endCursor":"Y3Vyc29yOnYyOpHO5Ff7Dg==","hasNextPage":false},"nodes":[{"id":"IC_kwDORFeuH87kV_rb","body":"zeNUAq172wahvEtSkyRlaGaHMXCYGOPF","url":"https://github.com/test-owner/test-repo/pull/52#issuecomment-3830971099","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-01T12:20:12Z","updatedAt":"2026-02-01T12:20:17Z"},{"id":"IC_kwDORFeuH87kV_ri","body":"EoYOh6eJMujSrnOrCOxlIuVGK9O9Byeg","url":"https://github.com/test-owner/test-repo/pull/52#issuecomment-3830971106","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-01T12:20:13Z","updatedAt":"2026-02-01T12:20:13Z"},{"id":"IC_kwDORFeuH87kV_rp","body":"gw3NJcSgtqAXCotawQYeNlYz1sUlq2Zl","url":"https://github.com/test-owner/test-repo/pull/52#issuecomment-3830971113","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-01T12:20:13Z","updatedAt":"2026-02-01T12:20:13Z"},{"id":"IC_kwDORFeuH87kV_rv","body":"zRCbETPzO8JuhVYa7QmmwBr3GBxA73DY","url":"https://github.com/test-owner/test-repo/pull/52#issuecomment-3830971119","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-01T12:20:13Z","updatedAt":"2026-02-01T12:20:13Z"},{"id":"IC_kwDORFeuH87kV_r1","body":"AmbALdPqV9f7tvFnqR86mvU6Et0tuuL7","url":"https://github.com/test-owner/test-repo/pull/52#issuecomment-3830971125","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-01T12:20:14Z","updatedAt":"2026-02-01T12:20:14Z"},{"id":"IC_kwDORFeuH87kV_r7","body":"BTzS3SYjdSbrFf6OpU4OGsq250HaIZmX","url":"https://github.com/test-owner/test-repo/pull/52#issuecomment-3830971131","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-01T12:20:14Z","updatedAt":"2026-02-01T12:20:14Z"},{"id":"IC_kwDORFeuH87kV_sA","body":"1cAphO6VHYgEdUlhs3C1m6hLHMmO5IFo","url":"https://github.com/test-owner/test-repo/pull/52#issuecomment-3830971136","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-01T12:20:15Z","updatedAt":"2026-02-01T12:20:15Z"},{"id":"IC_kwDORFeuH87kV_sE","body":"7oD69zJbSaMCsiA0YgNnYt8TBPv07qiv","url":"https://github.com/test-owner/test-repo/pull/52#issuecomment-3830971140","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-01T12:20:15Z","updatedAt":"2026-02-01T12:20:15Z"},{"id":"IC_kwDORFeuH87kV_sF","body":"HDi2RdfnGtpgiXPhTk9YDy2YR5DDY3EP","url":"https://github.com/test-owner/test-repo/pull/52#issuecomment-3830971141","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-01T12:20:15Z","updatedAt":"2026-02-01T12:20:15Z"},{"id":"IC_kwDORFeuH87kV_sO","body":"VfJ7M3aBOz4PEqO4khM1GNebwaPLnwWt","url":"https://github.com/test-owner/test-repo/pull/52#issuecomment-3830971150","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-01T12:20:16Z","updatedAt":"2026-02-01T12:20:16Z"}]}}}}'
+        body: '{"data":{"node":{"comments":{"pageInfo":{"endCursor":"Y3Vyc29yOnYyOpHO5QnyYQ==","hasNextPage":false},"nodes":[{"id":"IC_kwDORFeuH87lCfC1","body":"96aS9LE56UrAdu7lI0DfJC2QoJKBxMPi","url":"https://github.com/test-owner/test-repo/pull/65#issuecomment-3842633909","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-03T17:23:42Z","updatedAt":"2026-02-03T17:23:47Z"},{"id":"IC_kwDORFeuH87lCfEn","body":"r7Gqd2Y1cTkDnUTjDU7ysX5xSUkQt7I1","url":"https://github.com/test-owner/test-repo/pull/65#issuecomment-3842634023","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-03T17:23:43Z","updatedAt":"2026-02-03T17:23:43Z"},{"id":"IC_kwDORFeuH87lCfFP","body":"N86zKJah5CIfSdFb7apGAbjX03lOJR1H","url":"https://github.com/test-owner/test-repo/pull/65#issuecomment-3842634063","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-03T17:23:44Z","updatedAt":"2026-02-03T17:23:44Z"},{"id":"IC_kwDORFeuH87lCfGB","body":"wf7vSeJx9lLuE9bQm0OYMaLsEatyMxOl","url":"https://github.com/test-owner/test-repo/pull/65#issuecomment-3842634113","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-03T17:23:44Z","updatedAt":"2026-02-03T17:23:44Z"},{"id":"IC_kwDORFeuH87lCfGq","body":"eZI6P2g263G9Sih46I21FJhCV8pfmdOS","url":"https://github.com/test-owner/test-repo/pull/65#issuecomment-3842634154","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-03T17:23:45Z","updatedAt":"2026-02-03T17:23:45Z"},{"id":"IC_kwDORFeuH87lCfHV","body":"uGrwCM01Ha3rxGuWL8PYaApTluqTHOaC","url":"https://github.com/test-owner/test-repo/pull/65#issuecomment-3842634197","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-03T17:23:45Z","updatedAt":"2026-02-03T17:23:45Z"},{"id":"IC_kwDORFeuH87lCfIA","body":"YQilv9JjT4ZCNPlcnQWbF0TU2LfmbGvb","url":"https://github.com/test-owner/test-repo/pull/65#issuecomment-3842634240","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-03T17:23:46Z","updatedAt":"2026-02-03T17:23:46Z"},{"id":"IC_kwDORFeuH87lCfIm","body":"fMM658Nf0cMzls3BQwxfZINcRseTzzhH","url":"https://github.com/test-owner/test-repo/pull/65#issuecomment-3842634278","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-03T17:23:46Z","updatedAt":"2026-02-03T17:23:46Z"},{"id":"IC_kwDORFeuH87lCfJh","body":"VXs2CY5aLB7ptM0uDssOg2NpUvRPP7bf","url":"https://github.com/test-owner/test-repo/pull/65#issuecomment-3842634337","viewerCanUpdate":true,"viewerDidAuthor":true,"createdAt":"2026-02-03T17:23:47Z","updatedAt":"2026-02-03T17:23:47Z"}]}}}}'
         headers:
             Content-Type:
                 - application/json; charset=utf-8
         status: 200 OK
         code: 200
-        duration: 230.232458ms
+        duration: 247.11125ms
