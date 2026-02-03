@@ -7,9 +7,9 @@ interactions:
         proto_major: 1
         proto_minor: 1
         content_length: 97
-        host: 127.0.0.1:60531
-        body: '{"subject":"Testing 4reAdz86","body":"Test PR without reviewers","base":"main","head":"4reAdz86"}'
-        url: http://127.0.0.1:60531/abhinav/test-repo/changes
+        host: 127.0.0.1:54742
+        body: '{"subject":"Testing NdKkRK27","body":"Test PR without reviewers","base":"main","head":"NdKkRK27"}'
+        url: http://127.0.0.1:54742/abhinav/test-repo/changes
         method: POST
       response:
         proto: HTTP/1.1
@@ -19,7 +19,7 @@ interactions:
         body: |
             {
               "number": 14,
-              "url": "http://127.0.0.1:60532/abhinav/test-repo/change/14"
+              "url": "http://127.0.0.1:54743/abhinav/test-repo/change/14"
             }
         headers:
             Content-Length:
@@ -28,15 +28,15 @@ interactions:
                 - application/json
         status: 200 OK
         code: 200
-        duration: 61.940916ms
+        duration: 53.851958ms
     - id: 1
       request:
         proto: HTTP/1.1
         proto_major: 1
         proto_minor: 1
         content_length: 0
-        host: 127.0.0.1:60531
-        url: http://127.0.0.1:60531/abhinav/test-repo/change/14
+        host: 127.0.0.1:54742
+        url: http://127.0.0.1:54742/abhinav/test-repo/change/14
         method: GET
       response:
         proto: HTTP/1.1
@@ -46,9 +46,9 @@ interactions:
         body: |
             {
               "number": 14,
-              "html_url": "http://127.0.0.1:60532/abhinav/test-repo/change/14",
+              "html_url": "http://127.0.0.1:54743/abhinav/test-repo/change/14",
               "state": "open",
-              "title": "Testing 4reAdz86",
+              "title": "Testing NdKkRK27",
               "body": "Test PR without reviewers",
               "base": {
                 "repository": {
@@ -56,15 +56,15 @@ interactions:
                   "name": "test-repo"
                 },
                 "ref": "main",
-                "sha": "318ebb34a2e0214b3fa84e8dadce17619577c30e"
+                "sha": "a2da374c973bbcb83baf0c689699da02beb8025d"
               },
               "head": {
                 "repository": {
                   "owner": "abhinav",
                   "name": "test-repo"
                 },
-                "ref": "4reAdz86",
-                "sha": "41ba2b604b7333803bdf60ca333e17c243b8a29d"
+                "ref": "NdKkRK27",
+                "sha": "09c110f9b582c5567f89d800edcd88e04fef6365"
               }
             }
         headers:
@@ -74,16 +74,16 @@ interactions:
                 - application/json
         status: 200 OK
         code: 200
-        duration: 26.100792ms
+        duration: 23.119958ms
     - id: 2
       request:
         proto: HTTP/1.1
         proto_major: 1
         proto_minor: 1
         content_length: 27
-        host: 127.0.0.1:60531
+        host: 127.0.0.1:54742
         body: '{"reviewers":["reviewer1"]}'
-        url: http://127.0.0.1:60531/abhinav/test-repo/change/14
+        url: http://127.0.0.1:54742/abhinav/test-repo/change/14
         method: PATCH
       response:
         proto: HTTP/1.1
@@ -99,16 +99,16 @@ interactions:
                 - application/json
         status: 200 OK
         code: 200
-        duration: 1.18125ms
+        duration: 335µs
     - id: 3
       request:
         proto: HTTP/1.1
         proto_major: 1
         proto_minor: 1
         content_length: 27
-        host: 127.0.0.1:60531
+        host: 127.0.0.1:54742
         body: '{"reviewers":["reviewer2"]}'
-        url: http://127.0.0.1:60531/abhinav/test-repo/change/14
+        url: http://127.0.0.1:54742/abhinav/test-repo/change/14
         method: PATCH
       response:
         proto: HTTP/1.1
@@ -124,15 +124,15 @@ interactions:
                 - application/json
         status: 200 OK
         code: 200
-        duration: 129.541µs
+        duration: 159.583µs
     - id: 4
       request:
         proto: HTTP/1.1
         proto_major: 1
         proto_minor: 1
         content_length: 0
-        host: 127.0.0.1:60531
-        url: http://127.0.0.1:60531/abhinav/test-repo/change/14
+        host: 127.0.0.1:54742
+        url: http://127.0.0.1:54742/abhinav/test-repo/change/14
         method: GET
       response:
         proto: HTTP/1.1
@@ -142,9 +142,9 @@ interactions:
         body: |
             {
               "number": 14,
-              "html_url": "http://127.0.0.1:60532/abhinav/test-repo/change/14",
+              "html_url": "http://127.0.0.1:54743/abhinav/test-repo/change/14",
               "state": "open",
-              "title": "Testing 4reAdz86",
+              "title": "Testing NdKkRK27",
               "body": "Test PR without reviewers",
               "base": {
                 "repository": {
@@ -152,15 +152,15 @@ interactions:
                   "name": "test-repo"
                 },
                 "ref": "main",
-                "sha": "318ebb34a2e0214b3fa84e8dadce17619577c30e"
+                "sha": "a2da374c973bbcb83baf0c689699da02beb8025d"
               },
               "head": {
                 "repository": {
                   "owner": "abhinav",
                   "name": "test-repo"
                 },
-                "ref": "4reAdz86",
-                "sha": "41ba2b604b7333803bdf60ca333e17c243b8a29d"
+                "ref": "NdKkRK27",
+                "sha": "09c110f9b582c5567f89d800edcd88e04fef6365"
               },
               "requested_reviewers": [
                 "reviewer1",
@@ -174,4 +174,4 @@ interactions:
                 - application/json
         status: 200 OK
         code: 200
-        duration: 34.676291ms
+        duration: 24.433459ms
