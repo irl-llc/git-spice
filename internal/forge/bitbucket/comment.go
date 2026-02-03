@@ -82,7 +82,7 @@ func (r *Repository) updateComment(
 		// Return sentinel error so caller can recreate it.
 		var apiErr *apiError
 		if errors.As(err, &apiErr) && apiErr.StatusCode == 404 {
-			return fmt.Errorf("comment %d not found: %w", commentID, forge.ErrCommentCannotUpdate)
+			return fmt.Errorf("comment %d not found: %w", commentID, forge.ErrNotFound)
 		}
 		return fmt.Errorf("update comment: %w", err)
 	}

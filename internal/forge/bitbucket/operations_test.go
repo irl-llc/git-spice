@@ -136,7 +136,7 @@ func TestUpdateChangeComment(t *testing.T) {
 
 		err := repo.UpdateChangeComment(t.Context(), commentID, "updated content")
 		require.Error(t, err)
-		assert.ErrorIs(t, err, forge.ErrCommentCannotUpdate)
+		assert.ErrorIs(t, err, forge.ErrNotFound)
 	})
 }
 
