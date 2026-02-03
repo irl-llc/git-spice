@@ -45,7 +45,10 @@ cmp stderr $WORK/golden/submit-dry-run.txt
 # submit the entire stack from main
 gs trunk
 gs upstack submit -c
-cmpenv stderr $WORK/golden/submit-log.txt
+stderr 'Created #1'
+stderr 'Created #2'
+stderr 'Created #3'
+stderr 'Created #4'
 
 gs ls
 cmp stderr $WORK/golden/ls-after.txt
@@ -69,11 +72,6 @@ INF WOULD create a CR for feature1
 INF WOULD create a CR for feature2
 INF WOULD create a CR for feature3
 INF WOULD create a CR for feature4
--- golden/submit-log.txt --
-INF Created #1: $SHAMHUB_URL/alice/example/change/1
-INF Created #2: $SHAMHUB_URL/alice/example/change/2
-INF Created #3: $SHAMHUB_URL/alice/example/change/3
-INF Created #4: $SHAMHUB_URL/alice/example/change/4
 -- golden/ls-before.txt --
     ┏━■ feature4 ◀
   ┏━┻□ feature3

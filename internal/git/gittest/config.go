@@ -1,7 +1,6 @@
 package gittest
 
 import (
-	"runtime"
 	"strconv"
 )
 
@@ -16,10 +15,9 @@ func DefaultConfig() Config {
 		"core.autocrlf":         "false",
 	}
 
-	// On Windows, increase the timeout for template lookups.
-	if runtime.GOOS == "windows" {
-		cfg["spice.submit.listTemplatesTimeout"] = "10s"
-	}
+	// Increase the timeout for template lookups in tests.
+	// The default 1s can be too short under load.
+	cfg["spice.submit.listTemplatesTimeout"] = "10s"
 
 	return cfg
 }
