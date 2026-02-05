@@ -4,11 +4,10 @@ import (
 	"cmp"
 	"context"
 	"fmt"
-	"net"
 	"net/url"
-	"strings"
 
 	"go.abhg.dev/gs/internal/forge"
+	"go.abhg.dev/gs/internal/forge/urls"
 	"go.abhg.dev/gs/internal/silog"
 )
 
@@ -79,7 +78,7 @@ func (f *Forge) ParseRemoteURL(remoteURL string) (forge.RepositoryID, error) {
 
 // OpenRepository opens the Bitbucket repository that the given ID points to.
 func (f *Forge) OpenRepository(
-	ctx context.Context,
+	_ context.Context,
 	token forge.AuthenticationToken,
 	id forge.RepositoryID,
 ) (forge.Repository, error) {
@@ -96,86 +95,26 @@ func extractRepoInfo(bitbucketURL, remoteURL string) (workspace, repo string, er
 		return "", "", fmt.Errorf("bad base URL: %w", err)
 	}
 
-	u, err := parseRemoteURL(remoteURL)
+	u, err := urls.Parse(remoteURL)
 	if err != nil {
 		return "", "", err
 	}
 
-	stripDefaultPort(baseURL, u)
+	urls.StripDefaultPort(baseURL, u)
 
-	if err := validateHost(baseURL, u); err != nil {
-		return "", "", err
+	if !urls.MatchesHost(baseURL, u) {
+		return "", "", fmt.Errorf(
+			"%v is not a Bitbucket URL: expected host %q, got %q",
+			u, baseURL.Host, u.Host,
+		)
 	}
 
-	return extractWorkspaceRepo(u.Path)
-}
-
-func parseRemoteURL(remoteURL string) (*url.URL, error) {
-	// Normalize SSH URLs: git@host:path => ssh://git@host/path
-	if !hasGitProtocol(remoteURL) && strings.Contains(remoteURL, ":") {
-		remoteURL = "ssh://" + strings.Replace(remoteURL, ":", "/", 1)
-	}
-
-	u, err := url.Parse(remoteURL)
-	if err != nil {
-		return nil, fmt.Errorf("parse remote URL: %w", err)
-	}
-	return u, nil
-}
-
-func stripDefaultPort(baseURL, remoteURL *url.URL) {
-	if baseURL.Port() != "" {
-		return
-	}
-	host, port, err := net.SplitHostPort(remoteURL.Host)
-	if err != nil {
-		return
-	}
-	if port == "443" || port == "80" {
-		remoteURL.Host = host
-	}
-}
-
-func validateHost(baseURL, remoteURL *url.URL) error {
-	if remoteURL.Host == baseURL.Host {
-		return nil
-	}
-	if strings.HasSuffix(remoteURL.Host, "."+baseURL.Host) {
-		return nil
-	}
-	return fmt.Errorf(
-		"%v is not a Bitbucket URL: expected host %q, got %q",
-		remoteURL, baseURL.Host, remoteURL.Host,
-	)
-}
-
-func extractWorkspaceRepo(path string) (workspace, repo string, err error) {
-	s := strings.TrimPrefix(path, "/")
-	s = strings.TrimSuffix(s, "/")
-	s = strings.TrimSuffix(s, ".git")
-
-	workspace, repo, ok := strings.Cut(s, "/")
+	workspace, repo, ok := urls.ExtractPath(u.Path)
 	if !ok {
-		return "", "", fmt.Errorf("path %q does not contain a Bitbucket repository", s)
+		return "", "", fmt.Errorf(
+			"path %q does not contain a Bitbucket repository", u.Path,
+		)
 	}
+
 	return workspace, repo, nil
-}
-
-var _gitProtocols = []string{
-	"ssh://",
-	"git://",
-	"git+ssh://",
-	"git+https://",
-	"git+http://",
-	"https://",
-	"http://",
-}
-
-func hasGitProtocol(url string) bool {
-	for _, proto := range _gitProtocols {
-		if strings.HasPrefix(url, proto) {
-			return true
-		}
-	}
-	return false
 }

@@ -65,7 +65,9 @@ func (f *Forge) AuthenticationFlow(
 func (f *Forge) appPasswordAuth(_ context.Context, view ui.View) (*AuthenticationToken, error) {
 	f.logger().Info("Bitbucket Cloud uses API tokens for authentication.")
 	f.logger().Info("Create one at: https://bitbucket.org/account/settings/api-tokens/")
-	f.logger().Info("Required scopes: read:repository, write:repository, read:pullrequest, write:pullrequest")
+	f.logger().Info("Required scopes: pullrequest:write, account")
+	f.logger().Info("  pullrequest:write - create and edit pull requests")
+	f.logger().Info("  account - read workspace members for reviewer lookup")
 
 	email, err := promptRequired(view,
 		"Enter Atlassian account email", "email is required")

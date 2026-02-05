@@ -138,12 +138,9 @@ func (r *Repository) NewChangeMetadata(
 }
 
 // ListChangeTemplates lists pull request templates in the repository.
-//
-// This is a stub that will be implemented in a future PR.
+// Bitbucket has limited template support, so this returns an empty list.
 func (r *Repository) ListChangeTemplates(
-	ctx context.Context,
+	_ context.Context,
 ) ([]*forge.ChangeTemplate, error) {
-	// Bitbucket has limited template support.
-	// Return empty list for now.
 	return nil, nil
 }
