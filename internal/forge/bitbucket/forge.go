@@ -105,7 +105,7 @@ func (f *Forge) OpenRepository(
 	tok := token.(*AuthenticationToken)
 
 	client := newClient(f.APIURL(), tok, f.logger())
-	return newRepository(f, rid.workspace, rid.name, f.logger(), client), nil
+	return newRepository(f, rid.url, rid.workspace, rid.name, f.logger(), client), nil
 }
 
 func extractRepoInfo(bitbucketURL, remoteURL string) (workspace, repo string, err error) {
