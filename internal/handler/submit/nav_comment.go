@@ -373,7 +373,7 @@ func updateNavigationComments(
 		}
 
 		info := infos[idx]
-		commentBody := generateStackNavigationComment(nodes, idx, navCommentMarker)
+		commentBody := generateStackNavigationComment(nodes, idx, navCommentMarker, remoteRepo.Forge())
 		if info.Meta.NavigationCommentID() == nil {
 			postc <- &postComment{
 				Branch: info.Branch,
@@ -429,19 +429,37 @@ const (
 	_commentMarker = "<!-- gs:navigation comment -->"
 )
 
+// Bitbucket-specific marker for navigation comments.
+// Bitbucket doesn't support HTML comments, so we use Markdown link definition.
+const _bitbucketCommentMarker = "[gs]: # (navigation comment)"
+
 // Regular expressions that must ALL match a comment
 // for it to be considered a navigation comment
 // when detecting existing comments.
 var _navCommentRegexes = []*regexp.Regexp{
 	regexp.MustCompile(`(?m)^\Q` + _commentHeader + `\E$`),
-	regexp.MustCompile(`(?m)^\Q` + _commentMarker + `\E$`),
+	// Match either standard HTML comment or Bitbucket Markdown marker.
+	regexp.MustCompile(`(?m)^(\Q` + _commentMarker + `\E|\Q` + _bitbucketCommentMarker + `\E)$`),
 }
 
 func generateStackNavigationComment(
 	nodes []*stackedChange,
 	current int,
 	marker string,
+	f forge.Forge,
 ) string {
+	footer := _commentFooter
+	commentMarker := _commentMarker
+	if fc, ok := f.(forge.WithCommentFormat); ok {
+		format := fc.CommentFormat()
+		if format.Footer != "" {
+			footer = format.Footer
+		}
+		if format.Marker != "" {
+			commentMarker = format.Marker
+		}
+	}
+
 	var sb strings.Builder
 	sb.WriteString(_commentHeader)
 	sb.WriteString("\n\n")
@@ -453,10 +471,10 @@ func generateStackNavigationComment(
 	stacknav.Print(&sb, nodes, current, opts)
 
 	sb.WriteString("\n")
-	sb.WriteString(_commentFooter)
+	sb.WriteString(footer)
 
 	sb.WriteString("\n")
-	sb.WriteString(_commentMarker)
+	sb.WriteString(commentMarker)
 	sb.WriteString("\n")
 	return sb.String()
 }

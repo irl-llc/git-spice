@@ -180,6 +180,27 @@ func GetDisplayName(f Forge) string {
 	return f.ID()
 }
 
+// CommentFormat specifies formatting preferences for navigation comments.
+type CommentFormat struct {
+	// Footer is appended at the end of the navigation comment.
+	// Defaults to HTML <sub> tag if empty.
+	Footer string
+
+	// Marker is an invisible marker used to identify navigation comments.
+	// Defaults to HTML comment if empty.
+	Marker string
+}
+
+// WithCommentFormat is an optional interface that forges can implement
+// to customize navigation comment formatting.
+// This is useful for forges like Bitbucket that don't support HTML in comments.
+type WithCommentFormat interface {
+	Forge
+
+	// CommentFormat returns custom formatting for navigation comments.
+	CommentFormat() CommentFormat
+}
+
 // AuthenticationToken is a secret that results from a successful login.
 // It will be persisted in a safe place,
 // and re-used for future authentication with the forge.
