@@ -113,7 +113,7 @@ type CredentialSource int
 
 const (
 	// CredentialSourceEnv indicates credentials from environment variables.
-	// These are typically app passwords using Basic auth.
+	// These are typically API tokens using Bearer auth.
 	CredentialSourceEnv CredentialSource = iota
 
 	// CredentialSourceGCM indicates credentials from git-credential-manager.
@@ -122,8 +122,8 @@ const (
 )
 
 // Credential retrieves full authentication credentials (username and password)
-// for the given forge URL. This is useful for forges like Bitbucket
-// that require both username and token for Basic auth.
+// for the given forge URL. This is useful for forges that may need
+// the username for API operations or user identification.
 //
 // In update mode, it tries environment variables first,
 // then falls back to GCM.
