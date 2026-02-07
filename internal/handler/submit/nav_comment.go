@@ -313,23 +313,27 @@ func updateNavigationComments(
 			return nil
 		}
 
-		if errors.Is(err, forge.ErrNotFound) {
-			log.Info("Navigation comment was deleted, posting new comment",
-				"change", update.Change.String())
-
-			if err := handlePostComment(&postComment{
-				Branch: update.Branch,
-				Meta:   update.Meta,
-				Change: update.Change,
-				Body:   update.Body,
-			}); err != nil {
-				return fmt.Errorf("post replacement comment: %w", err)
-			}
-
-			return nil // recovery successful
+		recreatable := errors.Is(err, forge.ErrNotFound) ||
+			errors.Is(err, forge.ErrCommentCannotUpdate)
+		if !recreatable {
+			return err
 		}
 
-		return err
+		log.Info("Recreating navigation comment",
+			"change", update.Change.String(),
+			"reason", err,
+		)
+
+		if err := handlePostComment(&postComment{
+			Branch: update.Branch,
+			Meta:   update.Meta,
+			Change: update.Change,
+			Body:   update.Body,
+		}); err != nil {
+			return fmt.Errorf("post replacement comment: %w", err)
+		}
+
+		return nil
 	}
 
 	postc := make(chan *postComment)
