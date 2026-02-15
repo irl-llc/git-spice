@@ -13,30 +13,30 @@
 
 github:
   # Repository owner (your GitHub username or organization)
-  owner: "ed-irl"
+  owner: "your-username"
   # Test repository name (should be a repo you have write access to)
   repo: "git-spice-test"
   # A GitHub user who can be added as a reviewer (can be a bot account)
-  reviewer: "ekohlwey"
+  reviewer: "reviewer-username"
   # A GitHub user who can be assigned to PRs (can be the same as reviewer)
-  assignee: "ekohlwey"
+  assignee: "assignee-username"
 
 gitlab:
   # Project namespace (your GitLab username or group)
-  owner: "ed-irlllc"
+  owner: "your-username"
   # Test project name
   repo: "git-spice-test"
   # A GitLab user who can be added as a reviewer
-  reviewer: "ekohlwey1"
+  reviewer: "reviewer-username"
   # A GitLab user who can be assigned to MRs
-  assignee: "ekohlwey1"
+  assignee: "assignee-username"
 
 bitbucket:
   # Bitbucket workspace
-  owner: "shambucket"
+  owner: "your-workspace"
   # Test repository name
-  repo: "shambucket"
+  repo: "git-spice-test"
   # A Bitbucket user who can be added as a reviewer (use nickname from API)
-  reviewer: "Ed IRL Kohlwey"
+  reviewer: "reviewer-name"
   # Bitbucket does not support assignees, leave empty
   assignee: ""
