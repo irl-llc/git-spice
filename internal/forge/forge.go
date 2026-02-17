@@ -221,6 +221,11 @@ type RepositoryID interface {
 // because the base branch has not been pushed yet.
 var ErrUnsubmittedBase = errors.New("base branch has not been submitted yet")
 
+// ErrMergeNotAllowed indicates that a change cannot be merged
+// because preconditions are not met
+// (e.g., failing checks, review requirements, conflicts).
+var ErrMergeNotAllowed = errors.New("merge not allowed")
+
 // Repository is a Git repository hosted on a forge.
 type Repository interface {
 	Forge() Forge
@@ -234,6 +239,13 @@ type Repository interface {
 	SubmitChange(ctx context.Context, req SubmitChangeRequest) (SubmitChangeResult, error)
 
 	EditChange(ctx context.Context, id ChangeID, opts EditChangeOptions) error
+
+	// MergeChange merges an open change into its base branch.
+	//
+	// Returns ErrMergeNotAllowed if the change cannot be merged
+	// (e.g., failing checks, review requirements, conflicts).
+	MergeChange(ctx context.Context, id ChangeID) error
+
 	FindChangesByBranch(ctx context.Context, branch string, opts FindChangesOptions) ([]*FindChangeItem, error)
 	FindChangeByID(ctx context.Context, id ChangeID) (*FindChangeItem, error)
 	ChangesStates(ctx context.Context, ids []ChangeID) ([]ChangeState, error)
