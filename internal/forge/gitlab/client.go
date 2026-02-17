@@ -10,6 +10,7 @@ import (
 )
 
 type gitlabClient struct {
+	Discussions      discussionsService
 	MergeRequests    mergeRequestsService
 	Notes            notesService
 	Projects         projectsService
@@ -50,6 +51,7 @@ func newGitLabClient(ctx context.Context, baseURL string, tok *AuthenticationTok
 		return nil, err
 	}
 	return &gitlabClient{
+		Discussions:      client.Discussions,
 		MergeRequests:    client.MergeRequests,
 		Notes:            client.Notes,
 		ProjectTemplates: client.ProjectTemplates,
@@ -174,4 +176,14 @@ type usersService interface {
 		opt *gitlab.ListUsersOptions,
 		options ...gitlab.RequestOptionFunc,
 	) ([]*gitlab.User, *gitlab.Response, error)
+}
+
+// discussionsService allows listing discussions on merge requests.
+type discussionsService interface {
+	ListMergeRequestDiscussions(
+		pid any,
+		mergeRequest int64,
+		opt *gitlab.ListMergeRequestDiscussionsOptions,
+		options ...gitlab.RequestOptionFunc,
+	) ([]*gitlab.Discussion, *gitlab.Response, error)
 }
