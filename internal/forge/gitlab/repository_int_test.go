@@ -14,18 +14,9 @@ var NewRepository = newRepository
 // RepositoryOptions re-exports the private repositoryOptions type
 type RepositoryOptions = repositoryOptions
 
+// MergeChange merges a merge request using the production method.
 func MergeChange(ctx context.Context, repo *Repository, id *MR) error {
-	_, _, err := repo.client.MergeRequests.AcceptMergeRequest(
-		repo.repoID,
-		id.Number,
-		&gitlab.AcceptMergeRequestOptions{},
-		gitlab.WithContext(ctx),
-	)
-	if err != nil {
-		return fmt.Errorf("merge merge request: %w", err)
-	}
-	repo.log.Debug("Merged merge request", "mr", id.Number)
-	return nil
+	return repo.MergeChange(ctx, id)
 }
 
 func CloseChange(ctx context.Context, repo *Repository, id *MR) error {
