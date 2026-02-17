@@ -5,6 +5,7 @@
 | gs bd | [gs branch delete](/cli/reference.md#gs-branch-delete) |
 | gs be | [gs branch edit](/cli/reference.md#gs-branch-edit) |
 | gs bfo | [gs branch fold](/cli/reference.md#gs-branch-fold) |
+| gs bm | [gs branch merge](/cli/reference.md#gs-branch-merge) |
 | gs bon | [gs branch onto](/cli/reference.md#gs-branch-onto) |
 | gs br | [gs branch restack](/cli/reference.md#gs-branch-restack) |
 | gs brn | [gs branch rename](/cli/reference.md#gs-branch-rename) |
