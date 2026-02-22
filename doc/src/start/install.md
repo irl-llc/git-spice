@@ -60,12 +60,12 @@ ubi --project abhinav/git-spice --exe git-spice
 #### mise
 
 [mise](https://mise.jdx.dev) supports installing tools from various sources,
-and includes a ubi backend.
+including directly from GitHub.
 
 If you use mise, use the following command to install git-spice:
 
 ```bash
-mise use --global 'ubi:abhinav/git-spice[exe=git-spice]'
+mise use --global 'github:abhinav/git-spice'
 ```
 
 ### AUR (ArchLinux)
