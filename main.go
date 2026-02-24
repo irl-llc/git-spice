@@ -272,6 +272,8 @@ type mainCmd struct {
 
 	Rebase rebaseCmd `cmd:"" aliases:"rb" group:"Rebase"`
 
+	CI ciCmd `cmd:"" group:"CI" help:"CI/CD integration commands"`
+
 	// Navigation
 	Up     upCmd     `cmd:"" aliases:"u" group:"Navigation" help:"Move up one branch"`
 	Down   downCmd   `cmd:"" aliases:"d" group:"Navigation" help:"Move down one branch"`
@@ -538,6 +540,22 @@ func (cmd *mainCmd) AfterApply(ctx context.Context, kctx *kong.Context, logger *
 				Service:          svc,
 				RemoteRepository: remoteRepo,
 			}, nil
+		}),
+		kctx.BindSingletonProvider(func(
+			log *silog.Logger,
+			view ui.View,
+			store *state.Store,
+			secretStash secret.Stash,
+			forges *forge.Registry,
+			repo *git.Repository,
+		) (forge.Repository, error) {
+			remote, err := ensureRemote(ctx, repo, store, log, view)
+			if err != nil {
+				return nil, err
+			}
+			return openRemoteRepository(
+				ctx, log, secretStash, forges, repo, remote,
+			)
 		}),
 	)
 }

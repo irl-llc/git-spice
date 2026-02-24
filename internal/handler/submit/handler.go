@@ -388,6 +388,7 @@ func (h *Handler) SubmitBatch(ctx context.Context, req *BatchRequest) error {
 		opts.NavCommentSync,
 		opts.NavCommentDownstack,
 		opts.NavCommentMarker,
+		h.Store.Trunk(),
 		branchesToComment,
 		h.RemoteRepository,
 	)
@@ -435,6 +436,7 @@ func (h *Handler) Submit(ctx context.Context, req *Request) error {
 		opts.NavCommentSync,
 		opts.NavCommentDownstack,
 		opts.NavCommentMarker,
+		h.Store.Trunk(),
 		[]string{req.Branch},
 		h.RemoteRepository,
 	)
@@ -603,7 +605,7 @@ func (h *Handler) submitBranch(
 			// If we're importing an existing CR,
 			// also check if there's a stack navigation comment to import.
 			listCommentOpts := forge.ListChangeCommentsOptions{
-				BodyMatchesAll: _navCommentRegexes,
+				BodyMatchesAll: NavCommentRegexes,
 				CanUpdate:      true,
 			}
 
