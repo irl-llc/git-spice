@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"slices"
 
+	"go.abhg.dev/gs/internal/forge"
 	"go.abhg.dev/gs/internal/git"
 	"go.abhg.dev/gs/internal/handler/submit"
 	"go.abhg.dev/gs/internal/must"
@@ -34,6 +35,7 @@ func (cmd *downstackSubmitCmd) Run(
 	wt *git.Worktree,
 	store *state.Store,
 	svc *spice.Service,
+	forgeRepo forge.Repository,
 	submitHandler SubmitHandler,
 ) error {
 	if cmd.Branch == "" {
@@ -46,6 +48,12 @@ func (cmd *downstackSubmitCmd) Run(
 
 	if cmd.Branch == store.Trunk() {
 		return errors.New("nothing to submit below trunk")
+	}
+
+	if err := cmd.checkDownstack(
+		ctx, svc, forgeRepo, cmd.Branch,
+	); err != nil {
+		return err
 	}
 
 	downstacks, err := svc.ListDownstack(ctx, cmd.Branch)

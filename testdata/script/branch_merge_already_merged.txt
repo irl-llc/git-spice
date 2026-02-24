@@ -31,9 +31,11 @@ stderr 'Created #2'
 # merge feature1 externally
 shamhub merge alice/example 1
 
-# now merge from feature2 — feature1 should be skipped
+# now merge from feature2 — feature1 should be skipped.
+# Use --no-branch-check because feature1's merged state
+# would otherwise trigger stale base validation.
 env ROBOT_INPUT=$WORK/robot-merge.golden ROBOT_OUTPUT=$WORK/robot-merge.actual
-gs branch merge
+gs branch merge --no-branch-check
 cmp $WORK/robot-merge.actual $WORK/robot-merge.golden
 stderr 'already merged, skipping'
 stderr 'Merging feature2'
