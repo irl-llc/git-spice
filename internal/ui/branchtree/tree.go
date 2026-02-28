@@ -55,6 +55,10 @@ type Item struct {
 	// nil indicates state is not available.
 	ChangeState *forge.ChangeState
 
+	// CommentCounts holds comment resolution counts for the change.
+	// If non-nil and Total > 0, rendered as " [Resolved/Total]☑".
+	CommentCounts *forge.CommentCounts
+
 	// Worktree is the absolute path where this branch is checked out.
 	// If non-empty and differs from GraphOptions.CurrentWorktree,
 	// rendered as "[wt: path]".
@@ -134,6 +138,13 @@ type Style struct {
 	// Each style must include the text via SetString.
 	ChangeState ChangeStateStyle
 
+	// CommentCounts styles the comment counts indicator.
+	CommentCounts lipgloss.Style
+
+	// CommentCountsResolved styles comment counts
+	// when all comments are resolved.
+	CommentCountsResolved lipgloss.Style
+
 	// Worktree styles the worktree indicator.
 	Worktree lipgloss.Style
 
@@ -191,6 +202,8 @@ var DefaultStyle = Style{
 		Closed: ui.NewStyle().Foreground(ui.Gray).SetString("closed"),
 		Merged: ui.NewStyle().Foreground(ui.Magenta).SetString("merged"),
 	},
+	CommentCounts:         ui.NewStyle().Foreground(ui.Yellow),
+	CommentCountsResolved: ui.NewStyle().Foreground(ui.Green),
 	Worktree:              ui.NewStyle().Faint(true),
 	PushStatus:            ui.NewStyle().Foreground(ui.Yellow).Faint(true),
 	NeedsRestack:          ui.NewStyle().Foreground(ui.Gray).SetString(" (needs restack)"), // TODO: drop leading space
@@ -298,6 +311,10 @@ func (r *branchTreeRenderer) item(sb *strings.Builder, item *Item) {
 		r.changeID(sb, item.ChangeID, item.ChangeIDHighlights, item.ChangeState)
 	}
 
+	if cc := item.CommentCounts; cc != nil && cc.Total > 0 {
+		r.commentCounts(sb, cc)
+	}
+
 	if wt := item.Worktree; wt != "" && wt != r.CurrentWorktree {
 		r.worktree(sb, item.Worktree, item.WorktreeHighlights)
 	}
@@ -353,6 +370,19 @@ func (r *branchTreeRenderer) changeID(
 			sb.WriteString(r.Style.ChangeState.Merged.String())
 		}
 	}
+}
+
+func (r *branchTreeRenderer) commentCounts(
+	sb *strings.Builder,
+	cc *forge.CommentCounts,
+) {
+	style := r.Style.CommentCounts
+	if cc.Resolved == cc.Total {
+		style = r.Style.CommentCountsResolved
+	}
+	sb.WriteString(style.Render(
+		fmt.Sprintf(" [%d/%d]☑", cc.Resolved, cc.Total),
+	))
 }
 
 func (r *branchTreeRenderer) worktree(

@@ -9,7 +9,7 @@ interactions:
         content_length: 146
         host: api.github.com
         body: |
-            {"query":"query($owner:String!$repo:String!){repository(owner: $owner, name: $repo){id}}","variables":{"owner":"ed-irl","repo":"git-spice-test"}}
+            {"query":"query($owner:String!$repo:String!){repository(owner: $owner, name: $repo){id}}","variables":{"owner":"test-owner","repo":"test-repo"}}
         headers:
             Content-Type:
                 - application/json
@@ -27,7 +27,7 @@ interactions:
                 - application/json; charset=utf-8
         status: 200 OK
         code: 200
-        duration: 142.631083ms
+        duration: 186.669709ms
     - id: 1
       request:
         proto: HTTP/1.1
@@ -36,7 +36,7 @@ interactions:
         content_length: 278
         host: api.github.com
         body: |
-            {"query":"mutation($input:CreatePullRequestInput!){createPullRequest(input: $input){pullRequest{id,number,url}}}","variables":{"input":{"repositoryId":"R_kgDORFeuHw","baseRefName":"main","headRefName":"qldsCYHQ","title":"Testing qldsCYHQ","body":"Test PR for comment counts"}}}
+            {"query":"mutation($input:CreatePullRequestInput!){createPullRequest(input: $input){pullRequest{id,number,url}}}","variables":{"input":{"repositoryId":"R_kgDORFeuHw","baseRefName":"main","headRefName":"vHZqxJvm","title":"Testing vHZqxJvm","body":"Test PR for comment counts"}}}
         headers:
             Content-Type:
                 - application/json
@@ -48,13 +48,13 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: '{"data":{"createPullRequest":{"pullRequest":{"id":"PR_kwDORFeuH87AjsT7","number":10,"url":"https://github.com/ed-irl/git-spice-test/pull/10"}}}}'
+        body: '{"data":{"createPullRequest":{"pullRequest":{"id":"PR_kwDORFeuH87Auysf","number":64,"url":"https://github.com/test-owner/test-repo/pull/64"}}}}'
         headers:
             Content-Type:
                 - application/json; charset=utf-8
         status: 200 OK
         code: 200
-        duration: 745.564917ms
+        duration: 673.188375ms
     - id: 2
       request:
         proto: HTTP/1.1
@@ -63,7 +63,7 @@ interactions:
         content_length: 170
         host: api.github.com
         body: |
-            {"query":"query($ids:[ID!]!){nodes(ids: $ids){... on PullRequest{reviewThreads(first: 100){totalCount,nodes{isResolved}}}}}","variables":{"ids":["PR_kwDORFeuH87AjsT7"]}}
+            {"query":"query($ids:[ID!]!){nodes(ids: $ids){... on PullRequest{reviewThreads(first: 100){totalCount,nodes{isResolved}}}}}","variables":{"ids":["PR_kwDORFeuH87Auysf"]}}
         headers:
             Content-Type:
                 - application/json
@@ -81,4 +81,4 @@ interactions:
                 - application/json; charset=utf-8
         status: 200 OK
         code: 200
-        duration: 163.984916ms
+        duration: 204.997417ms
