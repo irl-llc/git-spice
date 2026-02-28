@@ -1,0 +1,24 @@
+Usage: gs branch (b) merge (m) [flags]
+
+Merge a branch and its downstack
+
+Merges the current branch and all branches below it into trunk via the forge
+API, bottom-up. Use --branch to start at a different branch.
+
+Already-merged branches are skipped automatically. Branches must have an open
+Change Request to be merged. Between merges, the command waits for each merge
+to complete and retargets the next PR to trunk. Use --no-wait to skip this and
+merge without waiting.
+
+After merging, run 'gs repo sync' to update local state.
+
+Flags:
+  --branch=NAME    Branch to merge
+  --no-wait        Skip waiting for each merge to propagate before proceeding.
+
+Global Flags:
+  -h, --help           Show help for the command
+      --version        Print version information and quit
+  -v, --verbose        Enable verbose output ($GIT_SPICE_VERBOSE)
+  -C, --dir=DIR        Change to DIR before doing anything
+      --[no-]prompt    Whether to prompt for missing information

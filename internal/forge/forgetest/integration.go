@@ -75,7 +75,7 @@ func Token(t *testing.T, forgeURL, envVar string) string {
 	}
 
 	// Try GCM.
-	cred, err := forge.LoadGCMCredential(forgeURL)
+	cred, err := forge.LoadGCMCredential(context.Background(), forgeURL)
 	if err == nil {
 		t.Logf("Using token from git-credential-manager for %s", forgeURL)
 		return cred.Password
@@ -154,7 +154,7 @@ func Credential(
 	}
 
 	// Try GCM.
-	cred, err := forge.LoadGCMCredential(forgeURL)
+	cred, err := forge.LoadGCMCredential(context.Background(), forgeURL)
 	if err == nil {
 		t.Logf(
 			"Using credentials from git-credential-manager for %s",

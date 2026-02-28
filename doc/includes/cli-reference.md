@@ -189,9 +189,10 @@ See https://abhinav.github.io/git-spice/cli/json/ for details.
 
 * `-a`, `--all` ([:material-wrench:{ .middle title="spice.log.all" }](/cli/config.md#spicelogall)): Show all tracked branches, not just the current stack.
 * `-S`, `--[no-]cr-status` ([:material-wrench:{ .middle title="spice.log.crStatus" }](/cli/config.md#spicelogcrstatus)): Request and include information about the Change Request
+* `-c`, `--[no-]comments` ([:material-wrench:{ .middle title="spice.log.comments" }](/cli/config.md#spicelogcomments)): Include comment resolution counts for changes
 * `--json`: Write to stdout as a stream of JSON objects in an unspecified order <span class="mdx-badge"><span class="mdx-badge__icon">:material-tag:{ title="Released in version" }</span><span class="mdx-badge__text">[v0.18.0](/changelog.md#v0.18.0)</span>
 
-**Configuration**: [spice.log.all](/cli/config.md#spicelogall), [spice.log.crFormat](/cli/config.md#spicelogcrformat), [spice.log.crStatus](/cli/config.md#spicelogcrstatus), [spice.log.pushStatusFormat](/cli/config.md#spicelogpushstatusformat), [spice.logLong.crFormat](/cli/config.md#spiceloglongcrformat), [spice.logShort.crFormat](/cli/config.md#spicelogshortcrformat)
+**Configuration**: [spice.log.all](/cli/config.md#spicelogall), [spice.log.comments](/cli/config.md#spicelogcomments), [spice.log.crFormat](/cli/config.md#spicelogcrformat), [spice.log.crStatus](/cli/config.md#spicelogcrstatus), [spice.log.pushStatusFormat](/cli/config.md#spicelogpushstatusformat), [spice.logLong.crFormat](/cli/config.md#spiceloglongcrformat), [spice.logShort.crFormat](/cli/config.md#spicelogshortcrformat)
 
 ### git-spice log long {#gs-log-long}
 
@@ -212,9 +213,10 @@ See https://abhinav.github.io/git-spice/cli/json/ for details.
 
 * `-a`, `--all` ([:material-wrench:{ .middle title="spice.log.all" }](/cli/config.md#spicelogall)): Show all tracked branches, not just the current stack.
 * `-S`, `--[no-]cr-status` ([:material-wrench:{ .middle title="spice.log.crStatus" }](/cli/config.md#spicelogcrstatus)): Request and include information about the Change Request
+* `-c`, `--[no-]comments` ([:material-wrench:{ .middle title="spice.log.comments" }](/cli/config.md#spicelogcomments)): Include comment resolution counts for changes
 * `--json`: Write to stdout as a stream of JSON objects in an unspecified order <span class="mdx-badge"><span class="mdx-badge__icon">:material-tag:{ title="Released in version" }</span><span class="mdx-badge__text">[v0.18.0](/changelog.md#v0.18.0)</span>
 
-**Configuration**: [spice.log.all](/cli/config.md#spicelogall), [spice.log.crFormat](/cli/config.md#spicelogcrformat), [spice.log.crStatus](/cli/config.md#spicelogcrstatus), [spice.log.pushStatusFormat](/cli/config.md#spicelogpushstatusformat), [spice.logLong.crFormat](/cli/config.md#spiceloglongcrformat), [spice.logShort.crFormat](/cli/config.md#spicelogshortcrformat)
+**Configuration**: [spice.log.all](/cli/config.md#spicelogall), [spice.log.comments](/cli/config.md#spicelogcomments), [spice.log.crFormat](/cli/config.md#spicelogcrformat), [spice.log.crStatus](/cli/config.md#spicelogcrstatus), [spice.log.pushStatusFormat](/cli/config.md#spicelogpushstatusformat), [spice.logLong.crFormat](/cli/config.md#spiceloglongcrformat), [spice.logShort.crFormat](/cli/config.md#spicelogshortcrformat)
 
 ## Stack
 
@@ -1005,6 +1007,31 @@ only if there are multiple CRs in the stack.
 * `--branch=NAME`: Branch to submit
 
 **Configuration**: [spice.submit.assignees](/cli/config.md#spicesubmitassignees), [spice.submit.draft](/cli/config.md#spicesubmitdraft), [spice.submit.label](/cli/config.md#spicesubmitlabel), [spice.submit.listTemplatesTimeout](/cli/config.md#spicesubmitlisttemplatestimeout), [spice.submit.navigationComment](/cli/config.md#spicesubmitnavigationcomment), [spice.submit.navigationComment.downstack](/cli/config.md#spicesubmitnavigationcommentdownstack), [spice.submit.navigationCommentStyle.marker](/cli/config.md#spicesubmitnavigationcommentstylemarker), [spice.submit.navigationCommentSync](/cli/config.md#spicesubmitnavigationcommentsync), [spice.submit.publish](/cli/config.md#spicesubmitpublish), [spice.submit.reviewers](/cli/config.md#spicesubmitreviewers), [spice.submit.reviewers.addWhen](/cli/config.md#spicesubmitreviewersaddwhen), [spice.submit.skipRestackCheck](/cli/config.md#spicesubmitskiprestackcheck), [spice.submit.template](/cli/config.md#spicesubmittemplate), [spice.submit.web](/cli/config.md#spicesubmitweb)
+
+### git-spice branch merge {#gs-branch-merge}
+
+```
+gs branch (b) merge (m) [flags]
+```
+
+Merge a branch and its downstack
+
+Merges the current branch and all branches below it
+into trunk via the forge API, bottom-up.
+Use --branch to start at a different branch.
+
+Already-merged branches are skipped automatically.
+Branches must have an open Change Request to be merged.
+Between merges, the command waits for each merge
+to complete and retargets the next PR to trunk.
+Use --no-wait to skip this and merge without waiting.
+
+After merging, run 'gs repo sync' to update local state.
+
+**Flags**
+
+* `--branch=NAME`: Branch to merge
+* `--no-wait`: Skip waiting for each merge to propagate before proceeding.
 
 ## Commit
 

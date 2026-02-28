@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
 
@@ -268,5 +269,52 @@ func (sh *ShamHub) MergeChange(req MergeChangeRequest) error {
 	}
 
 	sh.changes[changeIdx].State = shamChangeMerged
+	return nil
+}
+
+// REST endpoint: merge a change.
+
+type mergeChangeRequest struct {
+	Owner  string `path:"owner" json:"-"`
+	Repo   string `path:"repo" json:"-"`
+	Number int    `path:"number" json:"-"`
+}
+
+type mergeChangeResponse struct{}
+
+var _ = shamhubRESTHandler(
+	"POST /{owner}/{repo}/change/{number}/merge",
+	(*ShamHub).handleMergeChange,
+)
+
+func (sh *ShamHub) handleMergeChange(
+	_ context.Context, req *mergeChangeRequest,
+) (*mergeChangeResponse, error) {
+	err := sh.MergeChange(MergeChangeRequest{
+		Owner:  req.Owner,
+		Repo:   req.Repo,
+		Number: req.Number,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &mergeChangeResponse{}, nil
+}
+
+// MergeChange merges a change via the ShamHub REST API.
+func (r *forgeRepository) MergeChange(
+	ctx context.Context, fid forge.ChangeID,
+) error {
+	id := fid.(ChangeID)
+	u := r.apiURL.JoinPath(
+		r.owner, r.repo,
+		"change", strconv.Itoa(int(id)), "merge",
+	)
+
+	var res mergeChangeResponse
+	if err := r.client.Post(ctx, u.String(), struct{}{}, &res); err != nil {
+		return fmt.Errorf("merge change: %w", err)
+	}
+
 	return nil
 }
