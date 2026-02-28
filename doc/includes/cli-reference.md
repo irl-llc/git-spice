@@ -270,6 +270,7 @@ only if there are multiple CRs in the stack.
 * `-r`, `--reviewer=REVIEWER,...`: Add reviewers to the change request. Pass multiple times or separate with commas. <span class="mdx-badge"><span class="mdx-badge__icon">:material-tag:{ title="Released in version" }</span><span class="mdx-badge__text">[v0.21.0](/changelog.md#v0.21.0)</span>
 * `-a`, `--assign=ASSIGNEE,...`: Assign the change request to these users. Pass multiple times or separate with commas. <span class="mdx-badge"><span class="mdx-badge__icon">:material-tag:{ title="Released in version" }</span><span class="mdx-badge__text">[v0.21.0](/changelog.md#v0.21.0)</span>
 * `--no-web`: Alias for --web=false.
+* `--no-branch-check`: Skip stale base validation before submitting.
 
 **Configuration**: [spice.submit.assignees](/cli/config.md#spicesubmitassignees), [spice.submit.draft](/cli/config.md#spicesubmitdraft), [spice.submit.label](/cli/config.md#spicesubmitlabel), [spice.submit.listTemplatesTimeout](/cli/config.md#spicesubmitlisttemplatestimeout), [spice.submit.navigationComment](/cli/config.md#spicesubmitnavigationcomment), [spice.submit.navigationComment.downstack](/cli/config.md#spicesubmitnavigationcommentdownstack), [spice.submit.navigationCommentStyle.marker](/cli/config.md#spicesubmitnavigationcommentstylemarker), [spice.submit.navigationCommentSync](/cli/config.md#spicesubmitnavigationcommentsync), [spice.submit.publish](/cli/config.md#spicesubmitpublish), [spice.submit.reviewers](/cli/config.md#spicesubmitreviewers), [spice.submit.reviewers.addWhen](/cli/config.md#spicesubmitreviewersaddwhen), [spice.submit.skipRestackCheck](/cli/config.md#spicesubmitskiprestackcheck), [spice.submit.template](/cli/config.md#spicesubmittemplate), [spice.submit.updateOnly](/cli/config.md#spicesubmitupdateonly), [spice.submit.web](/cli/config.md#spicesubmitweb)
 
@@ -392,6 +393,7 @@ only if there are multiple CRs in the stack.
 * `-r`, `--reviewer=REVIEWER,...`: Add reviewers to the change request. Pass multiple times or separate with commas. <span class="mdx-badge"><span class="mdx-badge__icon">:material-tag:{ title="Released in version" }</span><span class="mdx-badge__text">[v0.21.0](/changelog.md#v0.21.0)</span>
 * `-a`, `--assign=ASSIGNEE,...`: Assign the change request to these users. Pass multiple times or separate with commas. <span class="mdx-badge"><span class="mdx-badge__icon">:material-tag:{ title="Released in version" }</span><span class="mdx-badge__text">[v0.21.0](/changelog.md#v0.21.0)</span>
 * `--no-web`: Alias for --web=false.
+* `--no-branch-check`: Skip stale base validation before submitting.
 * `--branch=NAME`: Branch to start at
 
 **Configuration**: [spice.submit.assignees](/cli/config.md#spicesubmitassignees), [spice.submit.draft](/cli/config.md#spicesubmitdraft), [spice.submit.label](/cli/config.md#spicesubmitlabel), [spice.submit.listTemplatesTimeout](/cli/config.md#spicesubmitlisttemplatestimeout), [spice.submit.navigationComment](/cli/config.md#spicesubmitnavigationcomment), [spice.submit.navigationComment.downstack](/cli/config.md#spicesubmitnavigationcommentdownstack), [spice.submit.navigationCommentStyle.marker](/cli/config.md#spicesubmitnavigationcommentstylemarker), [spice.submit.navigationCommentSync](/cli/config.md#spicesubmitnavigationcommentsync), [spice.submit.publish](/cli/config.md#spicesubmitpublish), [spice.submit.reviewers](/cli/config.md#spicesubmitreviewers), [spice.submit.reviewers.addWhen](/cli/config.md#spicesubmitreviewersaddwhen), [spice.submit.skipRestackCheck](/cli/config.md#spicesubmitskiprestackcheck), [spice.submit.template](/cli/config.md#spicesubmittemplate), [spice.submit.updateOnly](/cli/config.md#spicesubmitupdateonly), [spice.submit.web](/cli/config.md#spicesubmitweb)
@@ -547,6 +549,7 @@ only if there are multiple CRs in the stack.
 * `-r`, `--reviewer=REVIEWER,...`: Add reviewers to the change request. Pass multiple times or separate with commas. <span class="mdx-badge"><span class="mdx-badge__icon">:material-tag:{ title="Released in version" }</span><span class="mdx-badge__text">[v0.21.0](/changelog.md#v0.21.0)</span>
 * `-a`, `--assign=ASSIGNEE,...`: Assign the change request to these users. Pass multiple times or separate with commas. <span class="mdx-badge"><span class="mdx-badge__icon">:material-tag:{ title="Released in version" }</span><span class="mdx-badge__text">[v0.21.0](/changelog.md#v0.21.0)</span>
 * `--no-web`: Alias for --web=false.
+* `--no-branch-check`: Skip stale base validation before submitting.
 * `--branch=NAME`: Branch to start at
 
 **Configuration**: [spice.submit.assignees](/cli/config.md#spicesubmitassignees), [spice.submit.draft](/cli/config.md#spicesubmitdraft), [spice.submit.label](/cli/config.md#spicesubmitlabel), [spice.submit.listTemplatesTimeout](/cli/config.md#spicesubmitlisttemplatestimeout), [spice.submit.navigationComment](/cli/config.md#spicesubmitnavigationcomment), [spice.submit.navigationComment.downstack](/cli/config.md#spicesubmitnavigationcommentdownstack), [spice.submit.navigationCommentStyle.marker](/cli/config.md#spicesubmitnavigationcommentstylemarker), [spice.submit.navigationCommentSync](/cli/config.md#spicesubmitnavigationcommentsync), [spice.submit.publish](/cli/config.md#spicesubmitpublish), [spice.submit.reviewers](/cli/config.md#spicesubmitreviewers), [spice.submit.reviewers.addWhen](/cli/config.md#spicesubmitreviewersaddwhen), [spice.submit.skipRestackCheck](/cli/config.md#spicesubmitskiprestackcheck), [spice.submit.template](/cli/config.md#spicesubmittemplate), [spice.submit.updateOnly](/cli/config.md#spicesubmitupdateonly), [spice.submit.web](/cli/config.md#spicesubmitweb)
@@ -1002,6 +1005,7 @@ only if there are multiple CRs in the stack.
 * `-r`, `--reviewer=REVIEWER,...`: Add reviewers to the change request. Pass multiple times or separate with commas. <span class="mdx-badge"><span class="mdx-badge__icon">:material-tag:{ title="Released in version" }</span><span class="mdx-badge__text">[v0.21.0](/changelog.md#v0.21.0)</span>
 * `-a`, `--assign=ASSIGNEE,...`: Assign the change request to these users. Pass multiple times or separate with commas. <span class="mdx-badge"><span class="mdx-badge__icon">:material-tag:{ title="Released in version" }</span><span class="mdx-badge__text">[v0.21.0](/changelog.md#v0.21.0)</span>
 * `--no-web`: Alias for --web=false.
+* `--no-branch-check`: Skip stale base validation before submitting.
 * `--title=TITLE`: Title of the change request
 * `--body=BODY`: Body of the change request
 * `--branch=NAME`: Branch to submit
@@ -1026,12 +1030,17 @@ Between merges, the command waits for each merge
 to complete and retargets the next PR to trunk.
 Use --no-wait to skip this and merge without waiting.
 
+Before merging, the downstack is checked for branches
+whose base PR was already merged on the forge.
+Use --no-branch-check to skip this validation.
+
 After merging, run 'gs repo sync' to update local state.
 
 **Flags**
 
 * `--branch=NAME`: Branch to merge
 * `--no-wait`: Skip waiting for each merge to propagate before proceeding.
+* `--no-branch-check`: Skip stale base validation before merging.
 
 ## Commit
 

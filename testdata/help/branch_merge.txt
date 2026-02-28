@@ -10,11 +10,16 @@ Change Request to be merged. Between merges, the command waits for each merge
 to complete and retargets the next PR to trunk. Use --no-wait to skip this and
 merge without waiting.
 
+Before merging, the downstack is checked for branches whose base PR was already
+merged on the forge. Use --no-branch-check to skip this validation.
+
 After merging, run 'gs repo sync' to update local state.
 
 Flags:
-  --branch=NAME    Branch to merge
-  --no-wait        Skip waiting for each merge to propagate before proceeding.
+  --branch=NAME        Branch to merge
+  --no-wait            Skip waiting for each merge to propagate before
+                       proceeding.
+  --no-branch-check    Skip stale base validation before merging.
 
 Global Flags:
   -h, --help           Show help for the command

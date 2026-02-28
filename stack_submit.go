@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"go.abhg.dev/gs/internal/forge"
 	"go.abhg.dev/gs/internal/git"
 	"go.abhg.dev/gs/internal/handler/submit"
 	"go.abhg.dev/gs/internal/spice"
@@ -28,11 +29,18 @@ func (cmd *stackSubmitCmd) Run(
 	wt *git.Worktree,
 	store *state.Store,
 	svc *spice.Service,
+	forgeRepo forge.Repository,
 	submitHandler SubmitHandler,
 ) error {
 	currentBranch, err := wt.CurrentBranch(ctx)
 	if err != nil {
 		return fmt.Errorf("get current branch: %w", err)
+	}
+
+	if err := cmd.checkDownstack(
+		ctx, svc, forgeRepo, currentBranch,
+	); err != nil {
+		return err
 	}
 
 	stack, err := svc.ListStack(ctx, currentBranch)
